@@ -4,7 +4,7 @@ import com.example.algorithm.tree.common.TreeNode;
 
 import java.util.*;
 
-public class Solution {
+public class SolutionV1 {
 
     /**
      * 给你二叉搜索树的根节点root,同时给定最小边界low和最大边界high。通过修剪二叉搜索树，使得所有的节点值在[low,high]中。
@@ -170,9 +170,181 @@ public class Solution {
      * @param root
      * @return
      */
+    int ans;
     public int diameterOfBinaryTree(TreeNode root) {
-        // todo 先做到这里吧，今天
-        return 0;
+        ans = 1;
+        depth(root);
+        return ans - 1;
     }
+
+    public int depth(TreeNode node) {
+        // 访问到空节点了，返回0
+        if (node == null) {
+            return 0;
+        }
+        // 左儿子为根的子树的深度
+        int L = depth(node.left);
+        // 右儿子为根的子树的深度
+        int R = depth(node.right);
+        // 计算即L+R+1 并更新ans
+        ans = Math.max(ans, L + R + 1);
+        // 返回该节点为根的子树的深度
+        return Math.max(L, R) + 1;
+    }
+
+
+    /**
+     * 最小高度树
+     * 给定一个有序整数数组，元素各不相同且按照升序排列。
+     * 编写一个算法，创建一个高度最小的二叉树。
+     * 示例：给定有序数组 [-10, -3, 0, 5, 9]
+     * 一个可能的答案是：[0,-3,9,-10,null,5]，它可以表示下面这个高度平衡二叉搜索树：
+     *           0
+     *          / \
+     *        -3   9
+     *        /   /
+     *      -10  5
+     * @param nums
+     * @return
+     */
+    public TreeNode sortedArrayToBST(int[] nums) {
+        if (nums.length == 0) {
+            return null;
+        }
+        TreeNode node = new TreeNode(nums[nums.length / 2]);
+        node.left = sortedArrayToBST(Arrays.copyOfRange(nums, 0, nums.length / 2));
+        node.right = sortedArrayToBST(Arrays.copyOfRange(nums, nums.length / 2 + 1, nums.length));
+        return node;
+    }
+
+    /**
+     * 给定二叉搜索树(BST)的根节点和一个值。你需要在BST中找到值为给定值的节点。
+     * 返回以该节点为根的子树。如果不存在，返回null。
+     * 例如，给定二叉搜索树和值2
+     *              4
+     *            /   \
+     *          2      7
+     *         / \
+     *        1   3
+     * 你应该返回如下子树
+     *          2
+     *        /  \
+     *       1    3
+     * 在上述示例中，如果要找的值是 5，但因为没有节点值为 5，我们应该返回 NUL
+     * @param root
+     * @param val
+     * @return
+     */
+    public TreeNode searchBST(TreeNode root, int val) {
+        if (root == null || root.val == val) {
+            return root;
+        }
+        if (val < root.val) {
+            return searchBST(root.left, val);
+        } else {
+            return searchBST(root.right, val);
+        }
+    }
+
+    /**
+     * 二叉搜索树的范围和
+     * 给定二叉搜索树的根节点root,返回L和R(含)之间的所有节点的值的和。
+     * 二叉搜索树保证具有唯一的值。
+     * 例如：
+     *      输入：root=[10, 5, 15, 3, 7, null, 18], L=7, R=15
+     *                          10
+     *                        /   \
+     *                      5      15
+     *                    / \       \
+     *                   3   7       18
+     *      输出：32
+     * 示例 2：
+     *      输入：root = [10,5,15,3,7,13,18,1,null,6], L = 6, R = 10
+     *                          10
+     *                        /   \
+     *                       5     15
+     *                     /  \   /  \
+     *                    3   7  13  18
+     *                  /    /
+     *                 1    6
+     * 输出：23
+     * 提示：
+     *  树中的结点数量最多为 10000 个。
+     *  最终的答案保证小于 2^31。
+     * @param root
+     * @param L
+     * @param R
+     * @return
+     */
+
+    // 我们对树进行深度优先搜索，对于当前节点 node，如果 node.val 小于等于 L，那么只需要继续搜索它的右子树；如果 node.val 大于等于 R，那么只需要继续搜索它的左子树；
+    // 如果 node.val 在区间 (L, R) 中，则需要搜索它的所有子树。
+    //我们在代码中用递归和迭代的方法分别实现了深度优先搜索。
+    int ans1;
+    public int rangeSumBST(TreeNode root, int L, int R) {
+        ans = 0;
+        dfs(root, L, R);
+        return ans1;
+    }
+
+    public void dfs(TreeNode node, int L, int R) {
+        if (node == null) {
+            return;
+        }
+        if (L <= node.val && node.val <= R) {
+            dfs(node.left, L, R);
+            ans += node.val;
+            dfs(node.right, L, R);
+        }
+        if (node.val > R) {
+            dfs(node.left, L, R);
+        }
+        if (node.val < L) {
+            dfs(node.right, L, R);
+        }
+
+    }
+
+
+    /**
+     * 给定一个非空特殊的二叉树，每个节点都是正数，并且每个节点的子节点数量只能为2或0。
+     * 若是一个节点有两个子节点的话，那该节点的值等于两个子节点中较小的一个。
+     * 更加正式的说：root.val = min(root.left.val, root.right.val)总是成立。
+     * 给出这样的一颗二叉树，你需要输出所有节点中第二小的值，如果第二小的值不存在，输出-1。
+     * 实例：
+     *                      2
+     *                    /   \
+     *                   2     5
+     *                        / \
+     *                       5  7
+     * 输入：root=[2,2,5,null,null,5,7]
+     * 输出：5
+     * 说明：最小值是2，第二小值是5
+     *
+     * 示例：
+     *                      2
+     *                    /  \
+     *                   2   2
+     * 输入：root=[2, 2, 2]
+     * 输出：-1
+     * 说明：最小值是2，但是不存在第二小的值
+     *
+     * 说明：
+     *      树中节点数目在[1, 25]中。
+     *      1 <= Node.val <= 231 - 1
+     *      对于树中每个节点 root.val == min(root.left.val, root.right.val)
+     * @param root
+     * @return
+     */
+    public int findSecondMinimumValue(TreeNode root) {
+        // todo
+        return -1;
+    }
+
+    private int help(TreeNode root, int min) {
+        // todo
+        return -1;
+    }
+
 
 }
