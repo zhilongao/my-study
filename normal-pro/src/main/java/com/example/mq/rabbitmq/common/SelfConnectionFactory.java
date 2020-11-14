@@ -2,7 +2,7 @@ package com.example.mq.rabbitmq.common;
 
 import com.rabbitmq.client.Connection;
 
-public class ConnectionFactory {
+public class SelfConnectionFactory {
 
     public static Connection createConnection() throws Exception{
         // 创建一个ConnectionFactory,并设置相关的属性值

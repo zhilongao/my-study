@@ -1,6 +1,6 @@
 package com.example.mq.rabbitmq.simple;
 
-import com.example.mq.rabbitmq.common.ConnectionFactory;
+import com.example.mq.rabbitmq.common.SelfConnectionFactory;
 import com.rabbitmq.client.*;
 
 import java.io.IOException;
@@ -16,7 +16,7 @@ public class SimpleMessageService {
      * @throws Exception
      */
     public static void originalProduceMessage() throws Exception{
-        Connection connection = com.example.mq.rabbitmq.common.ConnectionFactory.createConnection();
+        Connection connection = SelfConnectionFactory.createConnection();
         // 通过Connection创建消息通道
         Channel channel = connection.createChannel();
         // 通过channel发送消息 需要指定exchange routingKey BasicProperties byte[] body
@@ -34,7 +34,7 @@ public class SimpleMessageService {
      * @throws Exception
      */
     public static void startSimpleConsumer() throws Exception{
-        Connection connection = com.example.mq.rabbitmq.common.ConnectionFactory.createConnection();
+        Connection connection = SelfConnectionFactory.createConnection();
         Channel channel = connection.createChannel();
         // 声明交换机
         String exchangeName = "simple_exchange";
@@ -68,7 +68,7 @@ public class SimpleMessageService {
      */
     public static void createDefaultExchangeProducer() throws Exception{
         // 创建Connection和Channel
-        Connection conn = com.example.mq.rabbitmq.common.ConnectionFactory.createConnection();
+        Connection conn = SelfConnectionFactory.createConnection();
         Channel channel = conn.createChannel();
         // 创建headers
         Map<String, Object> headers = new HashMap<String, Object>();
@@ -99,7 +99,7 @@ public class SimpleMessageService {
      */
     public static void createDefaultExchangeConsumer() throws Exception{
         // 创建Connection和Channel
-        Connection conn = com.example.mq.rabbitmq.common.ConnectionFactory.createConnection();
+        Connection conn = SelfConnectionFactory.createConnection();
         Channel channel = conn.createChannel();
         // 不声明交换机(默认交换机AMQP default, Direct类型)
         // 声明队列
@@ -127,7 +127,7 @@ public class SimpleMessageService {
      */
     public static void deleteQueueAndExchange() throws Exception{
         // 获取链接，创建channel
-        Connection conn = ConnectionFactory.createConnection();
+        Connection conn = SelfConnectionFactory.createConnection();
         Channel channel = conn.createChannel();
         // 删除queueName和channel
         String[] queueNames = {"ORIGIN_QUEUE","GP_FIRST_QUEUE", "GP_FOURTH_QUEUE", "GP_SECOND_QUEUE", "GP_THIRD_QUEUE",

@@ -1,6 +1,6 @@
 package com.example.mq.rabbitmq.rpc;
 
-import com.example.mq.rabbitmq.common.ConnectionFactory;
+import com.example.mq.rabbitmq.common.SelfConnectionFactory;
 import com.rabbitmq.client.*;
 import com.rabbitmq.client.AMQP.BasicProperties;
 
@@ -8,13 +8,14 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
 public class RPCServer {
+    private final static String REQUEST_QUEUE_NAME="RPC_REQUEST";
+
     public static void main(String[] args) throws Exception{
         // 1.创建connection和channel
-        Connection conn = ConnectionFactory.createConnection();
+        Connection conn = SelfConnectionFactory.createConnection();
         Channel channel = conn.createChannel();
         // 2.声明队列
-        String queueName = "rpcQueue";
-        channel.queueDeclare(queueName, true, false, false, null);
+        channel.queueDeclare(REQUEST_QUEUE_NAME, true, false, false, null);
         // 设置prefetch的值，一次处理一条数据
         channel.basicQos(1);
         // 3.创建消费者
@@ -38,6 +39,6 @@ public class RPCServer {
                 channel.basicAck(envelope.getDeliveryTag(),false);
             }
         };
-        channel.basicConsume(queueName, true, consumer);
+        channel.basicConsume(REQUEST_QUEUE_NAME, true, consumer);
     }
 }
