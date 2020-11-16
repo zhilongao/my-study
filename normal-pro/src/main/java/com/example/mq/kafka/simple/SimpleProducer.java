@@ -1,5 +1,6 @@
 package com.example.mq.kafka.simple;
 
+import com.example.mq.kafka.CommonConstant;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -9,7 +10,7 @@ import java.util.Properties;
 public class SimpleProducer {
     public static void main(String[] args) {
         Properties pros = new Properties();
-        pros.put("bootstrap.servers","192.168.44.160:9092");
+        pros.put("bootstrap.servers", CommonConstant.bootstrapServers);
         pros.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
         pros.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
         // 0:发送出去就确认 1:leader落盘就确认 all(-1) 所有Follower同步完才确认
