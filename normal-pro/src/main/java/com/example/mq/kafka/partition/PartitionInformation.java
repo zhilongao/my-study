@@ -36,7 +36,7 @@ public class PartitionInformation {
         // 获取元数据时生产者的阻塞时间，超时后抛出异常
         props.put("max.block.ms",3000);
         Producer<String,String> producer = new KafkaProducer<String,String>(props);
-        List<PartitionInfo> list = producer.partitionsFor("mytopic");
+        List<PartitionInfo> list = producer.partitionsFor("spring-boot-topic");
         for(PartitionInfo part : list){
             System.err.println(part.partition());
             System.err.println(part.leader());

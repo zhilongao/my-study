@@ -6,6 +6,51 @@ import com.example.algorithm.tree.common.TreeNode;
 import java.util.*;
 
 public class SolutionV3 {
+
+    // 二叉树构建 前序遍历和中序遍历
+
+    public static void main(String[] args) {
+        int[] inorder = {8, 5, 1, 7, 10, 12};
+        int[] sort = Arrays.copyOf(inorder, inorder.length);
+        Arrays.sort(sort);
+        for (int i = 0; i < sort.length; i++) {
+            System.err.print(sort[i] + "\t");
+        }
+    }
+
+    int preIdx = 0;
+    int[] preOrder;
+    HashMap<Integer, Integer> idxMap = new HashMap<Integer, Integer>();
+    public TreeNode bstFromPreOrder(int[] preOrder) {
+        this.preOrder = preOrder;
+        // 拷贝，并将拷贝到的数组排序
+        int [] inorder = Arrays.copyOf(preOrder, preOrder.length);
+        Arrays.sort(inorder);
+        // 将排序的数组值 ids存储到HashMap中
+        int idx = 0;
+        for (Integer val : inorder) {
+            idxMap.put(val, idx++);
+        }
+        return helper(0, inorder.length);
+    }
+
+    public TreeNode helper(int inLeft, int inRight) {
+        if (inLeft == inRight) {
+            return null;
+        }
+        // 构建root节点
+        int rootVal = preOrder[preIdx];
+        TreeNode root = new TreeNode(rootVal);
+        int index = idxMap.get(rootVal);
+        preIdx++;
+        root.left = helper(inLeft, index);
+        root.right = helper(index + 1, inRight);
+        return root;
+    }
+
+
+
+
     /**
      * 给定一颗二叉树，其中每个节点都含有一个整数数值（该值或正或负）
      * 设计一个算法，打印节点数值总和等于某个给定值的所有路径的数量。

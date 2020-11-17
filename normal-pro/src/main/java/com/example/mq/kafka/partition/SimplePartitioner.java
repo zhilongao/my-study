@@ -15,8 +15,14 @@ import java.util.Map;
 public class SimplePartitioner implements Partitioner {
 
     @Override
-    public int partition(String s, Object o, byte[] bytes, Object o1, byte[] bytes1, Cluster cluster) {
-        return 0;
+    public int partition(String topic, Object key, byte[] keyBytes, Object value, byte[] valueBytes, Cluster cluster) {
+        String k = (String) key;
+        System.err.println(k);
+        if (Integer.parseInt(k) % 2 == 0) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     @Override
