@@ -4,6 +4,17 @@ import com.example.algorithm.tree.common.ListNode;
 import com.example.algorithm.tree.common.TreeNode;
 
 import java.util.*;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class SolutionV3 {
 
@@ -203,4 +214,180 @@ public class SolutionV3 {
         }
         return node != null;
     }
+
+    /**
+     * 有序列表转换为二叉搜索树
+     * 给定一个单链表，其中的元素按照升序排序，将其转换为高度平衡的二叉搜索树。
+     * 本题中，一个高度平衡二叉搜索树是指   一个二叉树每个节点的左右两个子树的高度差的绝对值不超过1。
+     * 示例:
+     *      给定的有序链表： [-10, -3, 0, 5, 9],
+     *      一个可能的答案是：[0, -3, 9, -10, null, 5], 它可以表示下面这个高度平衡二叉搜索树：
+     *       0
+     *      / \
+     *    -3   9
+     *    /   /
+     *  -10  5
+     * @param head
+     * @return
+     */
+    public TreeNode sortedListToBST(ListNode head) {
+        return buildTree(head, null);
+    }
+
+    public TreeNode buildTree(ListNode left, ListNode right) {
+        if (left == right) {
+            return null;
+        }
+        ListNode mid = getMid(left, right);
+        TreeNode root = new TreeNode(mid.val);
+        root.left = buildTree(left, mid);
+        root.right = buildTree(mid.next, right);
+        return root;
+    }
+
+    public ListNode getMid(ListNode left, ListNode right) {
+        ListNode slow = left;
+        ListNode fast = left;
+        while (fast != right && fast.next != right) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+
+    /**
+     * 奇偶链表
+     * 给定一个单链表，把所有的奇数节点和偶数节点分别排在一起。
+     * 请注意：这里的奇数节点和偶数节点指的是节点编号的奇偶性。而非节点值的奇偶性。
+     * 请尝试使用原地算法完成。你的算法的空间复杂度应为 O(1)，时间复杂度应为 O(nodes)，nodes 为节点总数。
+     * @param head
+     * @return
+     */
+    public ListNode oddEvenList(ListNode head) {
+        if (head == null) {
+            return head;
+        }
+        // 奇数节点
+        ListNode odd = head;
+        // 偶数节点
+        ListNode evenHead = head.next;
+        ListNode even = evenHead;
+        while (even != null && even.next != null) {
+            // 首先更新odd的next节点
+            odd.next = even.next;
+            // 然后更新odd节点
+            odd = odd.next;
+            even.next = odd.next;
+            even = even.next;
+        }
+        odd.next = evenHead;
+        return head;
+    }
+
+    /**
+     * 反转链表
+     * 反转从位置m到n的链表，请使用一趟扫描完成反转。
+     * 1 ≤ m ≤ n ≤ 链表长度。
+     * 示例：
+     *    输入: 1->2->3->4->5->NULL, m = 2, n = 4
+     *    输出: 1->4->3->2->5->NULL
+     * @param head
+     * @param m
+     * @param n
+     * @return
+     */
+    private boolean stop;
+
+    private ListNode left;
+
+    public void recurseAndReverse(ListNode right, int m, int n) {
+        if (n == 1) {
+            return;
+        }
+        right = right.next;
+        if (m > 1) {
+            this.left = this.left.next;
+        }
+        this.recurseAndReverse(right, m - 1, n - 1);
+        if (this.left == right || right.next == this.left) {
+            this.stop = true;
+        }
+        if (!this.stop) {
+            int t = this.left.val;
+            this.left.val = right.val;
+            right.val = t;
+            this.left = this.left.next;
+        }
+    }
+
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        this.left = head;
+        this.stop = false;
+        this.recurseAndReverse(head, m, n);
+        return head;
+    }
+
+
+    public int[] shuffle(int[] nums, int n) {
+        int[] res = new int[nums.length];
+        for(int i = 0; i < n; i ++) {
+            res[2 * i] = nums[i];
+            res[2 * i + 1] = nums[n+i];
+        }
+        return res;
+    }
+
+
+    /**
+     * 一维数组的动态和
+     * 给你一个数组nums。数组动态和的计算公式为  runningSum[i] = sum(nums[0]…nums[i]) 。
+     * 输入：nums = [1,2,3,4]
+     * 解释：动态和计算过程为 [1, 1+2, 1+2+3, 1+2+3+4] 。
+     * @param nums
+     * @return
+     */
+    public int[] runningSum(int[] nums) {
+        for(int i = 1; i < nums.length; i ++) {
+            nums[i] = nums[i] + nums[i - 1];
+        }
+        return nums;
+    }
+
+
+    public ListNode partition(ListNode head, int x) {
+        int maxSize = 10;
+        int coreSize = 10;
+        long keepAliveTime = 100;
+        TimeUnit secondsUnit = TimeUnit.SECONDS;
+        BlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<Runnable>();
+        SelfThreadFactory threadFactory = new SelfThreadFactory();
+        SelfRejectedExecutionHandler rejectHandler = new SelfRejectedExecutionHandler();
+        ThreadPoolExecutor executor = new ThreadPoolExecutor(coreSize, maxSize, keepAliveTime, secondsUnit, blockingQueue, threadFactory, rejectHandler);
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+        return null;
+        // 使用redis作为分布式锁，redis的java客户端。
+    }
+
+
+    public static class SelfThreadFactory implements ThreadFactory {
+
+        @Override
+        public Thread newThread(Runnable r) {
+            return null;
+        }
+    }
+
+    public static class SelfRejectedExecutionHandler implements RejectedExecutionHandler {
+
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+
+        }
+    }
+
 }

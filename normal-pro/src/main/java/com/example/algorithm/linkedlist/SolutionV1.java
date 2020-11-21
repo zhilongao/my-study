@@ -1,6 +1,13 @@
 package com.example.algorithm.linkedlist;
 
+import com.alibaba.fastjson.JSONObject;
+import netscape.javascript.JSObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
@@ -188,4 +195,176 @@ public class SolutionV1 {
         }
         return head;
     }
+
+    /**
+     * 给定一个链表，旋转链表，将链表每个节点向右移动 k 个位置，其中 k 是非负数。
+     * @param head
+     * @param k
+     * @return
+     */
+    public ListNode sortList(ListNode head) {
+        // 头节点或者头节点的下一个节点为null，直接返回
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode slow = head;
+        ListNode fast = head.next;
+        while (fast != null && fast.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode tmp = slow.next;
+        slow.next = null;
+        ListNode left = sortList(head);
+        ListNode right = sortList(tmp);
+        ListNode h = new ListNode(0);
+        ListNode res = h;
+        while (left != null && right != null) {
+            if (left.val < right.val) {
+                h.next = left;
+                left = left.next;
+            } else {
+                h.next = right;
+                right = right.next;
+            }
+            h = h.next;
+        }
+        h.next = left != null ? left : right;
+        return res.next;
+    }
+
+    /**
+     * 旋转链表
+     * 给定一个链表，旋转链表，将链表每个节点向右移动k个位置，其中k是非负数。
+     * 示例 1:
+     *      输入: 1->2->3->4->5->NULL, k = 2
+     *      输出: 4->5->1->2->3->NULL
+     * 解释:
+     *      向右旋转 1 步: 5->1->2->3->4->NULL
+     *      向右旋转 2 步: 4->5->1->2->3->NULL
+     * 示例 2:
+     *      输入: 0->1->2->NULL, k = 4
+     *      输出: 2->0->1->NULL
+     * 解释:
+     *      向右旋转 1 步: 2->0->1->NULL
+     *      向右旋转 2 步: 1->2->0->NULL
+     *      向右旋转 3 步: 0->1->2->NULL
+     *      向右旋转 4 步: 2->0->1->NULL
+     * @param head
+     * @param k
+     * @return
+     */
+    // 说是循环旋转，但其实本质上是将尾部向前数第K个元素作为头，原来的头接到原来的尾上
+    public ListNode rotateRight(ListNode head, int k) {
+        if (head == null || k == 0) {
+            return head;
+        }
+        ListNode cursor = head;
+        ListNode tail = null;
+        int length = 1;
+        while(cursor.next != null) {
+            cursor = cursor.next;
+            length ++;
+        }
+        tail = cursor;
+
+        // 得到循环的次数
+        int loop = length - (k % length);
+        //改成循环链表
+        cursor.next = head;
+        //指向头结点
+        cursor = head;
+        //开始循环
+        for(int i = 0; i < loop; i++) {
+            cursor = cursor.next;
+            tail = tail.next;
+        }
+        //改成单链表
+        tail.next = null;
+        //返回当前头
+        return cursor;
+    }
+
+    public ListNode rotateRightV1(ListNode head, int k) {
+        if (head == null || k == 0) {
+            return head;
+        }
+        ListNode cursor = head;
+        ListNode tail = null;
+        int length = 1;
+        while (cursor.next != null) {
+            cursor = cursor.next;
+            length ++;
+        }
+        tail = cursor;
+        // 将链表构造成为环形链表
+        cursor.next = head;
+        cursor = head;
+        int loop = length - (k % length);
+        for (int i = 0; i < loop; i++) {
+            cursor = cursor.next;
+            tail = tail.next;
+        }
+        tail.next = null;
+        return cursor;
+    }
+
+    /**
+     * 两两交换链表中的节点
+     * 给定一个链表，两两交换相邻的节点，返回交换后的链表
+     * 你不能够只是单纯的修改节点内部的值，而是要真是节点的交换。
+     * 示例1： 1->2->3->4  2->1->4->3
+     * 示例2： head = [] []
+     * 示例3: head = [1] [1]
+     * 链表中节点的数目在1-100内
+     * 0 <= node.val <= 100
+     * @param node
+     * @return
+     */
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        ListNode newHead = head.next;
+        head.next = swapPairs(newHead.next);
+        newHead.next = head;
+        return newHead;
+    }
+
+    /**
+     * 重排链表
+     * 给定一个链表L  L0->L1->...->Ln-1->Ln
+     * 将其重新排序后变为 L0->Ln->L1->Ln-1->L2->Ln-2
+     * 你不能够只是单纯的修改链表的值，而是需要修改真实的节点
+     * 示例1：给定链表 1->2->3->4  重新排序 1->4->2->3
+     * 示例2: 给定链表 1->2->3->4->5 重新排序 1->5->2->4->3
+     *
+     *  因为链表不支持下标访问，所以我们无法随机访问链表中任意位置的元素。
+     *  因此比较容易想到的一个方法是，我们利用线性表存储该链表，然后利用线性表可以下标访问的特点，直接按照顺序访问指定的元素，重建该链表即可。
+     * @param head
+     */
+    public void reorderList(ListNode head) {
+        if (head == null) {
+            return;
+        }
+        List<ListNode> list = new ArrayList<>();
+        ListNode temp = head;
+        while (head != null) {
+            list.add(temp);
+            temp = temp.next;
+        }
+        int i = 0;
+        int j = list.size() - 1;
+        while (i < j) {
+            list.get(i).next = list.get(j);
+            i ++;
+            if (i == j) {
+                break;
+            }
+            list.get(j).next = list.get(i);
+            j --;
+        }
+        list.get(i).next = null;
+    }
+
 }
