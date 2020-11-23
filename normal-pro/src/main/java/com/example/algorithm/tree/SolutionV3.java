@@ -19,16 +19,6 @@ import java.util.concurrent.locks.ReentrantLock;
 public class SolutionV3 {
 
     // 二叉树构建 前序遍历和中序遍历
-
-    public static void main(String[] args) {
-        int[] inorder = {8, 5, 1, 7, 10, 12};
-        int[] sort = Arrays.copyOf(inorder, inorder.length);
-        Arrays.sort(sort);
-        for (int i = 0; i < sort.length; i++) {
-            System.err.print(sort[i] + "\t");
-        }
-    }
-
     int preIdx = 0;
     int[] preOrder;
     HashMap<Integer, Integer> idxMap = new HashMap<Integer, Integer>();
@@ -388,6 +378,146 @@ public class SolutionV3 {
         public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
 
         }
+    }
+
+    /**
+     * 长按键入
+     * 你的朋友正在使用键盘输入他的名字name，偶尔在输入字符c时，按键可能会被长按。而字符可能被输入一次或多次。
+     * 你将会检查键盘输入的字符typed，如果它对应的可能是你朋友的名字（其中一些字符可能会被长按），那么就返回true。
+     * 示例1：
+     *      输入：name="alex", typed="aaleex"; 输出true。
+     *      解释：'alex'中的'a'和'e'被长按
+     * 示例2：
+     *      输入:name="saeed", typed="ssaaedd"； 输出false。
+     *      解释：'e'一定需要被键入两次，但在typed的输出中不是这样
+     * @param name
+     * @param typed
+     * @return
+     */
+    public boolean isLongPressedName(String name, String typed) {
+        int i = 0;
+        int j = 0;
+        while (j < typed.length()) {
+            if (i < name.length() && name.charAt(i) == typed.charAt(j)) {
+                i ++;
+                j ++;
+            } else if (j > 0 && typed.charAt(j) == typed.charAt(j - 1)) {
+                j ++;
+            } else {
+                return false;
+            }
+        }
+        return i == name.length();
+    }
+
+    /**
+     * 合并排序的数组
+     * 给定两个排序后的数组A和B，其中A的末端有足够的缓冲空间容纳B。
+     * 编写一个方法，将B合并入A并排序。
+     * 初始化A和B的元素数量分别为m和n。
+     * 示例:
+     *     输入:
+     *          A=[1,2,3,0,0,0], m=3
+     *          B=[2,5,6], n=3
+     *     输出:
+     *          [1,2,2,3,5,6]
+     * @param A
+     * @param m
+     * @param B
+     * @param n
+     */
+    public void merge(int[] A, int m, int[] B, int n) {
+        int pa = 0, pb = 0;
+        int[] sorted = new int[m + n];
+        int cur;
+        while (pa < m || pb < n) {
+            if (pa == m) {
+                cur = B[pb++];
+            } else if (pb == n) {
+                cur = A[pa++];
+            } else if (A[pa] < B[pb]) {
+                cur = A[pa++];
+            } else {
+                cur = B[pb++];
+            }
+            sorted[pa + pb - 1] = cur;
+        }
+        for (int i = 0; i != m + n; ++i) {
+            A[i] = sorted[i];
+        }
+    }
+
+    /**
+     * 比较含退格的字符串
+     * 给定S和T两个字符串，当他们分别被输入到空白的文本编辑器后，判断二者是否相等，并返回结果。#代表退格字符。
+     * 注意：如果对空文本输入退格字符，文本继续为空。
+     * 示例1：
+     *      输入：S="ab#c", T="ad#c"   输出:true  解释:S和T都会变成"ac"
+     *      输入: S="ab##", T="c#d#"   输出:true  解释:S和T都会变成""
+     *      输入: S="a##c", T="#a#c"   输出:true  解释:S和T都会变成"c"
+     *      输入: S="a#c", T="b"       输出:false
+     * @param S
+     * @param T
+     * @return
+     */
+    public boolean backspaceCompare(String S, String T) {
+        return build(S).equals(build(T));
+    }
+
+    public String build(String str) {
+        StringBuilder sb = new StringBuilder();
+        int length = str.length();
+        for (int i = 0; i < length; i ++) {
+            char ch = str.charAt(i);
+            if (ch != '#') {
+                sb.append(ch);
+            } else {
+                if (sb.length() > 0) {
+                    sb.deleteCharAt(sb.length() - 1);
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     * 划分字母区间
+     * 字符串S由小写字母组成。我们要把这个字符串划分为尽可能多的片段，同一个字母最多出现在一个片段中。
+     * 返回一个表示每个字符串片段长度的列表。
+     * 示例
+     *      输入： S = "ababcbacadefegdehijhklij"
+     *      输出：[9,7,8]
+     * 解释：
+     *      划分结果为 "ababcbaca", "defegde", "hijhklij"。
+     * 每个字母最多出现在一个片段中。
+     * 像 "ababcbacadefegde", "hijhklij" 的划分是错误的，因为划分的片段数较少。
+     * @param S
+     * @return
+     */
+    public List<Integer> partitionLabels(String S) {
+        // 记录每个字符最后一次出现的下标
+        int[] last = new int[26];
+        int length = S.length();
+        for (int i = 0; i < length; i++) {
+            last[S.charAt(i) - 'a'] = i;
+        }
+        List<Integer> partition = new ArrayList<Integer>();
+        int start = 0;
+        int end = 0;
+        for (int i = 0; i < length; i++) {
+            // end和lastEnd对比
+            end = Math.max(end, last[S.charAt(i) - 'a']);
+            if (i == end) {
+                partition.add(end - start + 1);
+                start = end + 1;
+            }
+        }
+        return partition;
+    }
+
+
+    public static void main(String[] args) {
+        System.err.println('b' - 'a');
     }
 
 }

@@ -36,7 +36,6 @@ public class LruCache {
         if (node != null) {
             node = map.get(key);
             node.value = value;
-
         }
     }
 
