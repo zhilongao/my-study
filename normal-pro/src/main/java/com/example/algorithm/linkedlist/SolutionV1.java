@@ -367,4 +367,193 @@ public class SolutionV1 {
         list.get(i).next = null;
     }
 
+    /**
+     * 分割链表
+     * 编写程序以x为基准分割链表，使得所有小于x的节点排在大于或等于x的节点之前。
+     * 如果链表中包含x,x只需出现小于x的元素之后(如下所示)。
+     * 分割元素x只需处于右半部分即可，其不需要被置于左右两部分之间。
+     * 输入: head = 3->5->8->5->10->2->1, x = 5
+     * 输出: 3->1->2->10->5->5->8
+     * @param head
+     * @param x
+     * @return
+     */
+    public ListNode partition(ListNode head, int x) {
+        // 定义两个链表
+        ListNode leftHead = new ListNode(-1);
+        ListNode rightHead = new ListNode(-1);
+        ListNode left = leftHead;
+        ListNode right = rightHead;
+        while (head != null) {
+            if (head.val < x) {
+                left.next = head;
+                left = left.next;
+            } else {
+                right.next = head;
+                right = right.next;
+            }
+            head = head.next;
+        }
+        left.next = rightHead.next;
+        return leftHead.next;
+    }
+
+    public ListNode partitionV1(ListNode head, int x) {
+        if (head == null || head.next == null) {
+            return head;
+        }
+        //左链表虚拟头节点
+        ListNode leftOne = new ListNode(-1);
+        ListNode left = leftOne;
+        //右链表虚拟头节点
+        ListNode rightOne = new ListNode(-1);
+        ListNode right = rightOne;
+        //因为有断开操作,所以需要记录下一个遍历的节点
+        ListNode next;
+        while (head != null) {
+            next = head.next;
+            //值小于x的节点都接在左链表,其他接在右链表上
+            if (head.val < x) {
+                left.next = head;
+                left = left.next;
+            } else {
+                right.next = head;
+                right = right.next;
+            }
+            //断开操作
+            head.next = null;
+            head = next;
+        }
+        //拼接操作 左链表尾节点指向右链表头节点
+        left.next = rightOne.next;
+        return leftOne.next;
+    }
+
+    /**
+     * 分隔链表
+     * 给定一个头节点为root的链表，编写一个函数以将链表分隔为k个连续的部分。
+     * 每部分的长度应该尽可能的相等；任意两部分的长度差不能超过1，也就是说可能有些部分为null。
+     * 这k个部分应该按照在链表中出现的顺序进行输出，并且排在前面的部分的长度应该大于或等于后面的长度。
+     * 返回一个符合上述规则的链表的列表。
+     * 1->2->3->4 k=5  [[1] [2] [3] [4] null]
+     * @param root
+     * @param k
+     * @return
+     */
+    public ListNode[] splitListToParts(ListNode root, int k) {
+        ListNode curr = root;
+        int n = 0;
+        while (curr != null) {
+            n ++;
+            curr = curr.next;
+        }
+        int width = n / k;
+        int rem = n % k;
+        ListNode[] ans = new ListNode[k];
+        curr = root;
+        for (int i = 0; i < k; i++) {
+            ListNode head = new ListNode(0);
+            ListNode write = head;
+            for (int j = 0; j < width + (i < rem ? 1 : 0); j ++) {
+                write = write.next = new ListNode(curr.val);
+                if (curr != null) {
+                    curr = curr.next;
+                }
+            }
+            ans[i] = head.next;
+        }
+        return ans;
+    }
+
+    public ListNode[] splitListToPartsV2(ListNode root, int k) {
+        ListNode cur = root;
+        int N = 0;
+        while (cur != null) {
+            cur = cur.next;
+            N++;
+        }
+
+        int width = N / k, rem = N % k;
+
+        ListNode[] ans = new ListNode[k];
+        cur = root;
+        for (int i = 0; i < k; ++i) {
+            ListNode head = cur;
+            for (int j = 0; j < width + (i < rem ? 1 : 0) - 1; ++j) {
+                if (cur != null) cur = cur.next;
+            }
+            if (cur != null) {
+                ListNode prev = cur;
+                cur = cur.next;
+                prev.next = null;
+            }
+            ans[i] = head;
+        }
+        return ans;
+    }
+
+    /**
+     * 环路检测，并找出环路的头节点
+     * @param head
+     * @return
+     */
+    public ListNode detectCycle(ListNode head) {
+        ListNode slow = head, fast = head;
+        while (fast != null && fast.next != null) {
+            //快慢指针，快指针每次走两步，慢指针每次走一步
+            fast = fast.next.next;
+            slow = slow.next;
+            //先判断是否有环，
+            if (slow == fast) {
+                //确定有环之后才能找环的入口
+                while (head != slow) {
+                    //两相遇指针，一个从头结点开始，
+                    //一个从相遇点开始每次走一步，直到
+                    //再次相遇为止
+                    head = head.next;
+                    slow = slow.next;
+                }
+                return slow;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 链表求和
+     *    给定两个用链表表示的整数，每个节点包含一个数位。
+     *    这些数位是反向存放的，也就是个位排在链表首部。
+     *    编写函数对这两个整数求和，并用链表形式返回结果。
+     * 示例：
+     *      输入：(7->1->6) + (5->9->2)，即617 + 295
+     * 输出：2->1->9，即912
+     * 进阶：思考一下，假设这些数位是正向存放的，又该如何解决呢?
+     * 示例：
+     *      输入：(6 -> 1 -> 7) + (2 -> 9 -> 5)，即617 + 295
+     *      输出：9 -> 1 -> 2，即912
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode head = null;
+        ListNode trim = head;
+        int rem = 0;
+        while (l1 != null || l2 != null || rem != 0) {
+            int a = l1 != null ? l1.val : 0;
+            int b = l2 != null ? l2.val : 0;
+            int ans = a + b + rem;
+            rem = ans / 10;
+            ans = ans % 10;
+            if (trim == null) {
+                trim = new ListNode(ans);
+            } else {
+                trim.next = new ListNode(ans);
+                trim = trim.next;
+            }
+            l1 = l1 != null ? l1.next : null;
+            l2 = l2 != null ? l2.next : null;
+        }
+        return head;
+    }
 }
