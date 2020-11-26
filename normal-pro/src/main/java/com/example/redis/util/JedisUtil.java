@@ -57,6 +57,4 @@ public class JedisUtil {
         Jedis jedis = getJedis();
         return jedis.get(key);
     }
-
-
 }

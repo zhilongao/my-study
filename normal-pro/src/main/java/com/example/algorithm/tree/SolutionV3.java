@@ -515,9 +515,40 @@ public class SolutionV3 {
         return partition;
     }
 
+    /**
+     * 按摩师
+     * 一个有名的按摩师会收到源源不断的预约请求，每个预约都可以选择接或者不接。
+     * 在每次预约服务之间要有休息时间，因此她不能接收相邻的预约。给定一个预约的请求序列，
+     * 替按摩师找到最优的预约集合(总预约时间最长)，返回总的分钟数。
+     * 示例1：
+     *  输入:[1,2,3,1] 输出:4 选择1号预约和3号预约，总时长=1+3=4
+     *  输入:[2,7,9,3,1] 输出:12 选择1号 3号 5号预约，总时长=2+9+1=12
+     *  输入:[2,1,4,5,3,1,1,3] 输出:12 选择1号 3号 5号和8号预约，总时长=2+4+3+3=12
+     * @param nums
+     * @return
+     */
+    public int massage(int[] nums) {
 
-    public static void main(String[] args) {
-        System.err.println('b' - 'a');
+        return -1;
     }
 
+    public int massageV1(int[] nums) {
+        int n = nums.length;
+        if (n == 0) {
+            return 0;
+        }
+        int dp0 = 0;
+        int dp1 = nums[0];
+        for (int i = 1; i < n; ++i) {
+            // 计算 dp[i][0]
+            int tdp0 = Math.max(dp0, dp1);
+            // 计算 dp[i][1]
+            int tdp1 = dp0 + nums[i];
+            // 用 dp[i][0] 更新 dp_0
+            dp0 = tdp0;
+            // 用 dp[i][1] 更新 dp_1
+            dp1 = tdp1;
+        }
+        return Math.max(dp0, dp1);
+    }
 }
