@@ -21,9 +21,9 @@ public class JedisSentinelTest {
         // master的名字是sentinel.conf配置文件里面的名称
         String masterName = "redis-master";
         Set<String> sentinels = new HashSet<String>();
-        sentinels.add("192.168.8.121");
-        sentinels.add("192.168.8.122");
-        sentinels.add("192.168.8.123");
+        sentinels.add("192.168.8.128:26379");
+        sentinels.add("192.168.8.129:26379");
+        sentinels.add("192.168.8.132:26379");
         GenericObjectPoolConfig poolConfig;
         pool = new JedisSentinelPool(masterName, sentinels);
         return pool;
