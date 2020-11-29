@@ -16,16 +16,23 @@ import java.util.Set;
  */
 public class ClusterTest {
     public static void main(String[] args) throws IOException {
-        HostAndPort hostAndPort1 = new HostAndPort("10.192.39.1", 2307);
-        HostAndPort hostAndPort2 = new HostAndPort("10.192.39.2", 2308);
-        HostAndPort hostAndPort3 = new HostAndPort("10.192.39.3", 2309);
+        HostAndPort hostAndPort1 = new HostAndPort("192.168.43.4", 7291);
+        HostAndPort hostAndPort2 = new HostAndPort("192.168.43.4", 7292);
+        HostAndPort hostAndPort3 = new HostAndPort("192.168.43.4", 7293);
         Set<HostAndPort> nodes = new HashSet<>();
         nodes.add(hostAndPort1);
         nodes.add(hostAndPort2);
         nodes.add(hostAndPort3);
         JedisCluster cluster = new JedisCluster(nodes);
-        cluster.set("gupao:cluster", "qingshan2673");
-        System.out.println(cluster.get("gupao:cluster"));;
+        System.err.println("---------------->");
+        for (int i = 0; i < 10; i++) {
+            cluster.set("message" + i, "test-info" + i);
+        }
+        System.err.println("---------------->");
+        for (int i = 0; i < 10; i++) {
+            cluster.set("{misss}"+i, "test-info" + i);
+        }
+        System.err.println("---------------->");
         cluster.close();
     }
 }
