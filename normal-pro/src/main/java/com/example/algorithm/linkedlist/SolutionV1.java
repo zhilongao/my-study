@@ -1,6 +1,7 @@
 package com.example.algorithm.linkedlist;
 
 import com.alibaba.fastjson.JSONObject;
+import com.example.algorithm.tree.common.TreeNode;
 import netscape.javascript.JSObject;
 
 import java.util.ArrayList;
@@ -19,59 +20,63 @@ import java.util.Stack;
  * @since v1.0.0001
  */
 public class SolutionV1 {
+
     /**
-     * 反转链表II
-     * 反转从位置m到n的链表。请使用一趟扫描完成反转。
-     * 说明:
-     *  1 <= m <= n <= 链表长度
-     *  1->2->3->4->5->null  m=2 n=4
-     *  1->4->3->2->5->null
+     * 排序链表
+     * 给你链表的头节点head，请将其按升序排列并返回排序后的链表。
+     * 进阶：
+     *      可以在o(n, logn)时间复杂度和常数级空间复杂度下，对链表进行排序吗?
+     * 1. 4->2->1->3      1->2->3->4
+     * 2. -1->5->3->4->0  -1->0->3->4->5
      * @param head
-     * @param m
-     * @param n
      * @return
      */
-    public ListNode reverseBetween(ListNode head, int m, int n) {
-       if (head == null || head.next == null) {
-           return head;
-       }
-       // 找到开始反转的节点和反转节点的前一个节点
-       ListNode newHead = new ListNode(1);
-       newHead.next = head;
-       ListNode before = null;
-       ListNode after = null;
-       ListNode curr = newHead;
-       for (int i = 1; i <= m - 1; i ++) {
-           curr = curr.next;
-       }
-       before = curr;
-       curr = curr.next;
-       before.next = null;
-       // 开始反转链表啦
-        ListNode prev = null;
-        ListNode temp = null;
-        for(int i = m; i <= n; i ++) {
-            if (curr == null) {
-                break;
-            }
-            if (i == n) {
-                after = curr;
-            }
-            temp = curr.next;
-            curr.next = prev;
-            prev = curr;
-            curr = temp;
+    public ListNode sortList(ListNode head) {
+        if (head == null) {
+            return head;
         }
-        // 剩余元素的处理
-        before.next = prev;
-        while (prev.next != null) {
-            prev = prev.next;
+        ListNode dummyHead = new ListNode(0);
+        dummyHead.next = head;
+        ListNode lastSorted = head;
+        ListNode curr = head.next;
+        while (curr != null) {
+            if (lastSorted.val <= curr.val) {
+                lastSorted = lastSorted.next;
+            } else {
+                ListNode prev = dummyHead;
+                while (prev.next.val <= curr.val) {
+                    prev = prev.next;
+                }
+                lastSorted.next = curr.next;
+                curr.next = prev.next;
+                prev.next = curr;
+            }
+            curr = lastSorted.next;
         }
-        prev.next = after;
-        return newHead.next;
+        return dummyHead.next;
     }
 
+    public static int[] insertSort(int[] arr) {
+        int index = 0;
+        for(int i = 0; i < arr.length; i ++) {
+            index = i;
+            for (int j = i; j < arr.length; j++) {
+                if (arr[j] < arr[index]) {
+                    index = j;
+                }
+            }
+            int temp = arr[i];
+            arr[i] = arr[index];
+            arr[index] = temp;
+        }
+        return arr;
+    }
 
-
-
+    public static void main(String[] args) {
+        int[] arr1 = new int[]{1, 3, 6, 3, 7, 11, 2, 4, 9, 0};
+        insertSort(arr1);
+        for (int i = 0; i < arr1.length; i++) {
+            System.err.print(arr1[i] + "\t");
+        }
+    }
 }

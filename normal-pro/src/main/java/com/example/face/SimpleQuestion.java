@@ -10,18 +10,10 @@ public class SimpleQuestion {
         // 5. 让你设计一套登录流程，如何设计？
         // 6. redis的数据为什么在内核?
         // 7. 什么方式可以拦截用户信息?
-        simpleTest1();
+        StringBuffer buf = new StringBuffer();
+        StringBuilder builder = new StringBuilder();
+
     }
 
-    private static void simpleTest1() {
-        final String x = "x";
-        String y = "y";
-        String z1 = "xy";
-        String z2 = x + "y";
-        String z3 = x + y;
-        String z4 = (x + y).intern();
-        System.err.println(z1 == z2);//true
-        System.err.println(z1 == z3);//false
-        System.err.println(z1 == z4);//true
-    }
+
 }
