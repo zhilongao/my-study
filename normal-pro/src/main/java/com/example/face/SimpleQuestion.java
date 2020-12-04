@@ -12,8 +12,5 @@ public class SimpleQuestion {
         // 7. 什么方式可以拦截用户信息?
         StringBuffer buf = new StringBuffer();
         StringBuilder builder = new StringBuilder();
-
     }
-
-
 }

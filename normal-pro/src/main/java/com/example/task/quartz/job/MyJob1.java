@@ -21,7 +21,9 @@ public class MyJob1 implements Job {
     public void execute(JobExecutionContext context) throws JobExecutionException {
         Date date = new Date();
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        // 1. 从JobExecutionContext获取到JobDataMap属性，获取到先关的数据
         JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-        System.out.println( " " + sf.format(date) + " 任务1执行了，" + dataMap.getString("gupao"));
+        System.err.println(" " + sf.format(date) + " 任务1执行了，" + dataMap.getString("gupao"));
+
     }
 }

@@ -11,30 +11,28 @@ import org.quartz.JobListener;
  * @date 2020/12/3 19:32
  * @since v1.0.0001
  */
-public class MyJobListener implements JobListener {
+public class SelfJobListener implements JobListener {
+
     @Override
     public String getName() {
-        String name = getClass().getSimpleName();
-        System.out.println( "Method 111111 :"+ "获取到监听器名称：" + name);
-        return name;
+        return getClass().getSimpleName();
     }
 
     @Override
     public void jobToBeExecuted(JobExecutionContext context) {
         String jobName = context.getJobDetail().getKey().getName();
-        System.out.println("Method 222222 :"+ jobName + " ——任务即将执行 ");
+        System.err.println("SelfJobListener listener: " + jobName + " to be executed");
     }
 
     @Override
     public void jobExecutionVetoed(JobExecutionContext context) {
         String jobName = context.getJobDetail().getKey().getName();
-        System.out.println("Method 333333 :"+ jobName + " ——任务被否决 ");
+        System.err.println("SelfJobListener listener: "+ jobName + " execute vetoed");
     }
 
     @Override
     public void jobWasExecuted(JobExecutionContext context, JobExecutionException e) {
         String jobName = context.getJobDetail().getKey().getName();
-        System.out.println("Method 444444 :"+ jobName + " ——执行完毕 ");
-        System.out.println("------------------");
+        System.err.println("SelfJobListener listener: " + jobName + " was executed");
     }
 }
