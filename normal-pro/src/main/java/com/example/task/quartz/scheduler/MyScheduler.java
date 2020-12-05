@@ -3,6 +3,7 @@ package com.example.task.quartz.scheduler;
 import com.example.task.quartz.job.MyJob1;
 import com.example.task.quartz.listener.SelfJobListener;
 import com.example.task.quartz.listener.SelfSchedulerListener;
+import com.example.task.quartz.listener.SelfTriggerListener;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -36,8 +37,10 @@ public class MyScheduler {
         // SimpleScheduleBuilder
         SimpleScheduleBuilder simpleScheduleBuilder = SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(2).repeatForever();
         // Trigger
+        String triggerName = "trigger1";
+        String triggerGroup = "group1";
         Trigger trigger = TriggerBuilder.newTrigger()
-                .withIdentity("trigger1", "group1")
+                .withIdentity(triggerName, triggerGroup)
                 .startNow()
                 .withSchedule(simpleScheduleBuilder)
                 .build();
@@ -46,8 +49,10 @@ public class MyScheduler {
         // Scheduler
         Scheduler scheduler = factory.getScheduler();
         // add JobDetail和Trigger到Scheduler
+        String triggerListenerName = "myTriggerListener";
         scheduler.getListenerManager().addSchedulerListener(new SelfSchedulerListener());
         scheduler.getListenerManager().addJobListener(new SelfJobListener());
+        scheduler.getListenerManager().addTriggerListener(new SelfTriggerListener(triggerListenerName));
         scheduler.scheduleJob(jobDetail, trigger);
         // start Scheduler
         scheduler.start();
