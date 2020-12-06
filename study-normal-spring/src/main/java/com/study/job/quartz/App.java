@@ -9,7 +9,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class App {
     public static void main(String[] args) throws SchedulerException {
         // ramTest();
-        configTest();
+        // configTest();
         // dbTest();
     }
 
@@ -22,12 +22,6 @@ public class App {
         scheduler.start();
     }
 
-    private static void configTest() throws SchedulerException {
-        ApplicationContext context = new AnnotationConfigApplicationContext(QuartzConfig.class);
-        StdScheduler scheduler = (StdScheduler) context.getBean("simpleScheduler");
-        scheduler.start();
-    }
-
     private static void dbTest() throws SchedulerException {
         // 1. 获取容器
         ApplicationContext context = new ClassPathXmlApplicationContext("spring_quartz_db.xml");
@@ -35,5 +29,15 @@ public class App {
         StdScheduler dbScheduler = (StdScheduler) context.getBean("scheduler");
         // 3. 调度开始
         dbScheduler.start();
+    }
+
+    /**
+     * 此种方式熟悉完源码在来玩
+     * @throws SchedulerException
+     */
+    private static void configTest() throws SchedulerException {
+        ApplicationContext context = new AnnotationConfigApplicationContext(QuartzConfig.class);
+        StdScheduler scheduler = (StdScheduler) context.getBean("simpleScheduler");
+        scheduler.start();
     }
 }

@@ -1,6 +1,7 @@
 package com.study.job.quartz;
 
 import org.quartz.*;
+import org.quartz.impl.StdSchedulerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
@@ -36,9 +37,17 @@ public class QuartzConfig {
     }
 
     @Bean
-    public Scheduler simpleScheduler(Trigger trigger) {
-        SchedulerFactoryBean scheduler = new SchedulerFactoryBean();
-        scheduler.setTriggers(trigger);
-        return scheduler.getScheduler();
+    public SchedulerFactory schedulerFactory() {
+        StdSchedulerFactory schedulerFactory = new StdSchedulerFactory();
+        return schedulerFactory;
+    }
+
+
+    @Bean
+    public Scheduler simpleScheduler(SchedulerFactory factory, JobDetail jobDetail) throws Exception{
+        Scheduler scheduler = factory.getScheduler();
+        scheduler.addJob(jobDetail, true);
+        // todo
+        return factory.getScheduler();
     }
 }
