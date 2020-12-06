@@ -14,7 +14,7 @@ import java.util.Date;
  * @Description: 咕泡学院，只为更好的你
  */
 @DisallowConcurrentExecution
-public class TestTask1 implements BaseJob {
+public class SelfTask1 implements BaseJob {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {

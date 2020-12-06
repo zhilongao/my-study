@@ -12,7 +12,7 @@ import java.util.Date;
  * @Date: 2018/9/11 17:15
  * @Description: 咕泡学院，只为更好的你
  */
-public class TestTask2 implements BaseJob {
+public class SelfTask2 implements BaseJob {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         Date date = new Date();

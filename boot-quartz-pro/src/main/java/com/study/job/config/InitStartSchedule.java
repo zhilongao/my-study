@@ -30,7 +30,7 @@ public class InitStartSchedule implements CommandLineRunner {
 	@Autowired
 	private ISysJobService sysJobService;
 	@Autowired
-	private MyJobFactory myJobFactory;
+	private SelfJobFactory selfJobFactory;
 	
 	@Override
 	public void run(String... args){
@@ -51,7 +51,7 @@ public class InitStartSchedule implements CommandLineRunner {
 		SchedulerFactory sf = new StdSchedulerFactory();
 		Scheduler scheduler = sf.getScheduler();
 		// 如果不设置JobFactory，Service注入到Job会报空指针
-		scheduler.setJobFactory(myJobFactory);
+		scheduler.setJobFactory(selfJobFactory);
 		// 启动调度器
 		scheduler.start();
 

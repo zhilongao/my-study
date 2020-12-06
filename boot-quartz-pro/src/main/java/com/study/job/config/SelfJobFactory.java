@@ -10,7 +10,8 @@ import org.springframework.stereotype.Component;
  * 将Spring的对象注入到Quartz Job 2
  */
 @Component
-public class MyJobFactory extends AdaptableJobFactory {
+public class SelfJobFactory extends AdaptableJobFactory {
+
     @Autowired
     private AutowireCapableBeanFactory capableBeanFactory;
 
@@ -19,7 +20,6 @@ public class MyJobFactory extends AdaptableJobFactory {
         //调用父类的方法
         Object jobInstance = super.createJobInstance(bundle);
         capableBeanFactory.autowireBean(jobInstance);
-
         return jobInstance;
     }
 }
