@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context" xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.0.xsd">
+
+    <!--
+        spring整合quartz的步骤
+        1.定义工作任务的job
+        2.定义触发器trigger，并将触发器与工作任务绑定
+        3.定义调度器scheduler，并将trigger注册到scheduler
+    -->
+    <bean id="job1" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="name" value="test_job_1"/>
+        <property name="group" value="test_group"/>
+        <property name="jobClass" value="com.study.job.quartz.SelfJob1"/>
+        <!-- 必须设置为true，如果为false，当没有活动的触发器与之关联时会在调度器中会删除该任务  -->
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="job2" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">
+        <property name="name" value="test_job_2"/>
+        <property name="group" value="test_group"/>
+        <property name="jobClass" value="com.study.job.quartz.SelfJob2"/>
+        <property name="durability" value="true"/>
+    </bean>
+
+    <bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <property name="name" value="test_trigger1"/>
+        <property name="group" value="test_group"/>
+        <!-- 指定jobDetail属性 -->
+        <property name="jobDetail" ref="job1"/>
+        <!-- 指定Trigger的延迟时间 1s后运行 -->
+        <property name="startDelay" value="500"/>
+        <!-- 指定Trigger的重复间隔  5s -->
+        <property name="repeatInterval" value="1000"/>
+        <!-- 指定Trigger的重复次数 -->
+        <property name="repeatCount" value="2"/>
+    </bean>
+
+    <bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
+        <property name="name" value="test_trigger2"/>
+        <property name="group" value="test_group"/>
+        <property name="jobDetail" ref="job2"/>
+        <!-- 指定Cron 的表达式 ，当前是每隔1s运行一次 -->
+        <property name="cronExpression" value="0/1 * * * * ?"/>
+    </bean>
+
+</beans>
