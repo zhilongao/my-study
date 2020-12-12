@@ -21,6 +21,7 @@ public class SelfTask1 implements BaseJob {
         Date date = new Date();
         String simpleName = getClass().getSimpleName();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.err.println("some add content task1");
         System.err.println(Thread.currentThread().getName() + " " +sdf.format(date) + simpleName + "： ----咕泡学院，只为更好的你----");
     }
 }

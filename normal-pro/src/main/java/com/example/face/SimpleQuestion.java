@@ -1,5 +1,9 @@
 package com.example.face;
 
+import com.google.common.collect.Maps;
+
+import java.util.HashMap;
+
 public class SimpleQuestion {
     public static void main(String[] args) {
         // 1. StringBuffer和StringBuilder的区别
@@ -12,5 +16,7 @@ public class SimpleQuestion {
         // 7. 什么方式可以拦截用户信息?
         StringBuffer buf = new StringBuffer();
         StringBuilder builder = new StringBuilder();
+
+        HashMap<Object, Object> objectObjectHashMap = Maps.newHashMap();
     }
 }
