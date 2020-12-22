@@ -1,11 +1,10 @@
 package com.example.mq.rabbitmq.dlx;
 
 
-import com.example.mq.rabbitmq.common.SelfConnectionFactory;
+import com.example.mq.rabbitmq.SelfConnectionFactory;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
-import com.rabbitmq.client.ConnectionFactory;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

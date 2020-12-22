@@ -1,6 +1,6 @@
 package com.example.mq.rabbitmq.tt1;
 
-import com.example.mq.rabbitmq.common.SelfConnectionFactory;
+import com.example.mq.rabbitmq.SelfConnectionFactory;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;

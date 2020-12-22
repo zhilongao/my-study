@@ -1,17 +1,12 @@
 package com.example.mq.rabbitmq.confirm;
 
-import com.example.mq.rabbitmq.common.SelfConnectionFactory;
+import com.example.mq.rabbitmq.SelfConnectionFactory;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 
 
-/**
- * @Author: qingshan
- * @Description: 咕泡学院，只为更好的你
- * 消息生产者，测试Confirm模式
- */
 public class BatchConfirmProducer {
-    private final static String QUEUE_NAME = "ORIGIN_QUEUE_BATCH";
+    private final static String QUEUE_NAME = "original_queue_batch";
 
     public static void main(String[] args) throws Exception {
         // 建立连接
@@ -20,13 +15,11 @@ public class BatchConfirmProducer {
         Channel channel = conn.createChannel();
         String msg = "Hello world, Rabbit MQ ,Batch Confirm";
         // 声明队列（默认交换机AMQP default，Direct）
-        // String queue, boolean durable, boolean exclusive, boolean autoDelete, Map<String, Object> arguments
         channel.queueDeclare(QUEUE_NAME, false, false, false, null);
         try {
             channel.confirmSelect();
             for (int i = 0; i < 5; i++) {
                 // 发送消息
-                // String exchange, String routingKey, BasicProperties props, byte[] body
                 channel.basicPublish("", QUEUE_NAME, null, (msg +"-"+ i).getBytes());
             }
             // 批量确认结果，ACK如果是Multiple=True，代表ACK里面的Delivery-Tag之前的消息都被确认了
@@ -38,7 +31,6 @@ public class BatchConfirmProducer {
             // 发生异常，可能需要对所有消息进行重发
             e.printStackTrace();
         }
-
         channel.close();
         conn.close();
     }
