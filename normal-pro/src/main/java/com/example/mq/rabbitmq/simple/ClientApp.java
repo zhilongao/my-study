@@ -2,6 +2,9 @@ package com.example.mq.rabbitmq.simple;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * @author gaozhilong
+ */
 public class ClientApp {
 
     public static void main(String[] args) throws Exception{

@@ -53,15 +53,5 @@
     5.消息顺序性    
         
 集群和高可用
-
-实践经验 
-
-// Please see diagnostics information and suggestions below 
-//  Target node is unreachable (e.g. due to hostname resolution, TCP connection or firewall issues)        
-//  CLI tool fails to authenticate with the server (e.g. due to CLI tool's Erlang cookie not matching that of the server)  
-//  Target node is not running   
-// In addition to the diagnostics info below 
-
-// -detached
           
             

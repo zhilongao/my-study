@@ -22,7 +22,6 @@ public class PartitionInformation {
         props.put("bootstrap.servers", CommonConstant.bootstrapServers);
         props.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
-
         // 0 发出去就确认 | 1 leader 落盘就确认| all(-1) 所有Follower同步完才确认
         props.put("acks","1");
         // 异常自动重试次数

@@ -10,6 +10,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author gaozhilong
+ */
 public class SimpleMessageService {
 
     public static final String SIMPLE_EXCHANGE_NAME = "simple_exchange";

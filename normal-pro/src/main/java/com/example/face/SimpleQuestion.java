@@ -1,22 +1,16 @@
 package com.example.face;
 
-import com.google.common.collect.Maps;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class SimpleQuestion {
     public static void main(String[] args) {
-        // 1. StringBuffer和StringBuilder的区别
-        // StringBuffer是基于线程安全的, StringBuilder是非线程安全的
-        // 2. String和StringBuilder的区别
-        // 3. 用户信息是如何存储的，如何实现一个用户的登录？
-        // 4. 用户信息为什么存储到redis，还有什么情况可以存储用户信息?
-        // 5. 让你设计一套登录流程，如何设计？
-        // 6. redis的数据为什么在内核?
-        // 7. 什么方式可以拦截用户信息?
-        StringBuffer buf = new StringBuffer();
-        StringBuilder builder = new StringBuilder();
-
-        HashMap<Object, Object> objectObjectHashMap = Maps.newHashMap();
+        final List<String> strList = new ArrayList<>();
+        strList.add("Hello");
+        strList.add("world");
+        List<String> unmodifiableStrList = Collections.unmodifiableList(strList);
+        unmodifiableStrList.add("again");
     }
 }
