@@ -1,6 +1,9 @@
-package com.example.thread;
+package com.example.thread.base;
 
-public class T02_Disorder {
+/**
+ * @author gaozhilong
+ */
+public class T02Disorder {
 
     private static int x = 0, y = 0;
 

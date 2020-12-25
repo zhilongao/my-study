@@ -54,3 +54,7 @@
             
         阶段3: doCommit
 ```
+
+如何基于2pc或者3pc实现分布式事务
+    JOTM:Java Open Transaction Manager
+    Atomikos(开源)

@@ -1,4 +1,4 @@
-package com.example.thread;
+package com.example.thread.future;
 
 import java.util.Random;
 import java.util.concurrent.ForkJoinPool;
@@ -12,9 +12,7 @@ import java.util.concurrent.RecursiveTask;
  * @date 2020/12/19 11:23
  * @since v1.0.0001
  */
-public class T02_Fork_Join {
-
-    // ForkJoinPool线程池
+public class SimpleForkJoin {
 
     public static void main(String[] args) {
         long[] array = new long[20000];
@@ -77,8 +75,6 @@ public class T02_Fork_Join {
             return result;
         }
     }
-
-
 
     static Random random = new Random(0);
 

@@ -1,4 +1,4 @@
-package com.example.thread;
+package com.example.thread.base;
 
 import java.util.concurrent.TimeUnit;
 
@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2020/12/16 21:19
  * @since v1.0.0001
  */
-public class App2 {
+public class AppV1 {
 
 
     public static int count = 0;
@@ -24,7 +24,7 @@ public class App2 {
     }
 
     public static void add() {
-        synchronized (App2.class) {
+        synchronized (AppV1.class) {
             count ++;
         }
     }
@@ -33,7 +33,7 @@ public class App2 {
     public static void main(String[] args) {
         int threadNum = 1000;
         for (int i = 0; i < threadNum; i++) {
-            new Thread(() -> App2.incr()).start();
+            new Thread(() -> AppV1.incr()).start();
         }
         try {
             TimeUnit.SECONDS.sleep(3);

@@ -1,4 +1,4 @@
-package com.example.thread;
+package com.example.thread.queue;
 
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -10,7 +10,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * @date 2020/12/18 15:09
  * @since v1.0.0001
  */
-public class App3 {
+public class ClientApp {
 
     public static void main(String[] args) {
         Queue<String> queue = new ArrayBlockingQueue<String>(100);

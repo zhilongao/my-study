@@ -1,8 +1,11 @@
-package com.example.thread;
+package com.example.thread.cache;
 
 import java.util.concurrent.CountDownLatch;
 
-public class T02_CacheLinePadding_V1 {
+/**
+ * @author gaozhilong
+ */
+public class CacheLinePaddingV1 {
 
     public static long COUNT = 1_0000_0000L;
 
