@@ -7,26 +7,30 @@ import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.Properties;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author gaozhilong
  */
 public class SimpleProducer implements Runnable {
 
-    private static final String SIMPLE_TOPIC_NAME = "simple-topic";
-
     @Override
     public void run() {
         Properties prop = initProp();
         // 创建Sender线程
         Producer<String,String> producer = new KafkaProducer<String,String>(prop);
-        int limit = 10;
+        int limit = 100;
         for (int i = 0 ;i < limit; i++) {
             String key = Integer.toString(i);
             String value = Integer.toString(i);
-            ProducerRecord<String, String> record = new ProducerRecord<>(SIMPLE_TOPIC_NAME, key, value);
+            ProducerRecord<String, String> record = new ProducerRecord<>(CommonConstant.SIMPLE_TEST_TOPIC_NAME, key, value);
             producer.send(record);
             System.err.println("生产者发送消息:" + JSONObject.toJSONString(record));
+            try {
+                TimeUnit.MICROSECONDS.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         producer.close();
     }

@@ -17,11 +17,20 @@ import java.util.Properties;
  */
 public class PartitionInformation {
 
-    public static void main(String[] args) {
+    public static void printTopicInfo(String topic) {
+        Properties props = createProp();
+        Producer<String,String> producer = new KafkaProducer<String,String>(props);
+        List<PartitionInfo> list = producer.partitionsFor(topic);
+        for(PartitionInfo part : list){
+            System.err.println(part.partition() + "   " + part.leader());
+        }
+    }
+
+    private static Properties createProp() {
         Properties props=new Properties();
         props.put("bootstrap.servers", CommonConstant.bootstrapServers);
-        props.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "org.apache.kafka.common.serialization.StringSerializer");
         // 0 发出去就确认 | 1 leader 落盘就确认| all(-1) 所有Follower同步完才确认
         props.put("acks","1");
         // 异常自动重试次数
@@ -34,11 +43,6 @@ public class PartitionInformation {
         props.put("buffer.memory",33554432);
         // 获取元数据时生产者的阻塞时间，超时后抛出异常
         props.put("max.block.ms",3000);
-        Producer<String,String> producer = new KafkaProducer<String,String>(props);
-        List<PartitionInfo> list = producer.partitionsFor("spring-boot-topic");
-        for(PartitionInfo part : list){
-            System.err.println(part.partition());
-            System.err.println(part.leader());
-        }
+        return props;
     }
 }

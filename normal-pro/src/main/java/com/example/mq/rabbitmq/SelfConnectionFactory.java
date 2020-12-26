@@ -7,7 +7,7 @@ import com.rabbitmq.client.Connection;
  */
 public class SelfConnectionFactory {
 
-    public static final String host = "192.168.8.128";
+    public static final String host = "192.168.44.159";
 
     public static final int port = 5672;
 
