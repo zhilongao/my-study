@@ -1,7 +1,8 @@
 package com.example.mq.kafka.assign;
 
 
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import com.example.mq.kafka.util.InitPropsUtil;
+import com.example.mq.kafka.util.RecordPrintUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.TopicPartition;
@@ -14,33 +15,21 @@ import java.util.Properties;
  * @author: qingshan
  */
 public class ConsumerHandAssignTest {
+
+    public static final String groupId = "simple-test-group-55";
+
+    public static final String topic = "simple-test-topic-33";
+
     public static void main(String[] args) {
-        Properties props= new Properties();
-        //props.put("bootstrap.servers","192.168.44.161:9093,192.168.44.161:9094,192.168.44.161:9095");
-        props.put("bootstrap.servers","192.168.44.160:9092");
-        props.put("group.id","gp-assgin-group-2");
-        // 是否自动提交偏移量，只有commit之后才更新消费组的 offset
-        props.put("enable.auto.commit","true");
-        // 消费者自动提交的间隔
-        props.put("auto.commit.interval.ms","1000");
-        // 从最早的数据开始消费 earliest | latest | none
-        props.put("auto.offset.reset","earliest");
-        props.put("key.deserializer","org.apache.kafka.common.serialization.StringDeserializer");
-        props.put("value.deserializer","org.apache.kafka.common.serialization.StringDeserializer");
-
+        Properties props = InitPropsUtil.commonConsumerProps(groupId);
         KafkaConsumer<String,String> consumer=new KafkaConsumer<String, String>(props);
-        // 订阅topic，消费指定parptition
-        TopicPartition tp=new TopicPartition("ass5part",0);
+        // 订阅topic，消费指定Partition
+        TopicPartition tp = new TopicPartition(topic,0);
         consumer.assign(Arrays.asList(tp));
-
         while (true){
-            ConsumerRecords<String,String> records=consumer.poll(Duration.ofMillis(1000));
-            for (ConsumerRecord<String,String> record:records){
-                System.out.printf("offset = %d ,key =%s, value= %s, partition= %s%n" , record.offset(), record.key(), record.value(), record.partition());
-            }
+            ConsumerRecords<String,String> records = consumer.poll(Duration.ofMillis(1000));
+            RecordPrintUtil.printRecordMessage("simple-consumer", records);
         }
-
-
     }
 
 }

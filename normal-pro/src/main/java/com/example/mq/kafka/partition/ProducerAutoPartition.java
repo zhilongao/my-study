@@ -18,28 +18,22 @@ import java.util.concurrent.ExecutionException;
  */
 public class ProducerAutoPartition {
 
+    public static final String topic = "simple-test-topic-22";
+
     public static void main(String[] args) throws ExecutionException, InterruptedException {
         // 初始化属性
         Properties props = InitPropsUtil.commonProducerProps();
-        props.put("acks","-1");
-        props.put("retries",3);
-        props.put("batch.size",16384);
-        props.put("linger.ms",10);
-        props.put("buffer.memory",33554432);
-        props.put("max.block.ms",5000);
         // 使用自定义分区器
         props.put("partitioner.class", "com.example.mq.kafka.partition.SimplePartitioner");
-
-        KafkaProducer<String, Integer> producer = new KafkaProducer<String, Integer>(props);
-        String topic = "qs4part2673";
+        KafkaProducer<String, String> producer = new KafkaProducer<String, String>(props);
         int partitionSize = producer.partitionsFor(topic).size();
         System.err.println("Partition size: " + partitionSize);
         for (int i = 0; i < 10; i++) {
             // 使用自定义分区器选择分区
             // 默认是对key进行hash取余
-            ProducerRecord<String, Integer> producerRecord = new ProducerRecord<String, Integer>(topic, i+ "", i);
+            ProducerRecord<String, String> producerRecord = new ProducerRecord<String, String>(topic, i+ "", i+"");
             RecordMetadata metadata = producer.send(producerRecord).get();
-            System.out.println("Sent to partition: " + metadata.partition() + ", offset: " + metadata.offset());
+            System.err.println("Sent to partition: " + metadata.partition() + ", offset: " + metadata.offset());
         }
     }
 

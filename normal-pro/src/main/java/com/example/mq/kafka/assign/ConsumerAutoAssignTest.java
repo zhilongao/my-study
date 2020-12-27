@@ -2,6 +2,7 @@ package com.example.mq.kafka.assign;
 
 
 import com.example.mq.kafka.util.InitPropsUtil;
+import com.example.mq.kafka.util.RecordPrintUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -14,15 +15,15 @@ import java.util.Properties;
  * @author: qingshan
  */
 public class ConsumerAutoAssignTest {
+
+    public static final String groupId = "simple-test-group-33";
+
+    public static final String topic1 = "simple-test-topic-33";
+
+    public static final String topic2 = "simple-test-topic-55";
+
     public static void main(String[] args) {
-        Properties props = InitPropsUtil.commonConsumerProps();
-        props.put("group.id","gp-assign-group-1");
-        // 是否自动提交偏移量，只有commit之后才更新消费组的 offset
-        props.put("enable.auto.commit","true");
-        // 消费者自动提交的间隔
-        props.put("auto.commit.interval.ms","1000");
-        // 从最早的数据开始消费 earliest | latest | none
-        props.put("auto.offset.reset","earliest");
+        Properties props = InitPropsUtil.commonConsumerProps(groupId);
         // 结果 c1 : p0 p1 p2  c2 : p3 p4 （默认）
         // props.put("partition.assignment.strategy","org.apache.kafka.clients.consumer.RangeAssignor");
         // 结果 c1 : p0 p2 p4  c2 : p1 p3
@@ -30,25 +31,20 @@ public class ConsumerAutoAssignTest {
         // 结果 c1 : p2 p3 p4  c2 : p0 p1
         //props.put("partition.assignment.strategy","org.apache.kafka.clients.consumer.StickyAssignor");
         // 两个消费者消费5个分区
-        KafkaConsumer<String,String> consumer1=new KafkaConsumer<String, String>(props);
-        KafkaConsumer<String,String> consumer2=new KafkaConsumer<String, String>(props);
+        KafkaConsumer<String,String> consumer1 = new KafkaConsumer<String, String>(props);
+        KafkaConsumer<String,String> consumer2 = new KafkaConsumer<String, String>(props);
         // 订阅队列
-        consumer1.subscribe(Arrays.asList("ass5part"));
-        consumer2.subscribe(Arrays.asList("ass5part"));
+        consumer1.subscribe(Arrays.asList(topic1));
+        consumer2.subscribe(Arrays.asList(topic2));
         try {
             while (true){
-                ConsumerRecords<String,String> msg1=consumer1.poll(Duration.ofMillis(1000));
-                for (ConsumerRecord<String,String> record:msg1){
-                    System.out.printf("----consume1----offset = %d ,key =%s, value= %s, partition= %s%n" ,record.offset(),record.key(),record.value(),record.partition());
-                }
-                ConsumerRecords<String,String> msg2=consumer2.poll(Duration.ofMillis(1000));
-                for (ConsumerRecord<String,String> record:msg2){
-                    System.out.printf("----consume2----offset = %d ,key =%s, value= %s, partition= %s%n" ,record.offset(),record.key(),record.value(),record.partition());
-                }
+                ConsumerRecords<String,String> records1 = consumer1.poll(Duration.ofMillis(1000));
+                RecordPrintUtil.printRecordMessage("consumer1", records1);
+                ConsumerRecords<String,String> records2 = consumer2.poll(Duration.ofMillis(1000));
+                RecordPrintUtil.printRecordMessage("consumer2", records2);
             }
         } finally {
             consumer1.close();
         }
     }
-
 }

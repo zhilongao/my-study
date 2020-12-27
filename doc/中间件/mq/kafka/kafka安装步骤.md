@@ -175,4 +175,25 @@
 >sh kafka-topics.sh --list --zookeeper 192.168.43.93:2181
 >```
 >
+
+###### kafka常用命令
+
+>后台启动kafka
+>
+>```shell
+>./kafka-server-start.sh -daemon ../config/server1.properties
+>```
+>
+>创建主题
+>
+>```shell
+>sh kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic gptest
+>```
+>
+>查看已创建主题
+>
+>```shell
+>sh kafka-topics.sh -list -zookeeper localhost:2181
+>```
+>
 >
