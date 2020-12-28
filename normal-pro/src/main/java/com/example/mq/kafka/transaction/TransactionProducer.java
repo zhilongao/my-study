@@ -1,5 +1,6 @@
 package com.example.mq.kafka.transaction;
 
+import com.example.mq.kafka.util.InitPropsUtil;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -8,27 +9,24 @@ import org.apache.kafka.common.KafkaException;
 import java.util.Properties;
 import java.util.UUID;
 
+/**
+ * @author gaozhilong
+ */
 public class TransactionProducer {
 
-    private static void autoProducer() {
-        Properties props=new Properties();
-        //props.put("bootstrap.servers","192.168.44.161:9093,192.168.44.161:9094,192.168.44.161:9095");
-        props.put("bootstrap.servers","192.168.44.160:9092");
-        props.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
-        props.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
-        // 0 发出去就确认 | 1 leader 落盘就确认| all或-1 所有Follower同步完才确认
-        props.put("acks","all");
-        // 异常自动重试次数
-        props.put("retries",3);
-        // 多少条数据发送一次，默认16K
-        props.put("batch.size",16384);
-        // 批量发送的等待时间
-        props.put("linger.ms",5);
-        // 客户端缓冲区大小，默认32M，满了也会触发消息发送
-        props.put("buffer.memory",33554432);
-        // 获取元数据时生产者的阻塞时间，超时后抛出异常
-        props.put("max.block.ms",3000);
-        props.put("enable.idempotence",true);
+    public static final String topic = "transaction-test-topic";
+
+    public static void main(String[] args) {
+        produceMessage();
+    }
+
+    public static void produceMessage() {
+        Properties props = InitPropsUtil.commonProducerProps();
+        // 0 发出去就确认 | 1 leader 落盘就确认| all 所有Follower同步完才确认
+        // 基于事务的acks必须设置为all
+        props.put("acks", "all");
+        // 保证消息幂等性
+        props.put("enable.idempotence", true);
         // 事务ID，唯一
         props.put("transactional.id", UUID.randomUUID().toString());
         Producer<String,String> producer = new KafkaProducer<String,String>(props);
@@ -36,10 +34,10 @@ public class TransactionProducer {
         producer.initTransactions();
         try {
             producer.beginTransaction();
-            producer.send(new ProducerRecord<String,String>("transaction-test","1","1"));
-            producer.send(new ProducerRecord<String,String>("transaction-test","2","2"));
+            producer.send(new ProducerRecord<String,String>(topic,"1","1"));
+            producer.send(new ProducerRecord<String,String>(topic,"2","2"));
             // Integer i = 1/0;
-            producer.send(new ProducerRecord<String,String>("transaction-test","3","3"));
+            producer.send(new ProducerRecord<String,String>(topic,"3","3"));
             // 提交事务
             producer.commitTransaction();
         } catch (KafkaException e) {
