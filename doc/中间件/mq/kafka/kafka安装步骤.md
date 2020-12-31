@@ -196,4 +196,14 @@
 >sh kafka-topics.sh -list -zookeeper localhost:2181
 >```
 >
+>查看某个主题的详情
+>
+>```shell 
+>sh kafka-topics.sh --describe --bootstrap-server 192.168.8.128:9093,192.168.8.128:9094,192.168.8.128:9095 --topic simple-test-topic-11
+>```
+>
+>查看kafka的索引文件
+>```shell
+>sh kafka-dump-log.sh --files /usr/local/src/kafka_2.13-2.5.0/data/kafka-logs3/ser-topic-0/00000000000000000000.index
+>```
 >

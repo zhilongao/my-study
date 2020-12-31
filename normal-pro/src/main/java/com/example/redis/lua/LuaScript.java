@@ -22,6 +22,7 @@ public class LuaScript {
         for(int i = 0; i < count; i++){
             limit(jedis);
         }
+        jedis.close();
     }
 
     private static void simply(Jedis jedis) {

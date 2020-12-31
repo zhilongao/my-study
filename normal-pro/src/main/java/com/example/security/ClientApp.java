@@ -19,51 +19,17 @@ import java.util.List;
  */
 public class ClientApp {
 
-    private static final String algorithmMd5 = "MD5";
-
-    private static List<String> records = new ArrayList<>();
-
     public static void main(String[] args) {
         String password1 = "1234567";
         String password2 = "abcdefg";
         String password3 = "1111111";
-        records.add(encode(password1));
-        records.add(encode(password2));
-        System.err.println(JSONObject.toJSONString(records));
-        System.err.println(verify(password1));
-        System.err.println(verify(password2));
-        System.err.println(verify(password3));
-    }
-
-    /**
-     * 将用户输入的明文密码经过md5加密，然后base64转换成字符串存储。
-     * @param message
-     * @return
-     */
-    private static String encode(String message) {
-        MessageDigest digestInstance = null;
-        try {
-            digestInstance = MessageDigest.getInstance(algorithmMd5);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        byte[] inBytes = message.getBytes(StandardCharsets.UTF_8);
-        byte[] digest = digestInstance.digest(inBytes);
-        BASE64Encoder encoder = new BASE64Encoder();
-        String res = encoder.encode(digest);
-        return res;
-    }
-
-    /**
-     * 用户输入明文密码，先执行存储时的步骤，然后验证。
-     * @param message
-     * @return
-     */
-    private static boolean verify(String message) {
-        String encode = encode(message);
-        if (records.contains(encode)) {
-            return true;
-        }
-        return false;
+        Md5Example.encode(password1);
+        Md5Example.encode(password2);
+        boolean verify1 = Md5Example.verify(password1);
+        boolean verify2 = Md5Example.verify(password2);
+        boolean verify3 = Md5Example.verify(password3);
+        System.err.println(verify1);
+        System.err.println(verify2);
+        System.err.println(verify3);
     }
 }

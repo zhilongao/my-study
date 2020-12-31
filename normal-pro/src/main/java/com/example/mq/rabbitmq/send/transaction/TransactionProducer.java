@@ -1,4 +1,4 @@
-package com.example.mq.rabbitmq.transaction;
+package com.example.mq.rabbitmq.send.transaction;
 
 import com.example.mq.rabbitmq.SelfConnectionFactory;
 import com.rabbitmq.client.Channel;

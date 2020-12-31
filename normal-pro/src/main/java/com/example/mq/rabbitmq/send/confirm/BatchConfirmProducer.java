@@ -1,4 +1,4 @@
-package com.example.mq.rabbitmq.confirm;
+package com.example.mq.rabbitmq.send.confirm;
 
 import com.example.mq.rabbitmq.SelfConnectionFactory;
 import com.rabbitmq.client.Channel;
@@ -7,7 +7,13 @@ import com.rabbitmq.client.Connection;
 
 public class BatchConfirmProducer implements Runnable{
 
-    private final static String QUEUE_NAME = "original_queue_batch";
+    private final static String EXCHANGE_NAME = "original_batch_confirm_exchange";
+
+    private final static String EXCHANGE_TYPE = "topic";
+
+    private final static String QUEUE_NAME = "original_queue_batch1";
+
+    private final static String ROUTING_KEY = "simple_ack_message";
 
     Connection conn;
 
@@ -26,8 +32,12 @@ public class BatchConfirmProducer implements Runnable{
     public void run() {
         String msg = "Hello world, Rabbit MQ ,Batch Confirm";
         try {
+            // 声明交换机
+            channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
             // 声明队列
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            // 绑定关系
+            channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
             try {
                 channel.confirmSelect();
                 int limit = 5;

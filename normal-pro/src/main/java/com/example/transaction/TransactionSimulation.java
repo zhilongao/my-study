@@ -8,9 +8,5 @@ package com.example.transaction;
  * @since v1.0.0001
  */
 public class TransactionSimulation {
-    // 分布式事务模拟
-    //         order
-    // web
-    //          user
-    //This process is called Log Replication.
+
 }

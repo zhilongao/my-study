@@ -1,4 +1,4 @@
-package com.example.mq.rabbitmq.transaction;
+package com.example.mq.rabbitmq.send.transaction;
 
 /**
  * 写点注释吧

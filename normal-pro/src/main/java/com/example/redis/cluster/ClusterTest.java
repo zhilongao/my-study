@@ -1,5 +1,6 @@
 package com.example.redis.cluster;
 
+import com.example.redis.CommonConstant;
 import redis.clients.jedis.HostAndPort;
 import redis.clients.jedis.JedisCluster;
 
@@ -15,14 +16,27 @@ import java.util.Set;
  * @since v1.0.0001
  */
 public class ClusterTest {
-    public static void main(String[] args) throws IOException {
-        HostAndPort hostAndPort1 = new HostAndPort("192.168.43.4", 7291);
-        HostAndPort hostAndPort2 = new HostAndPort("192.168.43.4", 7292);
-        HostAndPort hostAndPort3 = new HostAndPort("192.168.43.4", 7293);
+
+
+    public static void main(String[] args) {
+        dataOpt();
+    }
+
+    public static Set<HostAndPort> addressParser() {
+        String[] addresses = CommonConstant.clusterAddress.split(",");
         Set<HostAndPort> nodes = new HashSet<>();
-        nodes.add(hostAndPort1);
-        nodes.add(hostAndPort2);
-        nodes.add(hostAndPort3);
+        for (String address : addresses) {
+            String[] hostAndPortArr = address.split(":");
+            String host = hostAndPortArr[0];
+            Integer port = Integer.parseInt(hostAndPortArr[1]);
+            HostAndPort hostAndPort = new HostAndPort(host, port);
+            nodes.add(hostAndPort);
+        }
+        return nodes;
+    }
+
+    public static boolean dataOpt() {
+        Set<HostAndPort> nodes = addressParser();
         JedisCluster cluster = new JedisCluster(nodes);
         System.err.println("---------------->");
         for (int i = 0; i < 10; i++) {
@@ -33,6 +47,11 @@ public class ClusterTest {
             cluster.set("{misss}"+i, "test-info" + i);
         }
         System.err.println("---------------->");
-        cluster.close();
+        try {
+            cluster.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return true;
     }
 }

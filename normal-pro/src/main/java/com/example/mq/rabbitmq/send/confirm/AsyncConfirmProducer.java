@@ -1,4 +1,4 @@
-package com.example.mq.rabbitmq.confirm;
+package com.example.mq.rabbitmq.send.confirm;
 
 import com.example.mq.rabbitmq.SelfConnectionFactory;
 import com.rabbitmq.client.Channel;
@@ -16,7 +16,13 @@ import java.util.TreeSet;
  */
 public class AsyncConfirmProducer implements Runnable{
 
+    private final static String EXCHANGE_NAME = "original_exchange_async";
+
+    private final static String EXCHANGE_TYPE = "topic";
+
     private final static String QUEUE_NAME = "original_queue_async";
+
+    private final static String ROUTING_KEY = "simple_confirm_async_key";
 
     Connection conn;
 
@@ -35,8 +41,12 @@ public class AsyncConfirmProducer implements Runnable{
     public void run() {
         String msg = "Hello world, Rabbit MQ, Async Confirm";
         try {
+            // 声明交换机
+            channel.exchangeDeclare(EXCHANGE_NAME, EXCHANGE_TYPE);
             // 声明队列
             channel.queueDeclare(QUEUE_NAME, false, false, false, null);
+            // 将队列和交换机绑定
+            channel.queueBind(QUEUE_NAME, EXCHANGE_NAME, ROUTING_KEY);
             // 声明一个SortedSet，用来维护未确认消息的deliveryTag
             final SortedSet<Long> confirmSet = Collections.synchronizedSortedSet(new TreeSet<Long>());
             // 这里不会打印所有响应的ACK； ACK可能有多个，有可能一次确认多条，也有可能一次确认一条
