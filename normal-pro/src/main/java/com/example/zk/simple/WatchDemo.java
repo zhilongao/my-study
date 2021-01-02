@@ -1,5 +1,6 @@
-package com.example.zk;
+package com.example.zk.simple;
 
+import com.example.zk.util.CommonConstant;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.apache.curator.framework.recipes.cache.NodeCache;
@@ -18,8 +19,30 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
  */
 public class WatchDemo {
 
+    private static final String zkUrl = CommonConstant.CONNECTION_STR;
+    public static void addListener() {
+        CuratorFramework curatorFramework = CuratorFrameworkFactory.builder().
+                connectString(zkUrl).sessionTimeoutMs(5000).
+                retryPolicy(new ExponentialBackoffRetry(1000, 3)).build();
+        curatorFramework.start();
+        String path = "order-service";
+        NodeCache nodeCache = new NodeCache(curatorFramework, path, false);
+        NodeCacheListener nodeCacheListener = new NodeCacheListener() {
+            @Override
+            public void nodeChanged() throws Exception {
+                System.err.println("receive node changed");
+                System.err.println(nodeCache.getCurrentData().getPath() + "---" + new String(nodeCache.getCurrentData().getData()));
+            }
+        };
+        nodeCache.getListenable().addListener(nodeCacheListener);
+        try {
+            nodeCache.start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) throws Exception {
-        String zkUrl = CommonConstant.CONNECTION_STR;
         // PathChildCache  --针对于子节点的创建、删除和更新 触发事件
         // NodeCache  针对当前节点的变化触发事件
         // TreeCache  综合事件

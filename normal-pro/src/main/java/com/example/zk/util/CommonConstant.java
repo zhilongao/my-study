@@ -1,4 +1,4 @@
-package com.example.zk;
+package com.example.zk.util;
 
 /**
  * 写点注释吧
@@ -9,6 +9,6 @@ package com.example.zk;
  */
 public class CommonConstant {
 
-    public static final String CONNECTION_STR = "192.168.8.128:2181";
+    public static final String CONNECTION_STR = "192.168.43.93:2181";
 
 }

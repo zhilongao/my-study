@@ -1,8 +1,7 @@
-package com.example.zk;
+package com.example.zk.simple;
 
+import com.example.zk.util.CuratorUtil;
 import org.apache.curator.framework.CuratorFramework;
-import org.apache.curator.framework.CuratorFrameworkFactory;
-import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.data.Stat;
 
@@ -13,19 +12,16 @@ import org.apache.zookeeper.data.Stat;
  * @date 2020/12/29 13:48
  * @since v1.0.0001
  */
-public class CuratorDemo {
+public class SimpleDemo {
 
     public static void main(String[] args) throws Exception {
-        String zkUrl = CommonConstant.CONNECTION_STR;
-        CuratorFramework curatorFramework=CuratorFrameworkFactory.builder().
-                connectString(zkUrl).sessionTimeoutMs(5000).
-                retryPolicy(new ExponentialBackoffRetry(1000,3)).build();
-        curatorFramework.start(); //启动
+        CuratorFramework framework = CuratorUtil.curatorFramework();
+        framework.start(); //启动
         String path = "/data/program";
         byte[] createData = "test".getBytes();
         byte[] upData = "up".getBytes();
         // CRUD
-        createData(curatorFramework, path, createData);
+        createData(framework, path, createData);
         // updateData(curatorFramework, path, upData);
         // deleteData(curatorFramework, path);
     }
