@@ -64,4 +64,70 @@ public class SimpleV1 {
         return num1 == num2;
     }
 
+    // 1374. 生成每种字符都是奇数个的字符串
+    // 给你一个整数n，请你返回一个含n个字符的字符串，其中每种字符在该字符串中都恰好出现奇数次 。
+    // 返回的字符串必须只含小写英文字母。如果存在多个满足题目要求的字符串，则返回其中任意一个即可。
+    // 示例 1：
+    //  输入：n = 4
+    //  输出："pppz"
+    //  解释："pppz" 是一个满足题目要求的字符串，因为 'p' 出现 3 次，且 'z' 出现 1 次。当然，还有很多其他字符串也满足题目要求，比如："ohhh" 和 "love"。
+    //示例 2：
+    //输入：n = 2
+    //输出："xy"
+    //解释："xy" 是一个满足题目要求的字符串，因为 'x' 和 'y' 各出现 1 次。当然，还有很多其他字符串也满足题目要求，比如："ag" 和 "ur"。
+    //示例 3：
+    //
+    //输入：n = 7
+    //输出："holasss"
+    public String generateTheString(int n) {
+        StringBuilder bf = new StringBuilder();
+        if(n % 2 == 0) {
+            int temp = n / 2;
+            if (temp % 2 == 0) {
+                temp --;
+            }
+            for (int i = 0; i < temp; i ++) {
+                bf.append("A");
+            }
+            for (int i = temp; i < n; i++) {
+                bf.append("B");
+            }
+        } else {
+            for (int i = 0; i < n; i++) {
+                bf.append("a");
+            }
+        }
+        return bf.toString();
+    }
+
+    // 1309. 解码字母到整数映射
+    // 给你一个字符串s，它由数字（'0'-'9'）和 '#' 组成。我们希望按下述规则将s映射为一些小写英文字符：
+    // 字符（'a' - 'i'）分别用（'1' - '9'）表示。
+    // 字符（'j' - 'z'）分别用（'10#' - '26#'）表示。 
+    // 返回映射之后形成的新字符串。
+    // 题目数据保证映射始终唯一。
+    // 示例 1：
+    //  输入：s = "10#11#12"
+    //  输出："jkab"
+    //  解释："j" -> "10#" , "k" -> "11#" , "a" -> "1" , "b" -> "2".
+    // 示例 2：
+    //  输入：s = "1326#"
+    //  输出："acz"
+    //示例 3：
+    //  输入：s = "25#"
+    //  输出："y"
+    //示例 4：
+    //输入：s = "12345678910#11#12#13#14#15#16#17#18#19#20#21#22#23#24#25#26#"
+    //输出："abcdefghijklmnopqrstuvwxyz"
+    public String freqAlphabets(String s) {
+        StringBuilder bf = new StringBuilder();
+        char[] map = "abcdefghijklmnopqrstuvwxyz".toCharArray();
+        for (int i = 0; i < s.length(); i++) {
+            if (i + 2 < s.length() && s.charAt(i + 1) == '#') {
+                s.charAt(i);
+            }
+        }
+        return "";
+    }
+
 }
