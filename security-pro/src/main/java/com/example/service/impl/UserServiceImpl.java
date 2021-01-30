@@ -1,3 +1,4 @@
+/*
 package com.example.service.impl;
 
 
@@ -12,13 +13,15 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * 写点注释吧
  *
  * @author gaozhilong
  * @date 2020/10/27 19:05
  * @since v1.0.0001
- */
+ *//*
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -52,3 +55,4 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 }
+*/

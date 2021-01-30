@@ -1,8 +1,10 @@
 package com.example.controller;
 
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * 写点注释吧
@@ -20,8 +22,19 @@ public class OrderController {
         return "order1 .......";
     }
 
+    public static  int index = 0;
+
     @RequestMapping("/order2")
     public String order2() {
+        String path = ClassLoader.getSystemResource("").getPath();
+        File file = new File(path + index++ + "file.txt");
+        // file.mkdirs();
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.err.println(path);
         return "order2 .......";
     }
 
@@ -30,7 +43,7 @@ public class OrderController {
         return "order3 .......";
     }
 
-    @PreAuthorize(value = "hasRole('CREATE')")
+    //@PreAuthorize(value = "hasRole('CREATE')")
     @RequestMapping("/order4")
     public String order4() {
         return "order4 .......";

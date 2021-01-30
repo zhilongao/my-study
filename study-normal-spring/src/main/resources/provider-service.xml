@@ -14,7 +14,7 @@
     <dubbo:registry id="register1" address="zookeeper://127.0.0.1:2181"/>
 
     <!-- 协议信息 -->
-    <dubbo:protocol id="protocol1" name="dubbo" port="20880"/>
+    <dubbo:protocol id="protocol1" name="dubbo" port="20881"/>
 
     <!-- 发布接口 -->
     <dubbo:service interface="com.study.dubbo.api.PayService" ref="payService" protocol="protocol1" registry="register1"/>

@@ -1,3 +1,4 @@
+/*
 package com.example.controller;
 
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -5,13 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+*/
 /**
  * 写点注释吧
  *
  * @author gaozhilong
  * @date 2020/10/27 19:10
  * @since v1.0.0001
- */
+ *//*
+
 @Controller
 public class BaseController {
 
@@ -46,3 +49,4 @@ public class BaseController {
     // 针对特定的url做授权操作
 
 }
+*/

@@ -1,5 +1,6 @@
 package com.example.spring.import1.enable;
 
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 /**
@@ -12,7 +13,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 public class BootstrapApp {
 
     public static void main(String[] args) {
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ColorAutoConfiguration.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(ColorAutoConfiguration.class);
         String[] definitionNames = context.getBeanDefinitionNames();
         for (String beanName : definitionNames) {
             System.err.println(beanName);

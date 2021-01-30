@@ -14,10 +14,11 @@ public class SimpleApp {
     public static void main(String[] args) {
         AbstractApplicationContext context = new AnnotationConfigApplicationContext(BeanConfiguration.class);
         String[] definitionNames = context.getBeanDefinitionNames();
+        System.err.println("==========");
         for (String definitionName : definitionNames) {
             System.err.println(definitionName);
         }
-        System.err.println("-----------------------------");
-        SearchService searchService = (SearchService) context.getBean("searchService");
+        System.err.println("==========");
+        context.getBean("searchService");
     }
 }

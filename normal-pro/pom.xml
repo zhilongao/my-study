@@ -184,6 +184,14 @@
             <artifactId>rocketmq-logging</artifactId>
             <version>4.7.1</version>
         </dependency>
+
+        <!-- 解析yaml文件 -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>1.26</version>
+        </dependency>
+
     </dependencies>
 
     <build>

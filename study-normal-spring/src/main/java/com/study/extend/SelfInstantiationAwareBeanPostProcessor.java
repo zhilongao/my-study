@@ -1,4 +1,4 @@
-package com.study.basic;
+package com.study.extend;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.PropertyValues;
@@ -15,10 +15,12 @@ import java.beans.PropertyDescriptor;
  */
 public class SelfInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
+        System.err.println("postProcessBeforeInstantiation----" + beanClass.getName());
         return null;
     }
 
     public boolean postProcessAfterInstantiation(Object bean, String beanName) throws BeansException {
+        System.err.println("postProcessAfterInstantiation----" + beanName);
         return false;
     }
 

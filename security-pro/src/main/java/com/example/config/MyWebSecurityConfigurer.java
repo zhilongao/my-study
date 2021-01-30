@@ -1,3 +1,4 @@
+/*
 package com.example.config;
 
 import com.example.service.UserService;
@@ -18,6 +19,7 @@ import org.springframework.security.web.session.SimpleRedirectSessionInformation
 
 import javax.sql.DataSource;
 
+*/
 /**
  * 写点注释吧
  * @Configuration 配置类
@@ -27,10 +29,11 @@ import javax.sql.DataSource;
  * @author gaozhilong
  * @date 2020/10/27 19:04
  * @since v1.0.0001
- */
-@Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)// 支持spring表达式注解
+ *//*
+
+// @Configuration
+// @EnableWebSecurity
+// @EnableGlobalMethodSecurity(prePostEnabled = true)// 支持spring表达式注解
 public class MyWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -44,29 +47,35 @@ public class MyWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SessionInformationExpiredStrategy expiredSessionStrategy;
-    /**
+    */
+/**
      * 自定义认证管理器
      * @param auth
      * @throws Exception
-     */
+     *//*
+
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        /*
+        */
+/*
         auth.inMemoryAuthentication()
                 .withUser("zhang")
                 .password("{noop}111")
                 .roles("USER");
-        */
+        *//*
+
         auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
     }
     //
 
 
-    /**
+    */
+/**
      * 自定义过滤器链
      * @param http
      * @throws Exception
-     */
+     *//*
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // super.configure(http);
@@ -108,12 +117,14 @@ public class MyWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         super.configure(web);
     }
 
-    /**
+    */
+/**
      * 持久化token
      * 在security中，默认使用的是PersistentTokenRepository的子类InMemoryTokenRepositoryImpl，将token放入到内存中
      * 若是使用JdbcTokenRepositoryImpl，会创建表 persistent_logins,将token持久化到数据库中
      * @return
-     */
+     *//*
+
     @Bean
     public PersistentTokenRepository persistentTokenRepository() {
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
@@ -132,3 +143,4 @@ public class MyWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 }
+*/

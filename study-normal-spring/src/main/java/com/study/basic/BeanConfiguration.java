@@ -1,5 +1,7 @@
 package com.study.basic;
 
+import com.study.extend.SelfInstantiationAwareBeanPostProcessor;
+import org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
@@ -18,5 +20,11 @@ public class BeanConfiguration {
     @Lazy
     public SearchService searchService() {
         return new SearchService();
+    }
+
+    @Bean
+    public InstantiationAwareBeanPostProcessor postProcessor() {
+        InstantiationAwareBeanPostProcessor postProcessor = new SelfInstantiationAwareBeanPostProcessor();
+        return postProcessor;
     }
 }
