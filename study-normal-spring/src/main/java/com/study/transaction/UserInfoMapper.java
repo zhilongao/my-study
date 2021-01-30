@@ -14,4 +14,6 @@ import java.util.List;
 public interface UserInfoMapper {
 
     List<UserInfo> selectByName(@Param("name") String name);
+
+    int insert(UserInfo userInfo);
 }

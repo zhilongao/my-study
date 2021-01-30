@@ -18,11 +18,30 @@ import java.util.List;
  */
 public class App {
     public static void main(String[] args) throws SQLException {
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:transaction/spring-simple1.xml");
+        // 1. 加载spring上下文ApplicationContext
+        // 2. 加载MyBatis的SqlSessionFactory
+        // 3. 加载MyBatis的SqlSessionFactory中获取到的SqlSession
+        // 4. 从SqlSession中获取指定的Mapper接口(代理类)
+        // 5. 使用Mapper接口调用相关的方法
+        String configLocation = "classpath:transaction/spring-simple1.xml";
+        ApplicationContext context = new ClassPathXmlApplicationContext(configLocation);
         SqlSessionFactory sqlSessionFactory = (SqlSessionFactory)context.getBean("sqlSessionFactory");
         SqlSession sqlSession = sqlSessionFactory.openSession();
         UserInfoMapper userInfoMapper = sqlSession.getMapper(UserInfoMapper.class);
-        List<UserInfo> list = userInfoMapper.selectByName("jack");
-        System.err.println("over");
+        List<UserInfo> userInfoList = userInfoMapper.selectByName("jack");
+        for (UserInfo userInfo : userInfoList) {
+            System.err.println(userInfo);
+        }
+        System.err.println("------------------------");
+        int batchNum = 10;
+        for (int i = 0; i < batchNum; i++) {
+            UserInfo userInfo = new UserInfo();
+            String name = "test:" + i;
+            userInfo.setName(name);
+            userInfoMapper.insert(userInfo);
+        }
+        sqlSession.rollback();
+        System.err.println("------------------------");
+
     }
 }

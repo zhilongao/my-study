@@ -13,12 +13,13 @@
     <!-- 配置文件的引入 -->
     <context:property-placeholder location="classpath:db/db1.properties"/>
 
-    <!--  数据源-->
-    <bean id="dataSource" class="com.study.transaction.SelfDataSource">
-        <property name="url" value="${datasource.url}"/>
-        <property name="driverClassName" value="${datasource.driver-class-name}"/>
-        <property name="name" value="${datasource.userName}"/>
-        <property name="passWord" value="${datasource.passWord}"/>
+    <!-- 数据源 使用c3p0 -->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="driverClass" value="${datasource.driver-class-name}"/>
+        <property name="jdbcUrl" value="${datasource.url}"/>
+        <property name="user" value="${datasource.userName}"/>
+        <property name="password" value="${datasource.passWord}"/>
+        <property name="testConnectionOnCheckin" value="true"/>
     </bean>
 
     <!-- 事务管理器 -->
@@ -36,5 +37,4 @@
         <property name="mapperLocations" value="classpath:mybatis/*.xml"/>
         <property name="typeAliasesPackage" value="com.study.transaction"/>
     </bean>
-
 </beans>

@@ -10,4 +10,8 @@
         select * from user_info
     </select>
 
+    <insert id="insert" parameterType="com.study.transaction.UserInfo">
+        insert into user_info (name) values (#{name,jdbcType=VARCHAR})
+    </insert>
+
 </mapper>
