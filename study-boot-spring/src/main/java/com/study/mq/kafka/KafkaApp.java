@@ -14,7 +14,8 @@ import java.util.Set;
 public class KafkaApp {
 
     public static void main(String[] args) {
-       // SpringApplication.run(KafkaApp.class, args);
+       SpringApplication.run(KafkaApp.class, args);
+       /*
        SpringApplication application = new SpringApplication(KafkaApp.class);
         Set<ApplicationContextInitializer<?>> initializers = application.getInitializers();
         for (ApplicationContextInitializer initializer : initializers) {
@@ -29,5 +30,6 @@ public class KafkaApp {
         }
         application.run(args);
         DefaultConversionService conversionService = new DefaultConversionService();
+        */
     }
 }
