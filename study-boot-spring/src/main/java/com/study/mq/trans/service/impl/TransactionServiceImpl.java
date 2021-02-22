@@ -1,8 +1,8 @@
-package com.study.mq.trans.service;
+package com.study.mq.trans.service.impl;
 
 import com.study.mq.trans.entity.SysUser;
 import com.study.mq.trans.mapper.SysUserMapper;
-import com.study.mq.trans.service.impl.TestService;
+import com.study.mq.trans.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -16,17 +16,18 @@ import org.springframework.transaction.annotation.Transactional;
  * @since v1.0.0001
  */
 @Service
-public class TestServiceImpl implements TestService {
+public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
     private SysUserMapper sysUserMapper;
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional(propagation = Propagation.REQUIRED)
     @Override
-    public int insert(SysUser sysUser) {
+    public int doInsert(SysUser sysUser) {
+        int insert = sysUserMapper.insert(sysUser);
         if (sysUser.getId() == 1L) {
             throw new RuntimeException();
         }
-        return sysUserMapper.insert(sysUser);
+        return insert;
     }
 }

@@ -1,7 +1,7 @@
 package com.study.mq.trans.controller;
 
 import com.study.mq.trans.entity.SysUser;
-import com.study.mq.trans.service.impl.SysUserService;
+import com.study.mq.trans.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

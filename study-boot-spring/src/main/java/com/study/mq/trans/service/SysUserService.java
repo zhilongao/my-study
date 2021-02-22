@@ -1,4 +1,4 @@
-package com.study.mq.trans.service.impl;
+package com.study.mq.trans.service;
 
 import com.study.mq.trans.entity.SysUser;
 

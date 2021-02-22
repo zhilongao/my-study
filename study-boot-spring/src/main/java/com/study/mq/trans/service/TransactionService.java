@@ -1,4 +1,4 @@
-package com.study.mq.trans.service.impl;
+package com.study.mq.trans.service;
 
 import com.study.mq.trans.entity.SysUser;
 
@@ -9,7 +9,7 @@ import com.study.mq.trans.entity.SysUser;
  * @date 2021/2/21 13:57
  * @since v1.0.0001
  */
-public interface TestService {
+public interface TransactionService {
 
-    int insert(SysUser sysUser);
+    int doInsert(SysUser sysUser);
 }
