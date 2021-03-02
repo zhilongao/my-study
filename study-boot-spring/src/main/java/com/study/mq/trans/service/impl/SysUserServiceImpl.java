@@ -69,6 +69,24 @@ public class SysUserServiceImpl implements SysUserService {
         return "ok";
     }
 
+    @Override
+    @Transactional
+    public String execute() {
+        try {
+            SysUser u1 = new SysUser();
+            u1.setId(24L);
+            u1.setName("test");
+            sysUserMapper.insert(u1);
+            if (u1.getId() == 24L) {
+                throw new RuntimeException();
+            }
+        } catch (RuntimeException e) {
+            throw e;
+        }
+        System.err.println("hello,world");
+        return "hello";
+    }
+
     @Transactional(propagation = Propagation.REQUIRED)
     public int doInsert(SysUser sysUser) {
         int insert = sysUserMapper.insert(sysUser);

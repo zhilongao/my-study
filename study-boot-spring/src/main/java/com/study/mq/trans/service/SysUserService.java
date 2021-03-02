@@ -12,4 +12,6 @@ import com.study.mq.trans.entity.SysUser;
 public interface SysUserService {
 
     String insert(SysUser sysUser);
+
+    String execute();
 }

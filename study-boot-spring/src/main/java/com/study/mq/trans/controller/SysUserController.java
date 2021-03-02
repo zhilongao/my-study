@@ -32,4 +32,9 @@ public class SysUserController {
         return "ok";
     }
 
+    @GetMapping("/test1")
+    public String test1() {
+        return sysUserService.execute();
+    }
+
 }
