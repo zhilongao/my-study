@@ -1,8 +1,8 @@
-package com.study.mq.trans;
+package com.study.trans.distribute;
 
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -12,11 +12,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @date 2021/2/21 9:49
  * @since v1.0.0001
  */
-@SpringBootApplication
-@MapperScan("com.study.mq.trans.mapper")
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @EnableTransactionManagement(proxyTargetClass=true)
-public class TransactionApplication {
+public class DistributeTransactionApplication {
     public static void main(String[] args) {
-        SpringApplication.run(TransactionApplication.class);
+        SpringApplication.run(DistributeTransactionApplication.class);
     }
 }

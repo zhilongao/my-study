@@ -1,8 +1,8 @@
-package com.study.mq.trans.mapper;
+package com.study.trans.common.mapper.sys;
 
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.study.mq.trans.entity.SysUser;
+import com.study.trans.common.entity.sys.SysUser;
 
 /**
  * 系统用户 Mapper 接口

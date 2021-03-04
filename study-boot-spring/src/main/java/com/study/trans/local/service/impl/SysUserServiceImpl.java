@@ -1,9 +1,9 @@
-package com.study.mq.trans.service.impl;
+package com.study.trans.local.service.impl;
 
-import com.study.mq.trans.entity.SysUser;
-import com.study.mq.trans.mapper.SysUserMapper;
-import com.study.mq.trans.service.SysUserService;
-import com.study.mq.trans.service.TransactionService;
+import com.study.trans.common.entity.sys.SysUser;
+import com.study.trans.common.mapper.sys.SysUserMapper;
+import com.study.trans.local.service.SysUserService;
+import com.study.trans.local.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
@@ -95,6 +95,4 @@ public class SysUserServiceImpl implements SysUserService {
         }
         return insert;
     }
-
-
 }

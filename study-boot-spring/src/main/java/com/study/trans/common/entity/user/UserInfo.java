@@ -1,4 +1,4 @@
-package com.study.mq.trans.entity;
+package com.study.trans.common.entity.user;
 
 import lombok.Data;
 
@@ -6,11 +6,11 @@ import lombok.Data;
  * 写点注释吧
  *
  * @author gaozhilong
- * @date 2021/2/21 10:13
+ * @date 2021/3/4 15:27
  * @since v1.0.0001
  */
 @Data
-public class SysUser {
+public class UserInfo {
 
     private Long id;
 

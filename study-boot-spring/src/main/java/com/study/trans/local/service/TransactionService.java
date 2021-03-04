@@ -1,6 +1,6 @@
-package com.study.mq.trans.service;
+package com.study.trans.local.service;
 
-import com.study.mq.trans.entity.SysUser;
+import com.study.trans.common.entity.sys.SysUser;
 
 /**
  * 写点注释吧
