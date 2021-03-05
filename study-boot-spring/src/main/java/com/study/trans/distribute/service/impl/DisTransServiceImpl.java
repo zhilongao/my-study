@@ -1,10 +1,10 @@
 package com.study.trans.distribute.service.impl;
 
-import com.study.trans.distribute.entity.order.OrderInfo;
-import com.study.trans.distribute.entity.user.UserInfo;
-import com.study.trans.distribute.mapper.order.OrderMapper;
-import com.study.trans.distribute.mapper.user.UserMapper;
-import com.study.trans.distribute.service.TestService;
+import com.study.trans.common.entity.order.OrderInfo;
+import com.study.trans.common.entity.user.UserInfo;
+import com.study.trans.common.mapper.order.OrderMapper;
+import com.study.trans.common.mapper.user.UserMapper;
+import com.study.trans.distribute.service.DisTransService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @since v1.0.0001
  */
 @Service
-public class TestServiceImpl implements TestService {
+public class DisTransServiceImpl implements DisTransService {
 
     @Autowired
     private UserMapper userMapper;
@@ -28,7 +28,7 @@ public class TestServiceImpl implements TestService {
 
     // 全局事务处理器
     // 事务底层原理采用aop技术做增强
-    // 无需再指定某个事务管理器，全交给 Atomikos 全局事务
+    // 无需再指定某个事务管理器，全交给Atomikos全局事务
     @Transactional
     @Override
     public Boolean addUser() {
@@ -38,7 +38,7 @@ public class TestServiceImpl implements TestService {
         int i = userMapper.saveUser(u1);
         // 操作订单库
         OrderInfo o1 = new OrderInfo();
-        o1.setId(100L);
+        o1.setId(101L);
         o1.setCount(1000);
         o1.setMoney(2000L);
         o1.setStatus((byte)1);

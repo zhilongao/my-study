@@ -23,7 +23,7 @@ import java.sql.SQLException;
  * @since v1.0.0001
  */
 @Configuration
-@MapperScan(basePackages = "com.study.mq.trans.mapper.user", sqlSessionTemplateRef = "userSqlSessionTemplate")
+@MapperScan(basePackages = "com.study.trans.common.mapper.user", sqlSessionTemplateRef = "userSqlSessionTemplate")
 public class UserDataSourceConfig {
 
     @Bean("userDataSource")

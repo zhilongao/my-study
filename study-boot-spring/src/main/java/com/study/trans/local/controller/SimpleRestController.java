@@ -1,6 +1,6 @@
-package com.study.trans.distribute.controller;
+package com.study.trans.local.controller;
 
-import com.study.trans.distribute.service.DisTransService;
+import com.study.trans.local.service.LocalTransService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,11 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class SimpleRestController {
 
     @Autowired
-    private DisTransService disTransService;
+    private LocalTransService localTransService;
 
-    @GetMapping("/test")
-    public String message() {
-        disTransService.addUser();
+    @GetMapping("localTransaction")
+    public String localTransaction() {
+        localTransService.localTransactionExecute();
+        return "ok";
+    }
+
+    @GetMapping("/disTransaction")
+    public String disTransaction() {
+        localTransService.distributeTransactionExecute();
         return "hello,world";
     }
 }

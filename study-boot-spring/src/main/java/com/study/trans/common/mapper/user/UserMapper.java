@@ -1,7 +1,8 @@
 package com.study.trans.common.mapper.user;
 
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.study.trans.distribute.entity.user.UserInfo;
+import com.study.trans.common.entity.user.UserInfo;
 
 /**
  * 写点注释吧

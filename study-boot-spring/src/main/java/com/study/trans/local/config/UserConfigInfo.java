@@ -1,4 +1,4 @@
-package com.study.trans.distribute.config;
+package com.study.trans.local.config;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -8,13 +8,13 @@ import org.springframework.stereotype.Component;
  * 写点注释吧
  *
  * @author gaozhilong
- * @date 2021/3/4 15:08
+ * @date 2021/3/4 15:21
  * @since v1.0.0001
  */
 @Component
-@ConfigurationProperties(prefix = "spring.datasource.order")
+@ConfigurationProperties(prefix = "spring.datasource.user")
 @Data
-public class OrderConfig {
+public class UserConfigInfo {
     private String driverClassName;
     private String url;
     private String userName;

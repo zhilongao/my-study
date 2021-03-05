@@ -1,7 +1,7 @@
-package com.study.trans.local.mapper.order;
+package com.study.trans.common.mapper.order;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.study.trans.distribute.entity.order.OrderInfo;
+import com.study.trans.common.entity.order.OrderInfo;
 
 /**
  * 写点注释吧

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.study.trans.distribute.mapper.order.OrderMapper">
-
-    <insert id="saveOrder" parameterType="com.study.trans.distribute.entity.order.OrderInfo">
+<mapper namespace="com.study.trans.common.mapper.order.OrderMapper">
+    <insert id="saveOrder" parameterType="com.study.trans.common.entity.order.OrderInfo">
         insert into order_info(id, count, money, status) values(#{id}, #{count}, #{money}, #{status})
     </insert>
 </mapper>

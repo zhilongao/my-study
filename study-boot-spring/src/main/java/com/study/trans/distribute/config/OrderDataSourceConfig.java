@@ -25,7 +25,7 @@ import java.sql.SQLException;
  * @since v1.0.0001
  */
 @Configuration
-@MapperScan(basePackages = "com.study.mq.trans.mapper.order", sqlSessionTemplateRef = "orderSqlSessionTemplate")
+@MapperScan(basePackages = "com.study.trans.common.mapper.order", sqlSessionTemplateRef = "orderSqlSessionTemplate")
 public class OrderDataSourceConfig {
 
     @Bean(value = "orderDataSource")
