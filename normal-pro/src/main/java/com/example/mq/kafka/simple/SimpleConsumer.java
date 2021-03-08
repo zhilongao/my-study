@@ -1,7 +1,7 @@
 package com.example.mq.kafka.simple;
 
 import com.example.mq.kafka.CommonConstant;
-import org.apache.kafka.clients.consumer.ConsumerRecord;
+import com.example.mq.kafka.util.RecordPrintUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 
@@ -9,9 +9,7 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Properties;
 
-/**
- * @author gaozhilong
- */
+
 public class SimpleConsumer implements Runnable {
 
     @Override
@@ -22,10 +20,7 @@ public class SimpleConsumer implements Runnable {
         try {
             for (;;) {
                 ConsumerRecords<String,String> records = consumer.poll(Duration.ofMillis(1000));
-                for (ConsumerRecord<String,String> record : records) {
-                    System.err.printf("接收到消息 offset = %d ,key = %s, value = %s, partition = %s%n" ,record.offset(), record.key(), record.value(), record.partition());
-                    System.err.println();
-                }
+                RecordPrintUtil.printRecordMessage(CommonConstant.SIMPLE_CONSUMER_NAME,records);
             }
         } finally {
             consumer.close();

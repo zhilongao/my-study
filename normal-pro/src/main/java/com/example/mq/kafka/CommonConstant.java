@@ -21,4 +21,6 @@ public class CommonConstant {
 
     public static final String SPRING_CLOUD_TOPIC_NAME = "spring-cloud-topic";
 
+    public static final String SIMPLE_CONSUMER_NAME = "simple-consumer";
+
 }

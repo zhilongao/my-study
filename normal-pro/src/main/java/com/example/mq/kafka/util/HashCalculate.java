@@ -1,4 +1,4 @@
-package com.example.mq.kafka.simple;
+package com.example.mq.kafka.util;
 
 /**
  * @author: qingshan

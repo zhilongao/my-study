@@ -1,6 +1,5 @@
 package com.example.mq.kafka.simple;
 
-import com.alibaba.fastjson.JSONObject;
 import com.example.mq.kafka.CommonConstant;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -25,7 +24,6 @@ public class SimpleProducer implements Runnable {
             String value = Integer.toString(i);
             ProducerRecord<String, String> record = new ProducerRecord<>(CommonConstant.SIMPLE_TEST_TOPIC_NAME, key, value);
             producer.send(record);
-            System.err.println("生产者发送消息:" + JSONObject.toJSONString(record));
             try {
                 TimeUnit.MICROSECONDS.sleep(5000);
             } catch (InterruptedException e) {
