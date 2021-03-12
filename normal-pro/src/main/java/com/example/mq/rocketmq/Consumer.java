@@ -2,6 +2,7 @@ package com.example.mq.rocketmq;
 
 import org.apache.rocketmq.client.consumer.DefaultMQPullConsumer;
 import org.apache.rocketmq.client.consumer.PullResult;
+import org.apache.rocketmq.client.consumer.PullStatus;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.message.MessageExt;
 import org.apache.rocketmq.common.message.MessageQueue;
@@ -9,37 +10,45 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * @author gaozhilong
+ */
 public class Consumer {
-    private static final Map<MessageQueue, Long> offseTable = new HashMap<MessageQueue, Long>();
+
+    public static final Map<MessageQueue, Long> offsetTable = new HashMap<MessageQueue, Long>();
+
+    public static final String DEFAULT_CONSUMER_GROUP_NAME = "my_test_consumer_group";
+
+    public static final String DEFAULT_NAME_SERVER_ADDR = "192.168.8.128:9876";
+
+    public static final String DEFAULT_TOPIC_NAME = "test_topic_1";
 
     public static void main(String[] args) throws MQClientException {
         // 创建消费者
-        DefaultMQPullConsumer consumer = new DefaultMQPullConsumer("my_test_consumer_group");
-        consumer.setNamesrvAddr("192.168.8.128:9876");
-                consumer.start();
+        DefaultMQPullConsumer consumer = new DefaultMQPullConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        consumer.setNamesrvAddr(DEFAULT_NAME_SERVER_ADDR);
+        consumer.start();
         // 从指定topic中拉取所有消息队列
-        Set<MessageQueue> mqs = consumer.fetchSubscribeMessageQueues("test_topic_1");
+        Set<MessageQueue> mqs = consumer.fetchSubscribeMessageQueues(DEFAULT_TOPIC_NAME);
         for (MessageQueue mq : mqs) {
-            System.out.println("Consume from the queue: " + mq);
-            SINGLE_MQ: while (true) {
+            System.err.println("Consume from the queue: " + mq);
+            SINGLE_MQ:
+            while (true) {
                 try {
                     // 获取消息的offset，指定从store中获取
                     long offset = consumer.fetchConsumeOffset(mq, true);
-                    PullResult pullResult =
-                            consumer.pullBlockIfNotFound(mq, null, getMessageQueueOffset(mq), 32);
-
+                    PullResult pullResult = consumer.pullBlockIfNotFound(mq, null, getMessageQueueOffset(mq), 32);
                     if (null != pullResult.getMsgFoundList()) {
                         for (MessageExt messageExt : pullResult.getMsgFoundList()) {
-                            System.out.print(new String(messageExt.getBody()));
-                            System.out.print(pullResult);
-                            System.out.println(messageExt);
+                            System.err.print(new String(messageExt.getBody()));
+                            System.err.print(pullResult);
+                            System.err.println(messageExt);
                         }
                     }
-
-                    putMessageQueueOffset(mq, pullResult.getNextBeginOffset());
-                    switch (pullResult.getPullStatus()) {
+                    offsetTable.put(mq, pullResult.getNextBeginOffset());
+                    PullStatus pullStatus = pullResult.getPullStatus();
+                    switch (pullStatus) {
                         case FOUND:
-                            // TODO
                             break;
                         case NO_MATCHED_MSG:
                             break;
@@ -59,13 +68,10 @@ public class Consumer {
         consumer.shutdown();
     }
 
-    private static void putMessageQueueOffset(MessageQueue mq, long offset) {
-        offseTable.put(mq, offset);
-    }
 
     // 需要消费者自己记录消费的偏移量  因为消息在broker上是持久的 (
     private static long getMessageQueueOffset(MessageQueue mq) {
-        Long offset = offseTable.get(mq);
+        Long offset = offsetTable.get(mq);
         if (offset != null){
             return offset;
         }

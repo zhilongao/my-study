@@ -7,10 +7,14 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 
 import java.util.Properties;
 
+
 /**
- * @author: qingshan
+ * @author gaozhilong
  */
 public class IdempotenceProducer {
+
+    private static final String TOPIC_NAME = "mytopic";
+
     public static void main(String[] args) {
         Properties props = InitPropsUtil.commonProducerProps();
         // 消息幂等性
@@ -19,7 +23,7 @@ public class IdempotenceProducer {
         Producer<String,String> producer = new KafkaProducer<String,String>(props);
         int limit = 10;
         for (int i =0 ;i < limit; i++) {
-            producer.send(new ProducerRecord<String,String>("mytopic", Integer.toString(i), Integer.toString(i)));
+            producer.send(new ProducerRecord<String,String>(TOPIC_NAME, Integer.toString(i), Integer.toString(i)));
         }
         producer.close();
     }

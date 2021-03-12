@@ -8,10 +8,21 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class App {
     public static void main(String[] args) throws SchedulerException {
-        // ramTest();
+        ramTest();
         // configTest();
         // dbTest();
+        System.err.println(Thread.currentThread().getName());
+        SimpleTask task = new SimpleTask();
+        task.start();
     }
+
+    public static class SimpleTask extends Thread {
+        @Override
+        public void run() {
+            System.err.println(Thread.currentThread().getName() + " execute task");
+        }
+    }
+
 
     private static void ramTest() throws SchedulerException {
         // 1. 获取容器

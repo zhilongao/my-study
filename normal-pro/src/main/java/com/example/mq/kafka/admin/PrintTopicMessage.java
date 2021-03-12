@@ -8,6 +8,9 @@ import org.apache.kafka.clients.admin.TopicListing;
 import java.util.Collection;
 import java.util.Set;
 
+/**
+ * @author gaozhilong
+ */
 public class PrintTopicMessage {
 
     public static void listTopicsWithOptions() throws Exception {

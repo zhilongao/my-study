@@ -15,34 +15,33 @@ import org.apache.rocketmq.remoting.common.RemotingHelper;
  */
 public class SimpleProducer {
 
-    private static String producerGroup = "simpleGroup";
+    public static final int MESSAGE_LIMIT = 6;
 
-    private static String namesrvAddr = "192.168.8.128:9876";
+    public static final String messageTags = "tagA";
+
+    public static final String messageKeys = "2673";
 
     public static void main(String[] args) throws MQClientException {
-        DefaultMQProducer producer = new DefaultMQProducer("my_test_producer_group");
-        producer.setNamesrvAddr("192.168.8.128:9876");
-        producer.setSendMsgTimeout(10000);
+        produceMessage();
+    }
+
+    public static void produceMessage() throws MQClientException{
+        DefaultMQProducer producer = new DefaultMQProducer(RocketCommonConstant.PRODUCER_GROUP_SIMPLE_NAME);
+        producer.setNamesrvAddr(RocketCommonConstant.NAME_SERVER_ADDR);
+        producer.setSendMsgTimeout(RocketCommonConstant.SEND_MSG_TIMEOUT);
         producer.start();
-
-
-        for (int i = 0; i < 6; i++){
+        for (int i = 0; i < MESSAGE_LIMIT; i++){
             try {
-                // tags 用于过滤消息 keys 索引键,多个用空格隔开,RocketMQ可以根据这些key快速检索到消息
-                Message msg = new Message("q-2-1",
-                        "TagA",
-                        "2673",
-                        ("RocketMQ "+String.format("%05d", i)).getBytes());
-
+                // tags用于过滤消息
+                // keys索引键,多个用空格隔开,RocketMQ可以根据这些key快速检索到消息
+                String message = "RocketMQ" + String.format("%05d", i);
+                Message msg = new Message(RocketCommonConstant.MESSAGE_TOPIC_NAME_1, messageTags, messageKeys, message.getBytes());
                 SendResult sendResult = producer.send(msg);
-                System.out.println(String.format("%05d", i)+" : "+sendResult);
-            }
-            catch (Exception e) {
+                System.err.println(String.format("%05d", i) + " : " + sendResult);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
         producer.shutdown();
     }
-
 }

@@ -16,16 +16,16 @@ public class AdminClientFactory {
      */
     public static AdminClient createAdminClientByProperties() {
         Properties prop = new Properties();
-        // 配置Kafka服务的访问地址及端口号
-        String bootstrapServersVal = CommonConstant.bootstrapServers;
         String requestTimeOutVal = "20000";
         String retriesVal = "3";
-        prop.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServersVal);
+        // bootstrap.servers  192.168.8.128:9093,192.168.8.128:9094,192.168.8.128:9095
+        prop.setProperty(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, CommonConstant.bootstrapServers);
+        // request.timeout.ms 20000
         prop.setProperty(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, requestTimeOutVal);
+        // retries 3
         prop.setProperty(AdminClientConfig.RETRIES_CONFIG, retriesVal);
         // 创建AdminClient实例
-        AdminClient adminClient = KafkaAdminClient.create(prop);
-        return adminClient;
+        return KafkaAdminClient.create(prop);
     }
 
     /**
@@ -34,10 +34,8 @@ public class AdminClientFactory {
     public static AdminClient createAdminClientByMap() {
         Map<String, Object> conf = Maps.newHashMap();
         // 配置Kafka服务的访问地址及端口号
-        String bootstrapServersVal = CommonConstant.bootstrapServers;
-        conf.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServersVal);
+        conf.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, CommonConstant.bootstrapServers);
         // 创建AdminClient实例
-        AdminClient adminClient = AdminClient.create(conf);
-        return adminClient;
+        return AdminClient.create(conf);
     }
 }

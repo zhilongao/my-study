@@ -12,21 +12,23 @@ import org.apache.kafka.common.TopicPartition;
 import java.time.Duration;
 import java.util.*;
 
+
 /**
- * @author: qingshan
+ * TimestampConsumer
+ * @author gaozhilong
  */
 public class TimestampConsumer {
 
-    private static final String groupId = "gp-time-group";
+    private static final String GROUP_ID = "gp-time-group";
 
-    private static final String topic = "test-timestamp-topic";
+    private static final String SIMPLE_TOPIC = "test-timestamp-topic";
 
     public static void main(String[] args) {
-        Properties props = InitPropsUtil.commonConsumerProps(groupId);
-        KafkaConsumer<String,String> consumer = new KafkaConsumer<>(props);
+        Properties props = InitPropsUtil.commonConsumerProps(GROUP_ID);
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
         try {
             // 1. 获取topic的partition信息
-            List<PartitionInfo> partitionInfos = consumer.partitionsFor(topic);
+            List<PartitionInfo> partitionInfos = consumer.partitionsFor(SIMPLE_TOPIC);
             List<TopicPartition> topicPartitions = new ArrayList<>();
             Map<TopicPartition, Long> timestampsToSearch = new HashMap<>(8);
             Date now = new Date();
@@ -57,7 +59,6 @@ public class TimestampConsumer {
                     consumer.seek(entry.getKey(), offset);
                 }
             }
-
             while(true) {
                 ConsumerRecords<String, String> records = consumer.poll(Duration.ofMillis(1000));
                 for (ConsumerRecord<String, String> record : records) {

@@ -1,6 +1,5 @@
 package com.example.mq.kafka.commit;
 
-import com.example.mq.kafka.CommonConstant;
 import com.example.mq.kafka.util.InitPropsUtil;
 import com.example.mq.kafka.util.RecordPrintUtil;
 import org.apache.kafka.clients.consumer.ConsumerRecord;

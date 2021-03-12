@@ -139,27 +139,4 @@ public class SimpleMessageService {
         // 开始获取消息
         channel.basicConsume(ORIGIN_QUEUE_NAME, true, consumer);
     }
-
-
-    public static void deleteQueue(String queueName) throws Exception {
-        // 获取链接，创建channel
-        Connection conn = SelfConnectionFactory.createConnection();
-        Channel channel = conn.createChannel();
-        // 删除队列
-        channel.queueDelete(queueName);
-        // 关闭channel 关闭conn
-        channel.close();
-        conn.close();
-    }
-
-    public static void deleteExchange(String exchangeName) throws Exception{
-        // 获取链接，创建channel
-        Connection conn = SelfConnectionFactory.createConnection();
-        Channel channel = conn.createChannel();
-        // 删除交换机
-        channel.exchangeDelete(exchangeName);
-        // 关闭channel 关闭conn
-        channel.close();
-        conn.close();
-    }
 }

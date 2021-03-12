@@ -23,7 +23,7 @@ public class OnewayProducer {
             //Call send message to deliver message to one of brokers.
             producer.sendOneway(msg);
         }
-        //Wait for sending to complete
+        // Wait for sending to complete
         Thread.sleep(5000);
         producer.shutdown();
     }

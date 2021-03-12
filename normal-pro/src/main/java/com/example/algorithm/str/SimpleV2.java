@@ -1,28 +1,53 @@
 package com.example.algorithm.str;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class SimpleV2 {
 
 
     public static void main(String[] args) {
-
+        int[] nums1 = {1,2,2,1};
+        int[] nums2 = {2,2};
+        // 1 1 2 2
+        // 2 2
+        int[] nums3 = {4,9,5};
+        int[] nums4 = {9,4,9,8,4};
+        // 4 5 9
+        // 4 4 8 9 9
+        int[] res1 = intersection(nums1, nums2);
+        int[] res2 = intersection(nums3, nums4);
+        System.err.println();
     }
 
-    // 给定一个非空的字符串，判断它是否可以由它的一个子串重复多次构成。给定的字符串只含有小写英文字母，并且长度不超过10000。
-    // 示例 1:
-    // 输入: "abab"
-    // 输出: True
-    // 解释: 可由子字符串 "ab" 重复两次构成。
-
-    // 示例 2:
-    // 输入: "aba"
-    // 输出: False
-
-    // 示例 3:
-    // 输入: "abcabcabcabc"
-    // 输出: True
-    // 解释: 可由子字符串 "abc" 重复四次构成。 (或者子字符串 "abcabc" 重复两次构成。)
-
-    public boolean repeatedSubstringPattern(String s) {
-       return false;
+    public static int[] intersection(int[] nums1, int[] nums2) {
+        Arrays.sort(nums1);
+        Arrays.sort(nums2);
+        int len1 = nums1.length;
+        int len2 = nums2.length;
+        int index1 = 0;
+        int index2 = 0;
+        Set<Integer> sets = new HashSet<>();
+        while (index1 < len1 && index2 < len2) {
+            if (nums1[index1] == nums2[index2]) {
+                sets.add(nums1[index1]);
+                index1++;
+                index2++;
+            } else if (nums1[index1] < nums2[index2]) {
+                index1 ++;
+            } else {
+                index2 ++;
+            }
+        }
+        int[] res = new int[sets.size()];
+        int index = 0;
+        for (Integer temp : sets) {
+            res[index++] = temp;
+        }
+        return res;
     }
+
 }
