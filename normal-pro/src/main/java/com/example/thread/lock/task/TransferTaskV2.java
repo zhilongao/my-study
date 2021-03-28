@@ -1,37 +1,34 @@
-package com.example.thread.lock;
+package com.example.thread.lock.task;
+
+import com.example.thread.lock.AccountInfo;
+import com.example.thread.lock.AccountLockManager;
+import com.example.thread.lock.task.BaseTransferTask;
 
 /**
- * 写点注释吧
+ * 使用资源管理器管理资源，解决死锁问题
  *
  * @author gaozhilong
- * @date 2020/12/21 11:04
+ * @date 2020/12/21 10:46
  * @since v1.0.0001
  */
-public class TransferTaskV3 extends BaseTransferTask {
+public class TransferTaskV2 extends BaseTransferTask {
 
+    private AccountLockManager lockManager;
 
-    public TransferTaskV3() {
+    public TransferTaskV2() {
 
     }
 
-    public TransferTaskV3(AccountInfo inAccount, AccountInfo outAccount, long money) {
+    public TransferTaskV2(AccountInfo inAccount, AccountInfo outAccount, long money, AccountLockManager lockManager) {
         super(inAccount, outAccount, money);
+        this.lockManager = lockManager;
     }
 
     @Override
-    protected void doWork() {
+    public void doWork() {
         for (;;) {
-            AccountInfo left;
-            AccountInfo right;
-            if (inAccount.hashCode() > outAccount.hashCode()) {
-                left = inAccount;
-                right = outAccount;
-            } else {
-                left = outAccount;
-                right = inAccount;
-            }
-            synchronized (left) {
-                synchronized (right) {
+            if (lockManager.tryLock(outAccount, inAccount)) {
+                try {
                     outAccount.transferOut(money);
                     inAccount.transferIn(money);
                     String outCountName = outAccount.getCountName();
@@ -40,6 +37,8 @@ public class TransferTaskV3 extends BaseTransferTask {
                     long inAllMoney = inAccount.getMoney();
                     System.err.printf("%s 转出 %s, 总金额: %s   %s 转入 %s, 总金额: %s", outCountName, money, outAllMoney, inCountName, money, inAllMoney);
                     System.err.println();
+                } finally {
+                    lockManager.release(outAccount, inAccount);
                 }
             }
         }

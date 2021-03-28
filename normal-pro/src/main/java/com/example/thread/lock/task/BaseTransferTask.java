@@ -1,4 +1,6 @@
-package com.example.thread.lock;
+package com.example.thread.lock.task;
+
+import com.example.thread.lock.AccountInfo;
 
 /**
  * 写点注释吧

@@ -1,4 +1,7 @@
-package com.example.thread.lock;
+package com.example.thread.lock.task;
+
+import com.example.thread.lock.AccountInfo;
+import com.example.thread.lock.task.BaseTransferTask;
 
 import java.util.concurrent.locks.Lock;
 

@@ -1,6 +1,8 @@
 package com.example.face;
 
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.locks.LockSupport;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * 写点注释吧
@@ -11,27 +13,14 @@ import java.util.Map;
  */
 public class App {
 
-    public String sortString(String s) {
-        int[] num = new int[26];
-        for (int i = 0; i < s.length(); i++) {
-            num[s.charAt(i) - 'a']++;
-        }
-        StringBuffer ret = new StringBuffer();
-        while (ret.length() < s.length()) {
-            for (int i = 0; i < 26; i++) {
-                if (num[i] > 0) {
-                    ret.append((char) (i + 'a'));
-                    num[i]--;
-                }
-            }
-            for (int i = 25; i >= 0; i--) {
-                if (num[i] > 0) {
-                    ret.append((char) (i + 'a'));
-                    num[i]--;
-                }
-            }
-        }
-        return ret.toString();
+    public static void main(String[] args) {
+        ThreadLocal<Integer> local = new ThreadLocal<>();
+        local.set(1);
+        local.get();
+
+        ReentrantLock lock = new ReentrantLock();
+        lock.lock();
+        lock.unlock();
     }
 }
 

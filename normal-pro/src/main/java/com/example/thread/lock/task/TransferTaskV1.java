@@ -1,30 +1,32 @@
-package com.example.thread.lock;
+package com.example.thread.lock.task;
+
+import com.example.thread.lock.AccountInfo;
+import com.example.thread.lock.task.BaseTransferTask;
 
 /**
- * 使用资源管理器管理资源，解决死锁问题
+ * 模拟普通死锁任务
  *
  * @author gaozhilong
- * @date 2020/12/21 10:46
+ * @date 2020/12/21 10:48
  * @since v1.0.0001
  */
-public class TransferTaskV2 extends BaseTransferTask {
+public class TransferTaskV1 extends BaseTransferTask {
 
-    private AccountLockManager lockManager;
-
-    public TransferTaskV2() {
+    public TransferTaskV1() {
 
     }
 
-    public TransferTaskV2(AccountInfo inAccount, AccountInfo outAccount, long money, AccountLockManager lockManager) {
+    public TransferTaskV1(AccountInfo inAccount, AccountInfo outAccount, long money) {
         super(inAccount, outAccount, money);
-        this.lockManager = lockManager;
     }
+
 
     @Override
     public void doWork() {
-        for (;;) {
-            if (lockManager.tryLock(outAccount, inAccount)) {
-                try {
+        while (true) {
+            synchronized (outAccount) {
+                synchronized (inAccount) {
+                    long money = 10L;
                     outAccount.transferOut(money);
                     inAccount.transferIn(money);
                     String outCountName = outAccount.getCountName();
@@ -33,8 +35,6 @@ public class TransferTaskV2 extends BaseTransferTask {
                     long inAllMoney = inAccount.getMoney();
                     System.err.printf("%s 转出 %s, 总金额: %s   %s 转入 %s, 总金额: %s", outCountName, money, outAllMoney, inCountName, money, inAllMoney);
                     System.err.println();
-                } finally {
-                    lockManager.release(outAccount, inAccount);
                 }
             }
         }

@@ -1,5 +1,6 @@
 package com.example.mq.rocketmq;
 
+import org.apache.rocketmq.client.consumer.DefaultLitePullConsumer;
 import org.apache.rocketmq.client.consumer.DefaultMQPullConsumer;
 import org.apache.rocketmq.client.consumer.PullResult;
 import org.apache.rocketmq.client.consumer.PullStatus;
@@ -26,6 +27,7 @@ public class Consumer {
     public static void main(String[] args) throws MQClientException {
         // 创建消费者
         DefaultMQPullConsumer consumer = new DefaultMQPullConsumer(DEFAULT_CONSUMER_GROUP_NAME);
+        // DefaultLitePullConsumer consumer = new DefaultLitePullConsumer(DEFAULT_CONSUMER_GROUP_NAME);
         consumer.setNamesrvAddr(DEFAULT_NAME_SERVER_ADDR);
         consumer.start();
         // 从指定topic中拉取所有消息队列
