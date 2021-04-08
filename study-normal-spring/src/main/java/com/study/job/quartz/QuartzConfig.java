@@ -50,4 +50,10 @@ public class QuartzConfig {
         // todo
         return factory.getScheduler();
     }
+
+
+    public static void main(String[] args) {
+        System.err.println(System.currentTimeMillis());
+        //persist
+    }
 }

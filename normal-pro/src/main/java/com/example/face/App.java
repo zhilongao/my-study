@@ -1,6 +1,7 @@
 package com.example.face;
 
 import java.util.*;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.LockSupport;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -21,6 +22,18 @@ public class App {
         ReentrantLock lock = new ReentrantLock();
         lock.lock();
         lock.unlock();
+
+        Condition condition = lock.newCondition();
+        try {
+            condition.await();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        condition.signal();
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("", "");
+        map.get("");
     }
 }
 
