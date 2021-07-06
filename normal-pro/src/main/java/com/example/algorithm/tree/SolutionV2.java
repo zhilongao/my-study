@@ -2,54 +2,76 @@ package com.example.algorithm.tree;
 
 import com.example.algorithm.tree.common.TreeNode;
 
-import java.util.Stack;
+import java.util.*;
 
 
 public class SolutionV2 {
 
     public static void main(String[] args) {
-        TreeNode root = new TreeNode(6);
-        TreeNode node2_7 = new TreeNode(7);
-        TreeNode node2_8 = new TreeNode(8);
-        root.left = node2_7;
-        root.right = node2_8;
+        TreeNode root = new TreeNode(4);
+        TreeNode node2_1 = new TreeNode(1);
+        TreeNode node2_2 = new TreeNode(6);
+        root.left = node2_1;
+        root.right = node2_2;
 
+        TreeNode node3_1 = new TreeNode(0);
         TreeNode node3_2 = new TreeNode(2);
-        TreeNode node3_7 = new TreeNode(7);
-        TreeNode node3_1 = new TreeNode(1);
-        TreeNode node3_3 = new TreeNode(3);
-        node2_7.left = node3_2;
-        node2_7.right = node3_7;
-        node2_8.left = node3_1;
-        node2_8.right = node3_3;
+        TreeNode node3_3 = new TreeNode(5);
+        TreeNode node3_4 = new TreeNode(7);
+        node2_1.left = node3_1;
+        node2_1.right = node3_2;
+        node2_2.left = node3_3;
+        node2_2.right = node3_4;
 
-        TreeNode node4_9 = new TreeNode(9);
-        TreeNode node4_1 = new TreeNode(1);
-        TreeNode node4_4 = new TreeNode(4);
-        TreeNode node4_5 = new TreeNode(5);
-        node3_2.left = node4_9;
-        node3_7.left = node4_1;
-        node3_7.right = node4_4;
-        node3_3.right = node4_5;
+        TreeNode node4_1 = new TreeNode(3);
+        TreeNode node4_2 = new TreeNode(8);
+
+        node3_2.right = node4_1;
+        node3_4.right = node4_2;
+
 
         SolutionV2 v2 = new SolutionV2();
-
     }
 
-    /**
-     * 累加树
-     * @param root
-     * @return
-     */
-    int sum = 0;
-    public TreeNode convertBST(TreeNode root) {
-        if (root != null) {
-            convertBST(root.right);
-            sum += root.val;
-            root.val = sum;
-            convertBST(root.left);
+    // 使用广度优先的算法来实现
+    List<List<Integer>> list = new ArrayList<>();
+    Map<TreeNode, TreeNode> map = new HashMap<>();
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        Queue<TreeNode> nodeQueue = new LinkedList<>();
+        Queue<Integer> valQueue = new LinkedList<>();
+        nodeQueue.offer(root);
+        valQueue.offer(0);
+        while (!nodeQueue.isEmpty()) {
+            TreeNode node = nodeQueue.poll();
+            int val = valQueue.poll();
+            int sum = val + node.val;
+            if (node.left == null && node.right == null && sum == targetSum) {
+                getPath(node);
+            } else {
+                if (node.left != null) {
+                    nodeQueue.offer(node.left);
+                    valQueue.offer(sum);
+                    map.put(node.left, node);
+                }
+                if (node.right != null) {
+                    nodeQueue.offer(node.right);
+                    valQueue.offer(sum);
+                    map.put(node.right, node);
+                }
+            }
         }
-        return root;
+        return list;
     }
+
+    private void getPath(TreeNode node) {
+        List<Integer> temp = new ArrayList<>();
+        while (node != null) {
+            temp.add(node.val);
+            node = map.get(node);
+        }
+        Collections.reverse(temp);
+        list.add(new ArrayList<>(temp));
+    }
+
 
 }
