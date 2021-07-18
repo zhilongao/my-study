@@ -9,22 +9,28 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class LogAspect {
 
-    @Pointcut("execution(public * com.study.search.aop.search.service.*.*(..))")
+    /*@Pointcut("execution(public * com.study.search.aop.search.service.*.*(..))")
     public void pointCut() {
+
+    }*/
+
+    @Pointcut("@annotation(com.study.search.aop.search.annotation.Log)")
+    public void pointCutV2() {
 
     }
 
-    @Before("pointCut()")
+
+    @Before("pointCutV2()")
     public void doBefore(JoinPoint joinPoint) {
         System.err.println("execute method before");
     }
 
-    @After("pointCut()")
+    @After("pointCutV2()")
     public void doAfter(JoinPoint joinPoint) {
         System.err.println("execute method after");
     }
 
-    @Around("pointCut()")
+    @Around("pointCutV2()")
     public Object doAround(ProceedingJoinPoint joinPoint) {
         System.err.println("around before");
         long start = System.currentTimeMillis();
