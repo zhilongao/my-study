@@ -1,4 +1,4 @@
-package com.study.server;
+package com.study.server.demo1;
 
 import java.io.InputStream;
 import java.net.ServerSocket;

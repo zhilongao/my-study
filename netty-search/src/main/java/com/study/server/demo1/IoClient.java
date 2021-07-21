@@ -1,4 +1,4 @@
-package com.study.server;
+package com.study.server.demo1;
 
 import java.io.IOException;
 import java.net.Socket;
