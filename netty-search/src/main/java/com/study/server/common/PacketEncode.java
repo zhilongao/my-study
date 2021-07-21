@@ -19,7 +19,7 @@ public class PacketEncode {
         return encode(ByteBufAllocator.DEFAULT, packet);
     }
 
-    public ByteBuf encode(ByteBufAllocator allocator,Packet packet ) {
+    public ByteBuf encode(ByteBufAllocator allocator, Packet packet) {
         // 1. 创建ByteBuf对象
         ByteBuf byteBuf = allocator.ioBuffer();
         // 2. 序列化java对象

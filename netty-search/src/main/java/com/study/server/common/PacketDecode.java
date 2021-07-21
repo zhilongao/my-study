@@ -39,6 +39,8 @@ public class PacketDecode {
     public Class<? extends Packet> getRequestType(byte command) {
         if (command == Command.LOGIN_REQUEST) {
             return LoginRequestPacket.class;
+        } else if (command == Command.LOGIN_RESPONSE) {
+            return LoginResponsePacket.class;
         }
         return null;
     }
