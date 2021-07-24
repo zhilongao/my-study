@@ -1,5 +1,6 @@
 package com.study.server.server.handler;
 
+import com.study.server.common.IDUtil;
 import com.study.server.common.Logs;
 import com.study.server.common.auth.Session;
 import com.study.server.common.auth.SessionUtil;
@@ -8,7 +9,6 @@ import com.study.server.common.packet.LoginResponsePacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-import java.util.UUID;
 
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
 
@@ -16,7 +16,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket packet) throws Exception {
         if (validLogin(packet)) {
             // 1. 维护会话状态
-            String userId = randomUserId();
+            String userId = IDUtil.randomId();
             String username = packet.getUsername();
             Session session = new Session(userId, username);
             SessionUtil.bindSession(session, ctx.channel());
@@ -28,11 +28,6 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             Logs.info("服务端" + packet + " 登录成功");
             ctx.channel().writeAndFlush(response);
         }
-    }
-
-
-    private static String randomUserId() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
     }
 
     private boolean validLogin(LoginRequestPacket packet) {

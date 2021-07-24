@@ -13,11 +13,6 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket packet) throws Exception {
-//        MessageResponsePacket resPacket = new MessageResponsePacket();
-//        Logs.info("收到客户端消息 " + packet.getMessage());
-//        resPacket.setMessage("服务端回复【" + packet.getMessage() + "】");
-//        ctx.channel().writeAndFlush(resPacket);
-
         // 1. 拿到客户端的会话信息
         Session session = SessionUtil.getSession(ctx.channel());
         // 2. 构造要发送的消息

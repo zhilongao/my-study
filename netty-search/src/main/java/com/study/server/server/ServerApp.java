@@ -2,6 +2,7 @@ package com.study.server.server;
 
 import com.study.server.common.*;
 import com.study.server.common.auth.AuthHandler;
+import com.study.server.server.handler.CreateGroupRequestHandler;
 import com.study.server.server.handler.LoginRequestHandler;
 import com.study.server.server.handler.MessageRequestHandler;
 import io.netty.bootstrap.ServerBootstrap;
@@ -35,6 +36,7 @@ public class ServerApp {
                         ch.pipeline().addLast(new LoginRequestHandler());
                         ch.pipeline().addLast(new AuthHandler());
                         ch.pipeline().addLast(new MessageRequestHandler());
+                        ch.pipeline().addLast(new CreateGroupRequestHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

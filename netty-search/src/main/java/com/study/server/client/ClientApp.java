@@ -1,9 +1,12 @@
 package com.study.server.client;
 
+import com.study.server.client.handler.CreateGroupResponseHandler;
 import com.study.server.client.handler.LoginResponseHandler;
 import com.study.server.client.handler.MessageResponseHandler;
 import com.study.server.common.*;
 import com.study.server.common.auth.SessionUtil;
+import com.study.server.common.console.ConsoleCommandManager;
+import com.study.server.common.console.LoginConsoleCommand;
 import com.study.server.common.packet.LoginRequestPacket;
 import com.study.server.common.packet.MessageRequestPacket;
 import io.netty.bootstrap.Bootstrap;
@@ -42,6 +45,7 @@ public class ClientApp {
                         ch.pipeline().addLast(new PacketDecoder());
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
+                        ch.pipeline().addLast(new CreateGroupResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });
@@ -67,22 +71,16 @@ public class ClientApp {
     }
 
     private static void startConsoleThread(Channel channel) {
-        Scanner sc = new Scanner(System.in);
-        LoginRequestPacket packet = new LoginRequestPacket();
+        Scanner scanner = new Scanner(System.in);
+        LoginConsoleCommand loginConsoleCommand = new LoginConsoleCommand();
+        ConsoleCommandManager commandManager = new ConsoleCommandManager();
         new Thread(() -> {
             while (!Thread.interrupted()) {
                 if (!SessionUtil.hasLogin(channel)) {
-                    Logs.error("输入用户名登录:");
-                    String userName = sc.nextLine();
-                    packet.setUsername(userName);
-                    packet.setPassword("pwd");
-                    channel.writeAndFlush(packet);
+                    loginConsoleCommand.exec(scanner, channel);
                     waitForLoginResponse();
                 } else {
-                    String toUserId = sc.next();
-                    String message = sc.next();
-                    MessageRequestPacket messagePacket = new MessageRequestPacket(toUserId, message);
-                    channel.writeAndFlush(messagePacket);
+                    commandManager.exec(scanner, channel);
                 }
             }
         }).start();

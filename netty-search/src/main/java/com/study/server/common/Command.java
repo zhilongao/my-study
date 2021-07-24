@@ -17,4 +17,20 @@ public interface Command {
      * 消息响应
      */
     Byte MESSAGE_RESPONSE = 4;
+    /**
+     * 创建群聊请求
+     */
+    Byte CREATE_GROUP_REQUEST = 5;
+    /**
+     * 创建群聊响应
+     */
+    Byte CREATE_GROUP_RESPONSE = 6;
+    /**
+     * 加入群聊请求
+     */
+    Byte JOIN_GROUP_REQUEST = 7;
+    /**
+     * 加入群聊响应
+     */
+    Byte JOIN_GROUP_RESPONSE = 8;
 }
