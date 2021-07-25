@@ -1,15 +1,15 @@
-package com.study.server.common.packet;
+package com.study.server.common.packet.request;
 
 import com.study.server.common.Command;
 import com.study.server.common.Packet;
 import lombok.Data;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 public class CreateGroupRequestPacket extends Packet {
 
-    private List<String> userIdList;
+    private Set<String> userIdSet;
 
     @Override
     public Byte getCommand() {

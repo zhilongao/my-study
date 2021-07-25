@@ -1,7 +1,7 @@
 package com.study.server.common.console;
 
 import com.study.server.common.Logs;
-import com.study.server.common.packet.LoginRequestPacket;
+import com.study.server.common.packet.request.LoginRequestPacket;
 import io.netty.channel.Channel;
 
 import java.util.Scanner;

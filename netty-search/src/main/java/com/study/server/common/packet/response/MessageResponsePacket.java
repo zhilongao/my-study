@@ -1,4 +1,4 @@
-package com.study.server.common.packet;
+package com.study.server.common.packet.response;
 
 import com.study.server.common.Command;
 import com.study.server.common.Packet;

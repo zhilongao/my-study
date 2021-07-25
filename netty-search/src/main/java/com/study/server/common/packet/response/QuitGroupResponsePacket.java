@@ -1,22 +1,20 @@
-package com.study.server.common.packet;
+package com.study.server.common.packet.response;
 
 import com.study.server.common.Command;
 import com.study.server.common.Packet;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class CreateGroupResponsePacket extends Packet {
+public class QuitGroupResponsePacket extends Packet {
 
     private boolean success;
 
     private String groupId;
 
-    private List<String> userNameList;
+    private String reason;
 
     @Override
     public Byte getCommand() {
-        return Command.CREATE_GROUP_RESPONSE;
+        return Command.QUIT_GROUP_RESPONSE;
     }
 }

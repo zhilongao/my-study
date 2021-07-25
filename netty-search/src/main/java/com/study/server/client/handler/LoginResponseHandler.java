@@ -2,7 +2,7 @@ package com.study.server.client.handler;
 
 import com.study.server.common.auth.Session;
 import com.study.server.common.auth.SessionUtil;
-import com.study.server.common.packet.LoginResponsePacket;
+import com.study.server.common.packet.response.LoginResponsePacket;
 import com.study.server.common.Logs;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;

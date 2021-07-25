@@ -1,11 +1,14 @@
 package com.study.server.common.console;
 
 import com.study.server.common.Logs;
-import com.study.server.common.packet.CreateGroupRequestPacket;
+import com.study.server.common.auth.SessionUtil;
+import com.study.server.common.packet.request.CreateGroupRequestPacket;
 import io.netty.channel.Channel;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
 public class CreateGroupConsoleCommand implements ConsoleCommand {
 
@@ -16,7 +19,10 @@ public class CreateGroupConsoleCommand implements ConsoleCommand {
         CreateGroupRequestPacket packet = new CreateGroupRequestPacket();
         Logs.error("【拉入群聊】输入userId列表,userId之间引文逗号隔开:");
         String userIds = scanner.next();
-        packet.setUserIdList(Arrays.asList(userIds.split(USER_ID_SPLITER)));
+        // 群聊创建,需要加入创建者userId
+        Set<String> groupUserIds = new HashSet<>(Arrays.asList(userIds.split(USER_ID_SPLITER)));
+        groupUserIds.add(SessionUtil.getSession(channel).getUserId());
+        packet.setUserIdSet(groupUserIds);
         channel.writeAndFlush(packet);
     }
 }

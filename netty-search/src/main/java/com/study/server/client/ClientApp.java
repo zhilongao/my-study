@@ -1,14 +1,10 @@
 package com.study.server.client;
 
-import com.study.server.client.handler.CreateGroupResponseHandler;
-import com.study.server.client.handler.LoginResponseHandler;
-import com.study.server.client.handler.MessageResponseHandler;
+import com.study.server.client.handler.*;
 import com.study.server.common.*;
 import com.study.server.common.auth.SessionUtil;
 import com.study.server.common.console.ConsoleCommandManager;
 import com.study.server.common.console.LoginConsoleCommand;
-import com.study.server.common.packet.LoginRequestPacket;
-import com.study.server.common.packet.MessageRequestPacket;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
@@ -46,6 +42,9 @@ public class ClientApp {
                         ch.pipeline().addLast(new LoginResponseHandler());
                         ch.pipeline().addLast(new MessageResponseHandler());
                         ch.pipeline().addLast(new CreateGroupResponseHandler());
+                        ch.pipeline().addLast(new JoinGroupResponseHandler());
+                        ch.pipeline().addLast(new QuitGroupResponseHandler());
+                        ch.pipeline().addLast(new ListGroupMembersResponseHandler());
                         ch.pipeline().addLast(new PacketEncoder());
                     }
                 });

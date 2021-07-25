@@ -33,4 +33,20 @@ public interface Command {
      * 加入群聊响应
      */
     Byte JOIN_GROUP_RESPONSE = 8;
+    /**
+     * 退出群聊请求
+     */
+    Byte QUIT_GROUP_REQUEST = 9;
+    /**
+     * 退出群聊响应
+     */
+    Byte QUIT_GROUP_RESPONSE = 10;
+    /**
+     * 查看群成员请求
+     */
+    Byte LIST_GROUP_MEMBERS_REQUEST = 11;
+    /**
+     * 查看群成员响应
+     */
+    Byte LIST_GROUP_MEMBERS_RESPONSE = 12;
 }

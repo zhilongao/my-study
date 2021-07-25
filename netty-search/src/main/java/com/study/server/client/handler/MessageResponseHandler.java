@@ -1,7 +1,7 @@
 package com.study.server.client.handler;
 
 import com.study.server.common.Logs;
-import com.study.server.common.packet.MessageResponsePacket;
+import com.study.server.common.packet.response.MessageResponsePacket;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
