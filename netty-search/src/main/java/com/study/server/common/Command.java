@@ -49,4 +49,12 @@ public interface Command {
      * 查看群成员响应
      */
     Byte LIST_GROUP_MEMBERS_RESPONSE = 12;
+    /**
+     * 发送群消息请求
+     */
+    Byte SEND_GROUP_MESSAGE_REQUEST = 13;
+    /**
+     * 发送群消息响应
+     */
+    Byte SEND_GROUP_MESSAGE_RESPONSE = 14;
 }
