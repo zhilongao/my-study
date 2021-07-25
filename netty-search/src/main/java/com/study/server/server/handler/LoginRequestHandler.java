@@ -6,11 +6,19 @@ import com.study.server.common.auth.Session;
 import com.study.server.common.auth.SessionUtil;
 import com.study.server.common.packet.request.LoginRequestPacket;
 import com.study.server.common.packet.response.LoginResponsePacket;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
 
+@ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
+
+    public static final LoginRequestHandler instance = new LoginRequestHandler();
+
+    protected LoginRequestHandler() {
+
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, LoginRequestPacket packet) throws Exception {

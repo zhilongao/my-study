@@ -6,11 +6,18 @@ import com.study.server.common.auth.SessionUtil;
 import com.study.server.common.packet.request.MessageRequestPacket;
 import com.study.server.common.packet.response.MessageResponsePacket;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
+@ChannelHandler.Sharable
 public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRequestPacket> {
 
+    public static final MessageRequestHandler instance = new MessageRequestHandler();
+
+    protected MessageRequestHandler() {
+
+    }
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, MessageRequestPacket packet) throws Exception {
         // 1. 拿到客户端的会话信息

@@ -5,6 +5,7 @@ import com.study.server.common.auth.SessionUtil;
 import com.study.server.common.packet.request.ListGroupMembersRequestPacket;
 import com.study.server.common.packet.response.ListGroupMembersResponsePacket;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
@@ -12,7 +13,14 @@ import io.netty.channel.group.ChannelGroup;
 import java.util.ArrayList;
 import java.util.List;
 
+@ChannelHandler.Sharable
 public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<ListGroupMembersRequestPacket> {
+
+    public static final ListGroupMembersRequestHandler instance = new ListGroupMembersRequestHandler();
+
+    protected ListGroupMembersRequestHandler() {
+
+    }
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ListGroupMembersRequestPacket packet) throws Exception {
