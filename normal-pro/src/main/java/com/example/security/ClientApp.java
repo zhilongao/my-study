@@ -1,5 +1,6 @@
 package com.example.security;
 
+/*
 
 import com.alibaba.fastjson.JSONObject;
 import sun.misc.BASE64Encoder;
@@ -10,13 +11,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * 写点注释吧
  *
  * @author gaozhilong
  * @date 2020/12/28 15:40
  * @since v1.0.0001
- */
+ *//*
+
 public class ClientApp {
 
     public static void main(String[] args) {
@@ -33,3 +36,4 @@ public class ClientApp {
         System.err.println(verify3);
     }
 }
+*/

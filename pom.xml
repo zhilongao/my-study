@@ -10,6 +10,7 @@
     <modules>
         <module>study-normal-spring</module>
         <module>netty-search</module>
+        <module>ibatis-search</module>
     </modules>
 
     <packaging>pom</packaging>
