@@ -1,6 +1,7 @@
 package com.example.spring.annotation;
 
 import org.springframework.core.type.AnnotationMetadata;
+import org.springframework.core.type.StandardAnnotationMetadata;
 import org.springframework.core.type.classreading.MetadataReader;
 import org.springframework.core.type.classreading.SimpleMetadataReaderFactory;
 
@@ -9,7 +10,8 @@ import java.util.Set;
 
 public class App {
     public static void main(String[] args) {
-        test1();
+        // test1();
+        test2();
     }
 
 
@@ -28,6 +30,15 @@ public class App {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static void test2() {
+        // 1. 直接构建元数据
+        AnnotationMetadata annotationMetadata = new StandardAnnotationMetadata(SpringPo1.class);
+        // 2. 读取元数据的注解类型
+        Set<String> annotationTypes = annotationMetadata.getAnnotationTypes();
+        // 3. 循环输出
+        annotationTypes.forEach(System.err::println);
     }
 
 }

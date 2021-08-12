@@ -8,7 +8,7 @@ public class OnewayProducer {
     public static void main(String[] args) throws Exception{
         //Instantiate with a producer group name.
         DefaultMQProducer producer = new DefaultMQProducer("my_test_oneway_group");
-        // Specify name server addresses.
+        // Specify name stu addresses.
         producer.setNamesrvAddr("192.168.43.4:9876");
         //Launch the instance.
         producer.start();
