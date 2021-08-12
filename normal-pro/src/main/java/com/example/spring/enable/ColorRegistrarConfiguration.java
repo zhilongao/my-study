@@ -1,6 +1,6 @@
-package com.example.spring.import1.enable;
+package com.example.spring.enable;
 
-import com.example.spring.import1.enable.entity.Blue;
+import com.example.spring.entity.Blue;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * 写点注释吧
+ * 注解装配和自动扫描的联合使用
  *
  * @author gaozhilong
  * @date 2021/1/30 13:42

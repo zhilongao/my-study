@@ -10,7 +10,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
  * @date 2021/1/29 17:34
  * @since v1.0.0001
  */
-public class PropertySourcePropertiesApplication {
+public class App {
 
     public static void main(String[] args) {
         ApplicationContext context = new AnnotationConfigApplicationContext(JdbcPropertiesConfiguration.class);
@@ -21,6 +21,4 @@ public class PropertySourcePropertiesApplication {
         System.err.println(message2);
         System.err.println(message3);
     }
-
-    //
 }

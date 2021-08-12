@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import java.util.Date;
 
 @Configuration
-public class ConfigurationDemo {
+public class NormalConfiguration {
 
     @Bean
     public Date currentDate() {

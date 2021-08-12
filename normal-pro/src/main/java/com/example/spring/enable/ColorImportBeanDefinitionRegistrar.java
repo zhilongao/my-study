@@ -1,7 +1,7 @@
-package com.example.spring.import1.enable;
+package com.example.spring.enable;
 
-import com.example.spring.import1.enable.entity.Black;
-import com.example.spring.import1.enable.entity.Red;
+import com.example.spring.entity.Black;
+import com.example.spring.entity.Red;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.RootBeanDefinition;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;

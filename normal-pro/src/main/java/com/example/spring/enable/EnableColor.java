@@ -1,6 +1,6 @@
-package com.example.spring.import1.enable;
+package com.example.spring.enable;
 
-import com.example.spring.import1.enable.entity.Yellow;
+import com.example.spring.entity.Yellow;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.Documented;

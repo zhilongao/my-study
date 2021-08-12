@@ -1,6 +1,6 @@
-package com.example.spring.import1.enable;
+package com.example.spring.enable;
 
-import com.example.spring.import1.enable.entity.Green;
+import com.example.spring.entity.Green;
 import org.springframework.context.annotation.ImportSelector;
 import org.springframework.core.type.AnnotationMetadata;
 

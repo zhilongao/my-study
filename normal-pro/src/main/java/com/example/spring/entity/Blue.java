@@ -1,4 +1,4 @@
-package com.example.spring.import1.enable.entity;
+package com.example.spring.entity;
 
 /**
  * 写点注释吧

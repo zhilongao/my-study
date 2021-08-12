@@ -1,4 +1,4 @@
-package com.example.spring.import1.enable;
+package com.example.spring.enable;
 
 import org.springframework.context.annotation.Configuration;
 
