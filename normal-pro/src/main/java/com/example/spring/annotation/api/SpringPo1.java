@@ -1,4 +1,4 @@
-package com.example.spring.annotation;
+package com.example.spring.annotation.api;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Configuration;

@@ -1,17 +1,23 @@
-package com.example.face.fin;
+package com.example.face;
 
 import java.util.concurrent.TimeUnit;
 
-public class FinallyApp {
-    public static void main(String[] args) {
-        FinallyApp app = new FinallyApp();
+public class FinallyExecute {
+
+    public static void testFinally() {
+        FinallyExecute app = new FinallyExecute();
+        // 虚拟机的异常退出导致finally中的代码不会被执行
         // app.test1();
+
+        // 由于try块中的死循环导致finally中的代码不会被执行
         // app.test2();
 
+        // 用户线程退出，守护线程也跟着结束(此时守护线程中的代码没执行完就会退出)
         System.err.println("main thread execute before");
         app.test3();
         System.err.println("main thread execute after");
     }
+
 
     /**
      * 虚拟机的异常退出导致finally中的代码不会被执行
@@ -64,5 +70,4 @@ public class FinallyApp {
         t.setDaemon(true);
         t.start();
     }
-
 }
