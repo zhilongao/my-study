@@ -28,4 +28,17 @@ public class BeanConfig {
     public Person p4() {
         return new Person("person-window", 91);
     }
+
+    @ConditionalSystem(type = ConditionalSystem.Type.WINDOWS)
+    @Bean(name = "condition-person-windows")
+    public Person p5() {
+        return new Person("condition-person-windows", 88);
+    }
+
+
+    @ConditionalSystem(type = ConditionalSystem.Type.LINUX)
+    @Bean(name = "condition-person-linux")
+    public Person p6() {
+        return new Person("condition-person-linux", 89);
+    }
 }
