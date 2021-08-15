@@ -17,11 +17,17 @@ public class App {
             sqlMap = SqlMapClientBuilder.buildSqlMapClient(reader);
             sqlMap.startTransaction();
             Account account = new Account();
-            account.setId(2);
+            account.setId(4);
             account.setFirstName("firstName:jack");
             account.setLastName("lastName:tom");
             account.setEmailAddress("2323@qq.com");
-            sqlMap.insert("insertAccount1", account);
+            sqlMap.insert("Account.insert", account);
+
+            User u1 = new User();
+            u1.setId(1);
+            u1.setName("jack");
+            sqlMap.insert("User.insert", u1);
+
             sqlMap.commitTransaction();
             reader.close();
         } catch (IOException e) {

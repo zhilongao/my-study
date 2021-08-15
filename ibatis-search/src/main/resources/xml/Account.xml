@@ -40,11 +40,14 @@
         from ACCOUNT
         where ACC_ID = #id#
     </select>
+
+
     <!-- 使用外联参数映射是用？占位符 -->
-    <insert id="insertAccount1" parameterClass="Account">
+    <insert id="insert" parameterClass="Account">
         insert into ACCOUNT (ACC_ID, ACC_FIRST_NAME, ACC_LAST_NAME, ACC_EMAIL)
         values (#id#, #firstName#, #lastName#, #emailAddress#)
     </insert>
+
     <!-- 插入语句返回值要通过selectKey查询 -->
     <insert id="insertAccount2" parameterClass="Account">
         insert into ACCOUNT (ACC_ID, ACC_FIRST_NAME, ACC_LAST_NAME, ACC_EMAIL)
