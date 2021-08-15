@@ -1,7 +1,7 @@
 package com.study.ibatis.domain;
 
 public class Account {
-    private String id;
+    private int id;
 
     private String firstName;
 
@@ -9,11 +9,11 @@ public class Account {
 
     private String emailAddress;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

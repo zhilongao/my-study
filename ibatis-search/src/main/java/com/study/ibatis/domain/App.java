@@ -15,8 +15,18 @@ public class App {
         try {
             Reader reader = Resources.getResourceAsReader("SqlMapConfig.xml");
             sqlMap = SqlMapClientBuilder.buildSqlMapClient(reader);
+            sqlMap.startTransaction();
+            Account account = new Account();
+            account.setId(2);
+            account.setFirstName("firstName:jack");
+            account.setLastName("lastName:tom");
+            account.setEmailAddress("2323@qq.com");
+            sqlMap.insert("insertAccount1", account);
+            sqlMap.commitTransaction();
             reader.close();
         } catch (IOException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
