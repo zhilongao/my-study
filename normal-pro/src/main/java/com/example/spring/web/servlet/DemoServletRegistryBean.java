@@ -1,4 +1,4 @@
-package com.example.spring.web;
+package com.example.spring.web.servlet;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 
