@@ -3,8 +3,8 @@
 <head >
     <meta charset="UTF-8">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
-    <meta http-equiv="Access-Control-Allow-Headers" content="X-Requested-With">
-    <meta http-equiv="Access-Control-Allow-Headers" content="Content-Type">
+<!--    <meta http-equiv="Access-Control-Allow-Headers" content="X-Requested-With">
+    <meta http-equiv="Access-Control-Allow-Headers" content="Content-Type">-->
     <title>Title</title>
 
 </head>
@@ -18,17 +18,19 @@
 <script>
     $("#userListId").click(function() {
         //alert("hello,world")
-        $.ajax({
-            url: "http://432k4554r8.zicp.vip/feishu/userList",
-            dataType: "json",
-            type: "get",
-            data: {},
-            success: function(result) {
-                console.log(result)
-            },
-            error: function(data) {
-                console.log(data)
-            }
-        });
+        // $.ajax({
+        //     url: "http://4302g45548.vicp.fun/test/userList",
+        //     dataType: "json",
+        //     type: "get",
+        //     data: {},
+        //     success: function(result) {
+
+                window.location.href='https://open.feishu.cn/open-apis/authen/v1/index?app_id=cli_a1b2255ac778900d&redirect_uri=http://4302g45548.vicp.fun/test/testRedirect';
+        //         console.log(result)
+        //     },
+        //     error: function(data) {
+        //         console.log(data)
+        //     }
+        // });
     });
 </script>
