@@ -1,4 +1,4 @@
-package com.example.common.transfer.common;
+package com.util.file.transfer.common;
 
 /**
  * @author gaozhilong

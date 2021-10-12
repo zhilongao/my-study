@@ -11,12 +11,8 @@ public class StackDemo {
 
     public static long count = 0;
 
-    public static void method(long i) {
-        System.err.println(count++);
-        method(i);
-    }
-
     public static void main(String[] args) {
-        method(1);
+        int i1 = 14860288 / 907 /1024;
+        System.err.println(i1);
     }
 }

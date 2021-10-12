@@ -1,6 +1,6 @@
-package com.example.common.transfer;
+package com.util.file.transfer;
 
-import com.example.common.transfer.client.ClientInstance;
+import com.util.file.transfer.client.ClientInstance;
 
 /**
  * @author gaozhilong

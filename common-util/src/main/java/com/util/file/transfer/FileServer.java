@@ -1,6 +1,6 @@
-package com.example.common.transfer;
+package com.util.file.transfer;
 
-import com.example.common.transfer.server.ServerInstance;
+import com.util.file.transfer.server.ServerInstance;
 
 /**
  * @author gaozhilong

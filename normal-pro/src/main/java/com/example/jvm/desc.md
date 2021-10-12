@@ -16,7 +16,7 @@
 3. 类的装载(类加载器)
     Bootstrap ClassLoader(启动类加载器)
     Extension ClassLoader(扩展类加载器)
-    App ClassLoader(应用类加载器)
+    com.util.App ClassLoader(应用类加载器)
     
     类加载的机制： 双亲委派机制。
     

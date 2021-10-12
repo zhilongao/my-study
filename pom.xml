@@ -7,11 +7,17 @@
     <groupId>org.example</groupId>
     <artifactId>spring-study-plan</artifactId>
     <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <java.version>1.8</java.version>
+    </properties>
+
     <modules>
         <module>study-normal-spring</module>
         <module>netty-search</module>
         <module>ibatis-search</module>
         <module>tomcat-study</module>
+        <module>common-util</module>
     </modules>
 
     <packaging>pom</packaging>

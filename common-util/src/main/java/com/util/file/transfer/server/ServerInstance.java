@@ -1,6 +1,6 @@
-package com.example.common.transfer.server;
+package com.util.file.transfer.server;
 
-import com.example.common.transfer.common.LogsUtil;
+import com.util.file.transfer.common.LogsUtil;
 
 import java.io.*;
 import java.net.ServerSocket;

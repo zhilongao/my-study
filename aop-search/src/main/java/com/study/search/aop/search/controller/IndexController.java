@@ -24,13 +24,13 @@ public class IndexController {
     @Autowired
     private OrderService orderService;
 
-    public static final String appId = "cli_a1b2255ac778900d";
+    public static final String appId = "cli_a1bdb7de747c500d";
 
-    public static final String redirectUri = "http://432k4554r8.zicp.vip/feishu/testRedirect";
+    public static final String redirectUri = "https://silly-fly-59.loca.lt/open/feishu/feiShuAuthLogin";
 
     public static final Map<String, String> stateMap = new HashMap<>();
 
-    @PostMapping("/receive")
+/*    @PostMapping("/receive")
     @ResponseBody
     public String index(@RequestBody JSONObject object) {
         System.err.println(object.toJSONString());
@@ -40,7 +40,7 @@ public class IndexController {
         JSONObject obj = new JSONObject();
         obj.put("challenge", challenge);
         return obj.toJSONString();
-    }
+    }*/
 
     @GetMapping(value = "/index1")
     public ModelAndView testM1(@RequestParam Map<String, Object> body) {
@@ -48,6 +48,25 @@ public class IndexController {
         return model;
     }
 
+    @GetMapping(name = "同步飞书的组织结构", value = "/updateCompany")
+    @ResponseBody
+    public String updateCompany(HttpServletRequest request, HttpServletResponse response) {
+        String token = request.getHeader("token");
+        if (StringUtils.isEmpty(token)) {
+            // todo 没有token时,是重定向还是抛出异常
+            String url = "https://open.feishu.cn/open-apis/authen/v1/index?app_id=" + appId + "&redirect_uri=" + redirectUri;
+            try {
+                response.sendRedirect(url);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // throw new BusinessException("token为空!");
+        }
+        return "ok";
+    }
+
+
+/*
     @GetMapping(value = "/userList")
     @ResponseBody
     @CrossOrigin
@@ -74,6 +93,7 @@ public class IndexController {
         }
         return "ok";
     }
+*/
 
 
     // 飞书的登录回调

@@ -25,14 +25,17 @@ public class SelfInstantiationAwareBeanPostProcessor implements InstantiationAwa
     }
 
     public PropertyValues postProcessPropertyValues(PropertyValues pvs, PropertyDescriptor[] pds, Object bean, String beanName) throws BeansException {
+        System.err.println("postProcessPropertyValues----" + beanName);
         return null;
     }
 
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
+        System.err.println("postProcessBeforeInitialization----" + beanName);
         return null;
     }
 
     public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+        System.err.println("postProcessAfterInitialization----" + beanName);
         return null;
     }
 }

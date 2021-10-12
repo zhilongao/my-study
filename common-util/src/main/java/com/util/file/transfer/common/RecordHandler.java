@@ -1,8 +1,4 @@
-package com.example.common.transfer.common;
-
-import com.example.common.transfer.common.ConfigUtils;
-import com.example.common.transfer.common.FileLogInfo;
-import com.example.common.transfer.common.LogsUtil;
+package com.util.file.transfer.common;
 
 import java.io.File;
 import java.io.FileInputStream;

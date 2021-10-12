@@ -1,8 +1,8 @@
-package com.example.common.transfer.client;
+package com.util.file.transfer.client;
 
-import com.example.common.transfer.common.ConfigUtils;
-import com.example.common.transfer.common.LogsUtil;
-import com.example.common.transfer.common.StreamTool;
+import com.util.file.transfer.common.ConfigUtils;
+import com.util.file.transfer.common.LogsUtil;
+import com.util.file.transfer.common.StreamTool;
 
 import java.io.*;
 import java.net.Socket;
