@@ -9,11 +9,17 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class LogAspect {
 
-    /*@Pointcut("execution(public * com.study.search.aop.search.service.*.*(..))")
+    /**
+     * 定义切点(包扫描的形式)
+     */
+    @Pointcut("execution(public * com.study.search.aop.search.service.*.*(..))")
     public void pointCut() {
 
-    }*/
+    }
 
+    /**
+     * 定义切点(注解的形式)
+     */
     @Pointcut("@annotation(com.study.search.aop.search.annotation.Log)")
     public void pointCutV2() {
 
@@ -22,17 +28,17 @@ public class LogAspect {
 
     @Before("pointCutV2()")
     public void doBefore(JoinPoint joinPoint) {
-        System.err.println("execute method before");
+        System.err.println("--->execute method before");
     }
 
     @After("pointCutV2()")
     public void doAfter(JoinPoint joinPoint) {
-        System.err.println("execute method after");
+        System.err.println("--->execute method after");
     }
 
     @Around("pointCutV2()")
     public Object doAround(ProceedingJoinPoint joinPoint) {
-        System.err.println("around before");
+        System.err.println("----around before----");
         long start = System.currentTimeMillis();
         Object result = null;
         try {
@@ -42,6 +48,7 @@ public class LogAspect {
         }
         long end = System.currentTimeMillis();
         System.err.println("all cost time " + (end - start));
+        System.err.println("----around after----");
         return  result;
     }
 }

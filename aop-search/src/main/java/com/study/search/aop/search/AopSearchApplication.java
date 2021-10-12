@@ -10,6 +10,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class AopSearchApplication {
 
     public static void main(String[] args) {
-        ConfigurableApplicationContext context = SpringApplication.run(AopSearchApplication.class, args);
+        SpringApplication.run(AopSearchApplication.class, args);
     }
 }
