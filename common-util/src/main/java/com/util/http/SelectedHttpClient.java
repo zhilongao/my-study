@@ -46,8 +46,9 @@ public class SelectedHttpClient {
 
         STRATEGY_WEB_CLIENT("WebClient");
 
+        String code;
         StrategyType(String code) {
-
+            this.code = code;
         }
     }
 
@@ -81,32 +82,32 @@ public class SelectedHttpClient {
 
     public String get(String url, Map<String, String> headers, Map<String, Object> params) {
         if (STRATEGY_REST_TEMPLATE.equals(this.strategyReq)) {
-            System.err.println("发送Get请求,使用策略:RestTemplate");
+            // System.err.println("发送Get请求,使用策略:RestTemplate");
             return restTemplateGet(url, headers, params);
         } else if (STRATEGY_HTTP_CLIENT.equals(this.strategyReq)) {
-            System.err.println("发送Get请求,使用策略:HttpClient");
+            // System.err.println("发送Get请求,使用策略:HttpClient");
             return httpClientGet(url, headers, params);
         } else if (STRATEGY_WEB_CLIENT.equals(this.strategyReq)) {
-            System.err.println("发送Get请求,使用策略:WebClient");
+            // System.err.println("发送Get请求,使用策略:WebClient");
             return webClientGet(url, headers, params);
         } else {
-            System.err.println("发送Get请求,使用策略:OkHttp");
+            // System.err.println("发送Get请求,使用策略:OkHttp");
             return okHttpGet(url, headers, params);
         }
     }
 
     public String post(String url, Map<String, String> headers, Map<String, Object> body) {
         if (STRATEGY_REST_TEMPLATE.equals(this.strategyReq)) {
-            System.err.println("发送Post请求,使用策略:RestTemplate");
+            // System.err.println("发送Post请求,使用策略:RestTemplate");
             return restTemplatePost(url, headers, body);
         } else if (STRATEGY_HTTP_CLIENT.equals(this.strategyReq)) {
-            System.err.println("发送Post请求,使用策略:HttpClient");
+            // System.err.println("发送Post请求,使用策略:HttpClient");
             return httpClientPost(url, headers, body);
         } else if (STRATEGY_WEB_CLIENT.equals(this.strategyReq)) {
-            System.err.println("发送Post请求,使用策略:WebClient");
+            // System.err.println("发送Post请求,使用策略:WebClient");
             return webClientPost(url, headers, body);
         } else {
-            System.err.println("发送Post请求,使用策略:OkHttp");
+            // System.err.println("发送Post请求,使用策略:OkHttp");
             return okHttpPost(url, headers, body);
         }
     }
@@ -318,6 +319,6 @@ public class SelectedHttpClient {
     }
 
     private void printInfo(String message) {
-        System.err.println(message);
+        // System.err.println(message);
     }
 }
