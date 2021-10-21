@@ -18,6 +18,14 @@ public class IndexController {
     private OrderService orderService;
 
     @ResponseBody
+    @GetMapping("/index1")
+    public String index1(HttpServletRequest request) {
+        String userAgent = request.getHeader("user-agent");
+        System.err.println("userAgent:" + userAgent);
+        return "hello,world";
+    }
+
+    @ResponseBody
     @GetMapping("/get")
     public String test(HttpServletRequest request, @RequestParam("name") String name) {
         System.err.println("--------------start header----------------");
