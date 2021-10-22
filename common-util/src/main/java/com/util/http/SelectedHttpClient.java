@@ -68,6 +68,7 @@ public class SelectedHttpClient {
 
     RestTemplate template = new RestTemplate();
 
+    // OkHttpClient
     OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
     CloseableHttpClient httpClient = HttpClients.createDefault();
@@ -111,6 +112,13 @@ public class SelectedHttpClient {
             return okHttpPost(url, headers, body);
         }
     }
+
+    //hutool
+    // 1. 创建执行的Call对象
+    // 2. 调用Call的execute方法
+
+    // 执行的相关组件
+
 
     /********************************************* OkHttp **********************************/
     public String okHttpGet(String url, Map<String, String> headers, Map<String, Object> params) {
@@ -290,10 +298,11 @@ public class SelectedHttpClient {
         Set<String> keys = params.keySet();
         for (String key : keys) {
             if (builder.indexOf("?") != -1) {
-                builder.append("&").append(key).append("=").append(params.get(key));
+                builder.append("&");
             } else {
-                builder.append("?").append(key).append("=").append(params.get(key));
+                builder.append("?");
             }
+            builder.append(key).append("=").append(params.get(key));
         }
         return builder.toString();
     }
