@@ -1,6 +1,5 @@
 package com.util.http;
 
-import org.apache.juli.logging.LogFactory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,7 +7,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import static com.util.http.SelectedHttpClient.StrategyType.*;
 
 public class ClientApp {
 
@@ -18,14 +16,11 @@ public class ClientApp {
     static ExecutorService executor = Executors.newFixedThreadPool(100);
 
     public static void main(String[] args) {
-
-        //client.setStrategyReq(STRATEGY_WEB_CLIENT);
-
         for (int i = 0; i < 3; i++) {
-            simpleTest(STRATEGY_HTTP_CLIENT);
-            simpleTest(STRATEGY_REST_TEMPLATE);
-            simpleTest(STRATEGY_OK_HTTP);
-            simpleTest(STRATEGY_WEB_CLIENT);
+            simpleTest(StrategyType.STRATEGY_HTTP_CLIENT);
+            simpleTest(StrategyType.STRATEGY_REST_TEMPLATE);
+            simpleTest(StrategyType.STRATEGY_OK_HTTP);
+            simpleTest(StrategyType.STRATEGY_WEB_CLIENT);
             System.err.println();
         }
 
@@ -39,14 +34,14 @@ public class ClientApp {
 //        System.err.println("post result:" + postResult);
     }
 
-    public static void simpleTest(SelectedHttpClient.StrategyType type) {
+    public static void simpleTest(StrategyType type) {
         SelectedHttpClient client = new SelectedHttpClient();
-        client.setStrategyReq(type);
+        client.setStrategyType(type);
         Map<String, String> headers = initHeaders();
         Map<String, Object> params = initParams();
 
         long start = System.currentTimeMillis();
-        int times = 10000;
+        int times = 1000;
         CountDownLatch latch = new CountDownLatch(times);
         for (int i = 0; i < times; i++) {
             executor.execute(new HttpExecuteTask(client, headers, params, latch));
@@ -57,7 +52,7 @@ public class ClientApp {
             e.printStackTrace();
         }
         long end = System.currentTimeMillis();
-        System.err.printf("使用策略:%s  耗时:%s ms \n", client.getStrategyReq().code, (end - start));
+        System.err.printf("使用策略:%s  耗时:%s ms \n", client.getStrategyType().code, (end - start));
     }
 
     public static class HttpExecuteTask implements Runnable {
@@ -75,14 +70,14 @@ public class ClientApp {
 
         @Override
         public void run() {
-            client.get(getUrl, headers, params);
+            client.doGet(getUrl, headers, params);
             latch.countDown();
         }
     }
 
-
     private static Map<String, String> initHeaders() {
         Map<String, String> headers = new HashMap<>();
+        headers.put("Content-type", "application/json");
         headers.put("head1", "value1");
         headers.put("head2", "value2");
         headers.put("head3", "value3");

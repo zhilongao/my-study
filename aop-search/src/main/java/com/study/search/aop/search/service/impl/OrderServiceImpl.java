@@ -9,12 +9,9 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-
-
     @Override
-    @Log
+    // @Log
     public List<String> findList(String customerId) {
-        System.err.println("execute findList method");
         return Arrays.asList("111", "222", "333");
     }
 }

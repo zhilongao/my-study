@@ -28,12 +28,7 @@ public class IndexController {
     @ResponseBody
     @GetMapping("/get")
     public String test(HttpServletRequest request, @RequestParam("name") String name) {
-        System.err.println("--------------start header----------------");
-        printHeaders(request);
-        System.err.println("---------------start param---------------");
-        System.err.println("name:" + name);
         orderService.findList("1001");
-        System.err.println("--------------- end ---------------");
         return "get ok";
     }
 
