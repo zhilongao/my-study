@@ -1,9 +1,6 @@
 package com.util.http;
 
-import com.util.http.strategy.HttpClientStrategy;
-import com.util.http.strategy.OkHttpStrategy;
-import com.util.http.strategy.RestTemplateStrategy;
-import com.util.http.strategy.WebClientStrategy;
+import com.util.http.strategy.*;
 
 public enum StrategyType {
 
@@ -13,7 +10,9 @@ public enum StrategyType {
 
     STRATEGY_HTTP_CLIENT("HttpClient", new HttpClientStrategy()),
 
-    STRATEGY_WEB_CLIENT("WebClient", new WebClientStrategy());
+    STRATEGY_WEB_CLIENT("WebClient", new WebClientStrategy()),
+
+    STRATEGY_HUTOOL_CLIENT("HutoolHttp", new HutoolHttpStrategy());
 
     /**
      * 策略标识

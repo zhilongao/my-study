@@ -1,6 +1,5 @@
 package com.util.http.strategy;
 
-import com.util.http.BaseWorkStrategy;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;

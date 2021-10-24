@@ -1,4 +1,4 @@
-package com.util.http;
+package com.util.http.strategy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 

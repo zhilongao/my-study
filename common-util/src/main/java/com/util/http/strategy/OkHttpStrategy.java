@@ -1,7 +1,6 @@
 package com.util.http.strategy;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.util.http.BaseWorkStrategy;
 import okhttp3.*;
 
 import java.io.IOException;
@@ -10,8 +9,6 @@ import java.util.Set;
 
 public class OkHttpStrategy extends BaseWorkStrategy {
 
-
-    // OkHttpClient
     OkHttpClient okHttpClient = new OkHttpClient.Builder().build();
 
     @Override
@@ -20,26 +17,12 @@ public class OkHttpStrategy extends BaseWorkStrategy {
         Request.Builder reqBuilder = new Request.Builder()
                 .url(reqUrl)
                 .get();
-        Set<String> headerKeys = headers.keySet();
-        for (String key : headerKeys) {
-            reqBuilder.addHeader(key, headers.get(key));
-        }
-        Request request = reqBuilder.build();
-        Call call = okHttpClient.newCall(request);
-        try {
-            Response response = call.execute();
-            ResponseBody body = response.body();
-            String message = body.string();
-            return message;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return "";
+        return execute(reqBuilder, headers);
     }
 
     @Override
     public String doPost(String url, Map<String, String> headers, Map<String, Object> params) {
-        String bodyStr = "";
+        String bodyStr;
         try {
             bodyStr = mapper.writeValueAsString(params);
         } catch (JsonProcessingException e) {
@@ -50,20 +33,27 @@ public class OkHttpStrategy extends BaseWorkStrategy {
         Request.Builder reqBuilder = new Request.Builder()
                 .url(url)
                 .post(reqBody);
-        Set<String> headerKeys = headers.keySet();
-        for (String key : headerKeys) {
-            reqBuilder.addHeader(key, headers.get(key));
-        }
+        return execute(reqBuilder, headers);
+    }
+
+    private String execute(Request.Builder reqBuilder, Map<String, String> headers) {
+        addHeaders(reqBuilder, headers);
         Request request = reqBuilder.build();
         Call call = okHttpClient.newCall(request);
         try {
             Response response = call.execute();
             ResponseBody resBody = response.body();
-            String message = resBody.string();
-            return message;
+            return resBody.string();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private void addHeaders(Request.Builder reqBuilder, Map<String, String> headers) {
+        Set<String> headerKeys = headers.keySet();
+        for (String key : headerKeys) {
+            reqBuilder.addHeader(key, headers.get(key));
+        }
     }
 }

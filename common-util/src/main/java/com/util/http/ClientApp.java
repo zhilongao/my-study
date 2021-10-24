@@ -21,6 +21,7 @@ public class ClientApp {
             simpleTest(StrategyType.STRATEGY_REST_TEMPLATE);
             simpleTest(StrategyType.STRATEGY_OK_HTTP);
             simpleTest(StrategyType.STRATEGY_WEB_CLIENT);
+            simpleTest(StrategyType.STRATEGY_HUTOOL_CLIENT);
             System.err.println();
         }
 
@@ -70,7 +71,8 @@ public class ClientApp {
 
         @Override
         public void run() {
-            client.doGet(getUrl, headers, params);
+            // client.doGet(getUrl, headers, params);
+            client.doPost(postUrl, headers, params);
             latch.countDown();
         }
     }
