@@ -36,6 +36,16 @@ public class OkHttpStrategy extends BaseWorkStrategy {
         return execute(reqBuilder, headers);
     }
 
+    @Override
+    public void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+
+    }
+
+    @Override
+    public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+
+    }
+
     private String execute(Request.Builder reqBuilder, Map<String, String> headers) {
         addHeaders(reqBuilder, headers);
         Request request = reqBuilder.build();

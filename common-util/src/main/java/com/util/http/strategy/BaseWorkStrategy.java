@@ -10,10 +10,15 @@ public abstract class BaseWorkStrategy {
     protected ObjectMapper mapper = new ObjectMapper();
 
 
-    protected abstract String doGet(String url, Map<String, String> headers, Map<String, Object> params);
+    public abstract String doGet(String url, Map<String, String> headers, Map<String, Object> params);
 
 
-    protected abstract String doPost(String url, Map<String, String> headers, Map<String, Object> params);
+    public abstract String doPost(String url, Map<String, String> headers, Map<String, Object> params);
+
+
+    public abstract void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params);
+
+    public abstract void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params);
 
     protected String extentUrl(String url, Map<String, Object> params) {
         StringBuilder builder = new StringBuilder(url);

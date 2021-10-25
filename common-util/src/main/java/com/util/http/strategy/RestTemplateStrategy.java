@@ -30,6 +30,16 @@ public class RestTemplateStrategy extends BaseWorkStrategy {
         return response.getBody();
     }
 
+    @Override
+    public void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+
+    }
+
+    @Override
+    public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+
+    }
+
     private HttpHeaders createHttpHeaders(Map<String, String> headers) {
         HttpHeaders httpHeaders = new HttpHeaders();
         Set<String> keys = headers.keySet();

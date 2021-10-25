@@ -22,14 +22,26 @@ public class SelectedHttpClient extends BaseWorkStrategy {
     }
 
     @Override
-    protected String doGet(String url, Map<String, String> headers, Map<String, Object> params) {
+    public String doGet(String url, Map<String, String> headers, Map<String, Object> params) {
         StrategyType strategyType = getStrategyType();
         return strategyType.strategy.doGet(url, headers, params);
     }
 
     @Override
-    protected String doPost(String url, Map<String, String> headers, Map<String, Object> params) {
+    public String doPost(String url, Map<String, String> headers, Map<String, Object> params) {
         StrategyType strategyType = getStrategyType();
         return strategyType.strategy.doPost(url, headers, params);
+    }
+
+    @Override
+    public void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+        StrategyType strategyType = getStrategyType();
+        strategyType.strategy.doGetAsync(url, headers, params);
+    }
+
+    @Override
+    public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+        StrategyType strategyType = getStrategyType();
+        strategyType.strategy.doPostAsync(url, headers, params);
     }
 }

@@ -16,26 +16,41 @@ public class ClientApp {
     static ExecutorService executor = Executors.newFixedThreadPool(100);
 
     public static void main(String[] args) {
-        for (int i = 0; i < 3; i++) {
-            simpleTest(StrategyType.STRATEGY_HTTP_CLIENT);
-            simpleTest(StrategyType.STRATEGY_REST_TEMPLATE);
-            simpleTest(StrategyType.STRATEGY_OK_HTTP);
-            simpleTest(StrategyType.STRATEGY_WEB_CLIENT);
-            simpleTest(StrategyType.STRATEGY_HUTOOL_CLIENT);
-            System.err.println();
-        }
-
-
-
-//        System.err.println("get result:" + getResult);
-//
-//        Map<String, Object> reqBody = new HashMap<>();
-//        reqBody.put("name", "tom");
-//        String postResult = client.post(postUrl, headers, reqBody);
-//        System.err.println("post result:" + postResult);
+        // executeGet();
+        // executePost();
+        testHttpClient();
     }
 
-    public static void simpleTest(StrategyType type) {
+    public static void testHttpClient() {
+        SelectedHttpClient client = new SelectedHttpClient();
+        client.setStrategyType(StrategyType.STRATEGY_HTTP_CLIENT);
+        Map<String, String> headers = initHeaders();
+        Map<String, Object> params = initParams();
+        client.doGetAsync(getUrl, headers, params);
+    }
+
+    public static void executeGet() {
+        for (int i = 0; i < 3; i++) {
+            simpleTest(StrategyType.STRATEGY_HTTP_CLIENT, "get");
+            simpleTest(StrategyType.STRATEGY_REST_TEMPLATE, "get");
+            simpleTest(StrategyType.STRATEGY_OK_HTTP, "get");
+            simpleTest(StrategyType.STRATEGY_WEB_CLIENT, "get");
+            simpleTest(StrategyType.STRATEGY_HUTOOL_CLIENT, "get");
+        }
+    }
+
+
+    public static void executePost() {
+        for (int i = 0; i < 3; i++) {
+            simpleTest(StrategyType.STRATEGY_HTTP_CLIENT, "post");
+            simpleTest(StrategyType.STRATEGY_REST_TEMPLATE, "post");
+            simpleTest(StrategyType.STRATEGY_OK_HTTP, "post");
+            simpleTest(StrategyType.STRATEGY_WEB_CLIENT, "post");
+            simpleTest(StrategyType.STRATEGY_HUTOOL_CLIENT, "post");
+        }
+    }
+
+    public static void simpleTest(StrategyType type, String methodType) {
         SelectedHttpClient client = new SelectedHttpClient();
         client.setStrategyType(type);
         Map<String, String> headers = initHeaders();
@@ -45,7 +60,7 @@ public class ClientApp {
         int times = 1000;
         CountDownLatch latch = new CountDownLatch(times);
         for (int i = 0; i < times; i++) {
-            executor.execute(new HttpExecuteTask(client, headers, params, latch));
+            executor.execute(new HttpExecuteTask(client, headers, params, latch, methodType));
         }
         try {
             latch.await();
@@ -61,18 +76,23 @@ public class ClientApp {
         private CountDownLatch latch;
         private Map<String, String> headers;
         private Map<String, Object> params;
+        private String methodType;
 
-        public HttpExecuteTask(SelectedHttpClient client, Map<String, String> headers, Map<String, Object> params, CountDownLatch latch) {
+        public HttpExecuteTask(SelectedHttpClient client, Map<String, String> headers, Map<String, Object> params, CountDownLatch latch, String methodType) {
             this.client = client;
             this.latch = latch;
             this.headers = headers;
             this.params = params;
+            this.methodType = methodType;
         }
 
         @Override
         public void run() {
-            // client.doGet(getUrl, headers, params);
-            client.doPost(postUrl, headers, params);
+            if ("get".equals(methodType)) {
+                client.doGet(getUrl, headers, params);
+            } else if ("post".equals(methodType)) {
+                client.doPost(postUrl, headers, params);
+            }
             latch.countDown();
         }
     }

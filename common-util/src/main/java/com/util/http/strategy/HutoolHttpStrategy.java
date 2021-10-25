@@ -30,4 +30,14 @@ public class HutoolHttpStrategy extends BaseWorkStrategy {
         }
         return "";
     }
+
+    @Override
+    public void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+
+    }
+
+    @Override
+    public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+
+    }
 }

@@ -96,6 +96,7 @@ public class HttpClientStrategy extends BaseWorkStrategy {
      * @param headers 请求头
      * @param params 请求参数
      */
+    @Override
     public void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params) {
         // 1. 创建请求
         HttpGet request = getRequest(url, headers, params);
@@ -109,6 +110,7 @@ public class HttpClientStrategy extends BaseWorkStrategy {
      * @param headers 请求头
      * @param params 请求参数
      */
+    @Override
     public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params){
         // 1. 创建请求
         HttpPost httpPost = postRequest(url, headers);

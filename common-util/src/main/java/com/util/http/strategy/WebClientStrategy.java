@@ -29,6 +29,16 @@ public class WebClientStrategy extends BaseWorkStrategy {
         return mono.block();
     }
 
+    @Override
+    public void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+
+    }
+
+    @Override
+    public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+
+    }
+
     private void addHeaders(WebClient.RequestHeadersSpec<?> reqSpec, Map<String, String> headers) {
         Set<String> headerNames = headers.keySet();
         for (String headerName : headerNames) {
