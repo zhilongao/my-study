@@ -124,7 +124,6 @@ public class HttpClientStrategy extends BaseWorkStrategy {
      */
     public void doAsync(HttpRequestBase request) {
         asyncHttpClient.start();
-        System.err.println(Thread.currentThread().getName());
         asyncHttpClient.execute(request, new FutureCallback<HttpResponse>() {
             @Override
             public void completed(HttpResponse response) {
