@@ -17,6 +17,7 @@ import org.apache.http.util.EntityUtils;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 /**
  * HttpClient
@@ -123,8 +124,10 @@ public class HttpClientStrategy extends BaseWorkStrategy {
      * @param request 请求
      */
     public void doAsync(HttpRequestBase request) {
-        asyncHttpClient.start();
-        asyncHttpClient.execute(request, new FutureCallback<HttpResponse>() {
+        if(!asyncHttpClient.isRunning()) {
+            asyncHttpClient.start();
+        }
+        Future<HttpResponse> future = asyncHttpClient.execute(request, new FutureCallback<HttpResponse>() {
             @Override
             public void completed(HttpResponse response) {
                 try {
@@ -134,17 +137,20 @@ public class HttpClientStrategy extends BaseWorkStrategy {
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void failed(Exception ex) {
                 System.out.println(request.getRequestLine() + "->" + ex);
                 System.out.println(" callback thread id is : " + Thread.currentThread().getId());
             }
+
             @Override
             public void cancelled() {
                 System.out.println(request.getRequestLine() + " cancelled");
                 System.out.println(" callback thread id is : " + Thread.currentThread().getId());
             }
         });
+        System.err.println(future);
     }
 
 
