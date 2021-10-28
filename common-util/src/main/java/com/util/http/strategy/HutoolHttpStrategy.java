@@ -13,8 +13,8 @@ public class HutoolHttpStrategy extends BaseWorkStrategy {
         String extentUrl = extentUrl(url, params);
         HttpRequest request = HttpRequest.get(extentUrl);
         request.addHeaders(headers);
-        HttpResponse execute = request.execute();
-        return execute.body();
+        HttpResponse response = request.execute();
+        return response.body();
     }
 
     @Override
@@ -33,11 +33,23 @@ public class HutoolHttpStrategy extends BaseWorkStrategy {
 
     @Override
     public void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params) {
-
+        String extentUrl = extentUrl(url, params);
+        HttpRequest request = HttpRequest.get(extentUrl);
+        request.addHeaders(headers);
+        HttpResponse response = request.execute(true);
+        // todo 处理响应结果
     }
 
     @Override
     public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params) {
-
+        HttpRequest request = HttpRequest.post(url);
+        request.addHeaders(headers);
+        try {
+            request.body(mapper.writeValueAsString(params));
+            HttpResponse response = request.execute(true);
+            // todo 处理响应结果
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        }
     }
 }

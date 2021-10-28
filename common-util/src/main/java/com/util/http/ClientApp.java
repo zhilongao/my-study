@@ -18,15 +18,15 @@ public class ClientApp {
     public static void main(String[] args) {
         // executeGet();
         // executePost();
-        testHttpClient();
+        testHttpClient(StrategyType.STRATEGY_HUTOOL_CLIENT);
     }
 
-    public static void testHttpClient() {
+    public static void testHttpClient(StrategyType type) {
         SelectedHttpClient client = new SelectedHttpClient();
-        client.setStrategyType(StrategyType.STRATEGY_HTTP_CLIENT);
+        client.setStrategyType(type);
         Map<String, String> headers = initHeaders();
         Map<String, Object> params = initParams();
-        client.doGetAsync(getUrl, headers, params);
+        client.doGet(getUrl, headers, params);
     }
 
     public static void executeGet() {

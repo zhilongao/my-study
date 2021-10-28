@@ -43,9 +43,21 @@
             
 3. 分析下start()方法
     3.1 首先是在client内部有一个变量reactorThread(Thread),它的run()方法其实只做了一件事情,创建了一个ioEventDispatch(InternalIODispatch),将其
-        交给connmgr(NHttpClientConnectionManager)的execute()方法。
+        交给connmgr(PoolingNHttpClientConnectionManager)的execute()方法执行。ioEventDispatch在创建的时候,构造函数里面会传一个值handler(HttpAsyncRequestExecutor)。
         
-    3.2     
+    3.2 在connmgr的内部,有一个ioreactor(DefaultConnectingIOReactor),在execute()方法内部,直接调用了ioreactor的execute(ioEventDispatch)方法, 改方法所做的工作
+            ① 填充BaseIOReactor[] dispatchers;数组对象
+            ② 填充Worker[] workers;数组对象 (Worker本质上是一个Runnable对象, 持有dispatcher和ioEventDispatch), 里面重写了run()方法
+            ③ 填充Thread[] threads;数组对象 (thread里面持有的Runnable对象是Worker对象)
+            ④ 启动threads里面的每一个线程,实际上是执行Worker里面的run方法
+            ⑤ 在主线程里面调用Selector的selector()方法,获取准备好执行的事件数,调用processEvents()方法处理
+            ⑥ 循环workers数组,检查是否有异常抛出,若是检测到异常,直接抛出
+   
+        主函数中processEvents()方法的分析
+                        
+
+
+        Worker线程中run()方法的分析
 
             
     交给后做了哪些事情	    
