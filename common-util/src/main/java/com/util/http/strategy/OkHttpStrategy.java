@@ -22,28 +22,45 @@ public class OkHttpStrategy extends BaseWorkStrategy {
 
     @Override
     public String doPost(String url, Map<String, String> headers, Map<String, Object> params) {
-        String bodyStr;
-        try {
-            bodyStr = mapper.writeValueAsString(params);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        Request.Builder reqBuilder = buildPostReqBuilder(url, params);
+        if (reqBuilder != null) {
+            return execute(reqBuilder, headers);
+        } else {
             return "";
         }
-        RequestBody reqBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), bodyStr);
-        Request.Builder reqBuilder = new Request.Builder()
-                .url(url)
-                .post(reqBody);
-        return execute(reqBuilder, headers);
     }
 
     @Override
     public void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params) {
-
+        String reqUrl = extentUrl(url, params);
+        Request.Builder reqBuilder = new Request.Builder()
+                .url(reqUrl)
+                .get();
+        executeAsync(reqBuilder, headers);
     }
 
     @Override
     public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params) {
+        Request.Builder reqBuilder = buildPostReqBuilder(url, params);
+        if (reqBuilder != null) {
+            executeAsync(reqBuilder, headers);
+        } else {
+            System.err.println("execute error");
+        }
+    }
 
+    public Request.Builder buildPostReqBuilder(String url, Map<String, Object> params) {
+        String bodyStr = "";
+        try {
+            bodyStr = mapper.writeValueAsString(params);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+        RequestBody reqBody = RequestBody.create(MediaType.parse("application/json;charset=UTF-8"), bodyStr);
+        return new Request.Builder()
+                .url(url)
+                .post(reqBody);
     }
 
     private String execute(Request.Builder reqBuilder, Map<String, String> headers) {
@@ -58,6 +75,24 @@ public class OkHttpStrategy extends BaseWorkStrategy {
             e.printStackTrace();
         }
         return "";
+    }
+
+    private void executeAsync(Request.Builder reqBuilder, Map<String, String> headers) {
+        addHeaders(reqBuilder, headers);
+        Request request = reqBuilder.build();
+        Call call = okHttpClient.newCall(request);
+        call.enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                System.err.println("failure");
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String message = response.body().toString();
+                System.err.println(message);
+            }
+        });
     }
 
     private void addHeaders(Request.Builder reqBuilder, Map<String, String> headers) {

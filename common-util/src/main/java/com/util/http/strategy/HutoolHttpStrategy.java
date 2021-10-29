@@ -37,6 +37,8 @@ public class HutoolHttpStrategy extends BaseWorkStrategy {
         HttpRequest request = HttpRequest.get(extentUrl);
         request.addHeaders(headers);
         HttpResponse response = request.execute(true);
+
+        response.body();
         // todo 处理响应结果
     }
 

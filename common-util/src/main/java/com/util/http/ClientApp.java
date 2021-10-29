@@ -18,7 +18,9 @@ public class ClientApp {
     public static void main(String[] args) {
         // executeGet();
         // executePost();
-        testHttpClient(StrategyType.STRATEGY_HUTOOL_CLIENT);
+        // testHttpClient(StrategyType.STRATEGY_HTTP_CLIENT);
+        // testHttpClient(StrategyType.STRATEGY_HUTOOL_CLIENT);
+        testHttpClient(StrategyType.STRATEGY_OK_HTTP);
     }
 
     public static void testHttpClient(StrategyType type) {
@@ -26,7 +28,13 @@ public class ClientApp {
         client.setStrategyType(type);
         Map<String, String> headers = initHeaders();
         Map<String, Object> params = initParams();
-        client.doGet(getUrl, headers, params);
+        long start = System.currentTimeMillis();
+        for (int i = 0; i < 10; i++) {
+            client.doGetAsync(getUrl, headers, params);
+        }
+        long end1 = System.currentTimeMillis();
+        System.err.println(type.name() + " all cost time:" + (end1 - start));
+
     }
 
     public static void executeGet() {

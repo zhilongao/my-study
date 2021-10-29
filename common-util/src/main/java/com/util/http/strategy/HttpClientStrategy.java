@@ -132,7 +132,6 @@ public class HttpClientStrategy extends BaseWorkStrategy {
             public void completed(HttpResponse response) {
                 try {
                     String content = EntityUtils.toString(response.getEntity(), "UTF-8");
-                    System.err.println(content);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -140,17 +139,14 @@ public class HttpClientStrategy extends BaseWorkStrategy {
 
             @Override
             public void failed(Exception ex) {
-                System.out.println(request.getRequestLine() + "->" + ex);
-                System.out.println(" callback thread id is : " + Thread.currentThread().getId());
+
             }
 
             @Override
             public void cancelled() {
-                System.out.println(request.getRequestLine() + " cancelled");
-                System.out.println(" callback thread id is : " + Thread.currentThread().getId());
+
             }
         });
-        System.err.println(future);
     }
 
 
