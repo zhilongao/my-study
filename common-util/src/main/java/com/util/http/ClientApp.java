@@ -1,7 +1,9 @@
 package com.util.http;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
@@ -18,9 +20,9 @@ public class ClientApp {
     public static void main(String[] args) {
         // executeGet();
         // executePost();
-        // testHttpClient(StrategyType.STRATEGY_HTTP_CLIENT);
+        testHttpClient(StrategyType.STRATEGY_HTTP_CLIENT);
         // testHttpClient(StrategyType.STRATEGY_HUTOOL_CLIENT);
-        testHttpClient(StrategyType.STRATEGY_OK_HTTP);
+        // testHttpClient(StrategyType.STRATEGY_OK_HTTP);
     }
 
     public static void testHttpClient(StrategyType type) {
@@ -28,10 +30,17 @@ public class ClientApp {
         client.setStrategyType(type);
         Map<String, String> headers = initHeaders();
         Map<String, Object> params = initParams();
+        List<BatchReq> reqs = new ArrayList<>();
         long start = System.currentTimeMillis();
-        for (int i = 0; i < 10; i++) {
-            client.doGetAsync(getUrl, headers, params);
+        for (int i = 0; i < 100; i++) {
+            BatchReq batchReq = new BatchReq();
+            batchReq.setUrl(getUrl);
+            batchReq.setHeaders(headers);
+            batchReq.setParams(params);
+            reqs.add(batchReq);
+            // client.doGetAsync(getUrl, headers, params);
         }
+        client.doGetAsyncBatch(reqs);
         long end1 = System.currentTimeMillis();
         System.err.println(type.name() + " all cost time:" + (end1 - start));
 

@@ -1,5 +1,6 @@
 package com.util.http.strategy;
 
+import com.util.http.BatchReq;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,8 +16,8 @@ import org.apache.http.impl.nio.client.HttpAsyncClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Future;
 
 /**
@@ -102,8 +103,19 @@ public class HttpClientStrategy extends BaseWorkStrategy {
         // 1. 创建请求
         HttpGet request = getRequest(url, headers, params);
         // 2. 执行请求
-        doAsync(request);
+        doAsync(Arrays.asList(request));
     }
+
+    @Override
+    public void doGetAsyncBatch(List<BatchReq> reqs) {
+        List<HttpRequestBase> requests = new ArrayList<>();
+        for (BatchReq req : reqs) {
+            HttpGet request = getRequest(req.getUrl(), req.getHeaders(), req.getParams());
+            requests.add(request);
+        }
+        doAsync(requests);
+    }
+
 
     /**
      * 异步post请求
@@ -114,40 +126,63 @@ public class HttpClientStrategy extends BaseWorkStrategy {
     @Override
     public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params){
         // 1. 创建请求
-        HttpPost httpPost = postRequest(url, headers);
+        HttpPost request = postRequest(url, headers);
         // 2. 发送请求
-        doAsync(httpPost);
+        doAsync(Arrays.asList(request));
     }
 
     /**
-     * 异步请求的封装
-     * @param request 请求
+     * 执行异步请求(批量)
+     * @param requests requests
      */
-    public void doAsync(HttpRequestBase request) {
-        if(!asyncHttpClient.isRunning()) {
-            asyncHttpClient.start();
+    private void doAsync(List<HttpRequestBase> requests) {
+        // 使用CountDownLatch控制client关闭的时机
+        CountDownLatch latch = new CountDownLatch(requests.size());
+        asyncHttpClient.start();
+        for (HttpRequestBase req : requests) {
+            doAsync(req, latch);
         }
+        // 等待任务执行完毕
+        try {
+            latch.await();
+            asyncHttpClient.close();
+        } catch (InterruptedException | IOException e) {
+            e.printStackTrace();
+        }
+        System.err.println("execute all");
+    }
+
+    /**
+     * 执行异步请求(单个)
+     * @param request request
+     */
+    private void doAsync(HttpRequestBase request, CountDownLatch latch) {
         Future<HttpResponse> future = asyncHttpClient.execute(request, new FutureCallback<HttpResponse>() {
             @Override
             public void completed(HttpResponse response) {
                 try {
+
                     String content = EntityUtils.toString(response.getEntity(), "UTF-8");
+                    System.err.println(content);
+                    // todo 处理内容
                 } catch (IOException e) {
                     e.printStackTrace();
+                } finally {
+                    latch.countDown();
                 }
             }
-
             @Override
             public void failed(Exception ex) {
-
+                latch.countDown();
             }
 
             @Override
             public void cancelled() {
-
+                latch.countDown();
             }
         });
     }
+
 
 
     /****************************************** 工具方法 *******************************/

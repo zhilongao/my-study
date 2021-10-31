@@ -1,7 +1,9 @@
 package com.util.http.strategy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.util.http.BatchReq;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -19,6 +21,15 @@ public abstract class BaseWorkStrategy {
     public abstract void doGetAsync(String url, Map<String, String> headers, Map<String, Object> params);
 
     public abstract void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params);
+
+    public void doGetAsyncBatch(List<BatchReq> reqs) {
+        throw new RuntimeException("not support!");
+    }
+
+    public void doPostAsyncBatch(List<BatchReq> reqs) {
+        throw new RuntimeException("not support!");
+    }
+
 
     protected String extentUrl(String url, Map<String, Object> params) {
         StringBuilder builder = new StringBuilder(url);

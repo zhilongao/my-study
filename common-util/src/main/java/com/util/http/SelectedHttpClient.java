@@ -3,6 +3,7 @@ package com.util.http;
 
 import com.util.http.strategy.BaseWorkStrategy;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,5 +44,17 @@ public class SelectedHttpClient extends BaseWorkStrategy {
     public void doPostAsync(String url, Map<String, String> headers, Map<String, Object> params) {
         StrategyType strategyType = getStrategyType();
         strategyType.strategy.doPostAsync(url, headers, params);
+    }
+
+    @Override
+    public void doGetAsyncBatch(List<BatchReq> reqs) {
+        StrategyType strategyType = getStrategyType();
+        strategyType.strategy.doGetAsyncBatch(reqs);
+    }
+
+    @Override
+    public void doPostAsyncBatch(List<BatchReq> reqs) {
+        StrategyType strategyType = getStrategyType();
+        strategyType.strategy.doGetAsyncBatch(reqs);
     }
 }
