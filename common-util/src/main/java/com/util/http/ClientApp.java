@@ -1,6 +1,10 @@
 package com.util.http;
 
 
+import com.util.http.common.BatchReq;
+import com.util.http.common.SelectedHttpClient;
+import com.util.http.common.StrategyType;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +36,7 @@ public class ClientApp {
         Map<String, Object> params = initParams();
         List<BatchReq> reqs = new ArrayList<>();
         long start = System.currentTimeMillis();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1; i++) {
             BatchReq batchReq = new BatchReq();
             batchReq.setUrl(getUrl);
             batchReq.setHeaders(headers);
@@ -85,7 +89,7 @@ public class ClientApp {
             e.printStackTrace();
         }
         long end = System.currentTimeMillis();
-        System.err.printf("使用策略:%s  耗时:%s ms \n", client.getStrategyType().code, (end - start));
+        System.err.printf("使用策略:%s  耗时:%s ms \n", client.getStrategyType().name(), (end - start));
     }
 
     public static class HttpExecuteTask implements Runnable {

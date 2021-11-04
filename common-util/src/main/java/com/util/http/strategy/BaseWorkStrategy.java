@@ -1,7 +1,7 @@
 package com.util.http.strategy;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.util.http.BatchReq;
+import com.util.http.common.BatchReq;
 
 import java.util.List;
 import java.util.Map;

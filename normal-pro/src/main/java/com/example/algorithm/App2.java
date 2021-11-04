@@ -1,15 +1,28 @@
 package com.example.algorithm;
 
-import java.util.List;
 
 public class App2 {
     public static void main(String[] args) {
-        // 三数之和,给定一个数组,找出数组中三个数相加和等于0的三个数的下标,不能够重复。
-
+        int x1 = 9807600;
+        int x2 = 980760001;
+        System.err.println(reverse(x1));
+        System.err.println(reverse(x2));
     }
 
-    public static List<List<Integer>> threeSum(int[] nums) {
-
-        return null;
+    /**
+     * 整数的反转
+     * @param x 整数
+     * @return 反转之后的数
+     */
+    public static int reverse(int x) {
+        StringBuilder sb = new StringBuilder();
+        int r  = 0;
+        while ( x != 0) {
+            r = x % 10;
+            x = x / 10;
+            sb.append(r);
+        }
+        return Integer.parseInt(sb.toString());
     }
 }
+

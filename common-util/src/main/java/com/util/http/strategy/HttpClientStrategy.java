@@ -1,7 +1,8 @@
 package com.util.http.strategy;
 
-import com.util.http.BatchReq;
+import com.util.http.common.BatchReq;
 import org.apache.http.HttpResponse;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -28,7 +29,18 @@ public class HttpClientStrategy extends BaseWorkStrategy {
 
     private CloseableHttpClient httpClient = HttpClients.createDefault();
 
-    private CloseableHttpAsyncClient asyncHttpClient = HttpAsyncClients.createDefault();
+    private static final CloseableHttpAsyncClient asyncHttpClient;
+
+    static {
+        RequestConfig requestConfig = RequestConfig.custom()
+                .setConnectTimeout(50000)
+                .setSocketTimeout(50000)
+                .setConnectionRequestTimeout(1000)
+                .build();
+        asyncHttpClient = HttpAsyncClients.custom()
+                .setDefaultRequestConfig(requestConfig)
+                .build();
+    }
 
     /**
      * 同步get请求
@@ -103,7 +115,7 @@ public class HttpClientStrategy extends BaseWorkStrategy {
         // 1. 创建请求
         HttpGet request = getRequest(url, headers, params);
         // 2. 执行请求
-        doAsync(Arrays.asList(request));
+        doAsync(Collections.singletonList(request));
     }
 
     @Override
@@ -128,7 +140,7 @@ public class HttpClientStrategy extends BaseWorkStrategy {
         // 1. 创建请求
         HttpPost request = postRequest(url, headers);
         // 2. 发送请求
-        doAsync(Arrays.asList(request));
+        doAsync(Collections.singletonList(request));
     }
 
     /**
@@ -161,7 +173,6 @@ public class HttpClientStrategy extends BaseWorkStrategy {
             @Override
             public void completed(HttpResponse response) {
                 try {
-
                     String content = EntityUtils.toString(response.getEntity(), "UTF-8");
                     System.err.println(content);
                     // todo 处理内容
