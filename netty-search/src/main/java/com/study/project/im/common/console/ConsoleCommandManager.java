@@ -13,12 +13,12 @@ public class ConsoleCommandManager implements ConsoleCommand {
 
     public ConsoleCommandManager() {
         consoleCommandMap = new HashMap<>();
-        consoleCommandMap.put("sendMessage", new MessageConsoleCommand());
-        consoleCommandMap.put("createGroup", new CreateGroupConsoleCommand());
-        consoleCommandMap.put("joinGroup", new JoinGroupConsoleCommand());
-        consoleCommandMap.put("quitGroup", new QuitGroupConsoleCommand());
-        consoleCommandMap.put("listGroupMembers", new ListGroupMembersConsoleCommand());
-        consoleCommandMap.put("sendGroupMessage", new SendGroupMessageConsoleCommand());
+        consoleCommandMap.put("1", new MessageConsoleCommand());
+        consoleCommandMap.put("2", new CreateGroupConsoleCommand());
+        consoleCommandMap.put("3", new JoinGroupConsoleCommand());
+        consoleCommandMap.put("4", new QuitGroupConsoleCommand());
+        consoleCommandMap.put("5", new ListGroupMembersConsoleCommand());
+        consoleCommandMap.put("6", new SendGroupMessageConsoleCommand());
     }
 
     @Override

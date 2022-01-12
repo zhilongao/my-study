@@ -28,7 +28,7 @@ public class ListGroupMembersRequestHandler extends SimpleChannelInboundHandler<
         String groupId = packet.getGroupId();
         ChannelGroup channelGroup = SessionUtil.getChannelGroup(groupId);
         // 2. 构造成员信息
-        List<Session> sessionList = new ArrayList<>();
+        List<Session> sessionList = new ArrayList<Session>();
         for (Channel channel : channelGroup) {
             Session session = SessionUtil.getSession(channel);
             sessionList.add(session);
