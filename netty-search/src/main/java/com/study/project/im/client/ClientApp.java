@@ -5,6 +5,7 @@ import com.study.project.im.common.auth.SessionUtil;
 import com.study.project.im.common.console.ConsoleCommandManager;
 import com.study.project.im.common.console.LoginConsoleCommand;
 import com.study.project.im.common.handler.Spliter;
+import com.study.project.im.common.packet.request.LoginRequestPacket;
 import com.study.project.im.common.util.Logs;
 import com.study.project.im.common.util.PacketDecoder;
 import com.study.project.im.common.util.PacketEncoder;
@@ -18,7 +19,10 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 
@@ -31,6 +35,14 @@ public class ClientApp {
     private static final int MAX_RETRY = 5;
 
     public static void main(String[] args) throws InterruptedException {
+        // 启动一个客户端
+        start();
+    }
+
+    /**
+     * 启动一个客户端
+     */
+    private static void start() {
         Bootstrap bootstrap = new Bootstrap();
         NioEventLoopGroup group = new NioEventLoopGroup();
         bootstrap.group(group)
@@ -63,6 +75,7 @@ public class ClientApp {
                 });
         connect(bootstrap, host, port, MAX_RETRY);
     }
+
 
     private static void connect(Bootstrap bootstrap, String host, int port, int retry) {
         bootstrap.connect(host, port).addListener(future -> {
@@ -97,6 +110,21 @@ public class ClientApp {
             }
         }).start();
     }
+
+    static Queue<String> queue = new ArrayBlockingQueue<String>(256);
+
+    private static void startMessageThread(Channel channel) {
+        new Thread(() -> {
+            String poll = queue.poll();
+            String[] split = poll.split(";");
+            LoginRequestPacket packet = new LoginRequestPacket();
+            packet.setUsername(split[0]);
+            packet.setPassword(split[1]);
+            channel.writeAndFlush(packet);
+        }).start();
+    }
+
+
 
     private static void waitForLoginResponse() {
         try {
