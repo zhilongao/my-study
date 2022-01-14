@@ -1,10 +1,14 @@
 package com.study.project.im.client;
 
+import com.alibaba.fastjson.JSONObject;
 import com.study.project.im.client.handler.*;
+import com.study.project.im.common.MessageQueue;
 import com.study.project.im.common.auth.SessionUtil;
 import com.study.project.im.common.console.ConsoleCommandManager;
 import com.study.project.im.common.console.LoginConsoleCommand;
 import com.study.project.im.common.handler.Spliter;
+import com.study.project.im.common.packet.DefaultPacket;
+import com.study.project.im.common.packet.Packet;
 import com.study.project.im.common.packet.request.LoginRequestPacket;
 import com.study.project.im.common.util.Logs;
 import com.study.project.im.common.util.PacketDecoder;
@@ -23,6 +27,7 @@ import java.util.Queue;
 import java.util.Scanner;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 
@@ -34,15 +39,15 @@ public class ClientApp {
 
     private static final int MAX_RETRY = 5;
 
-    public static void main(String[] args) throws InterruptedException {
-        // 启动一个客户端
-        start();
-    }
+//    public static void main(String[] args) throws InterruptedException {
+//        // 启动一个客户端
+//        start();
+//    }
 
     /**
      * 启动一个客户端
      */
-    private static void start() {
+    public static void start() {
         Bootstrap bootstrap = new Bootstrap();
         NioEventLoopGroup group = new NioEventLoopGroup();
         bootstrap.group(group)
@@ -83,7 +88,9 @@ public class ClientApp {
                 Logs.info("客户端连接成功");
                 // 启动控制台消息发送线程
                 Channel channel = ((ChannelFuture) future).channel();
-                startConsoleThread(channel);
+                // startConsoleThread(channel);
+                // 消息处理线程启动
+                startLoginPacketThread(channel);
             } else if (retry == 0) {
                 Logs.info("重连次数用完,放弃连接");
             } else {
@@ -111,16 +118,22 @@ public class ClientApp {
         }).start();
     }
 
-    static Queue<String> queue = new ArrayBlockingQueue<String>(256);
 
-    private static void startMessageThread(Channel channel) {
+    private static void startLoginPacketThread(Channel channnel) {
         new Thread(() -> {
-            String poll = queue.poll();
-            String[] split = poll.split(";");
-            LoginRequestPacket packet = new LoginRequestPacket();
-            packet.setUsername(split[0]);
-            packet.setPassword(split[1]);
-            channel.writeAndFlush(packet);
+            while (!Thread.interrupted()) {
+                LoginRequestPacket packet = MessageQueue.getLoginRequestPacket();
+                if (null != packet) {
+                    System.err.println("处理登录消息:" + JSONObject.toJSONString(packet));
+                    channnel.writeAndFlush(packet);
+                } else {
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
         }).start();
     }
 

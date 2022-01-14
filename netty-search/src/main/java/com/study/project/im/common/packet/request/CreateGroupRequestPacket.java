@@ -1,13 +1,14 @@
 package com.study.project.im.common.packet.request;
 
 import com.study.project.im.common.Command;
+import com.study.project.im.common.packet.DefaultPacket;
 import com.study.project.im.common.packet.Packet;
 import lombok.Data;
 
 import java.util.Set;
 
 @Data
-public class CreateGroupRequestPacket extends Packet {
+public class CreateGroupRequestPacket extends DefaultPacket {
 
     private Set<String> userIdSet;
 

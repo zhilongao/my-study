@@ -1,11 +1,12 @@
 package com.study.project.im.common.packet.response;
 
 import com.study.project.im.common.Command;
+import com.study.project.im.common.packet.DefaultPacket;
 import com.study.project.im.common.packet.Packet;
 import lombok.Data;
 
 @Data
-public class QuitGroupResponsePacket extends Packet {
+public class QuitGroupResponsePacket extends DefaultPacket {
 
     private boolean success;
 

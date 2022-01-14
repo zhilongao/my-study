@@ -1,12 +1,13 @@
 package com.study.project.im.common.packet.response;
 
 import com.study.project.im.common.Command;
+import com.study.project.im.common.packet.DefaultPacket;
 import com.study.project.im.common.packet.Packet;
 import com.study.project.im.common.auth.Session;
 import lombok.Data;
 
 @Data
-public class SendGroupMessageResponsePacket extends Packet {
+public class SendGroupMessageResponsePacket extends DefaultPacket {
 
     private String fromGroupId;
 

@@ -2,8 +2,10 @@ package com.study.project.im.common.packet;
 
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
-public abstract class Packet {
+public abstract class Packet implements Serializable {
     /**
      * 协议版本
      */

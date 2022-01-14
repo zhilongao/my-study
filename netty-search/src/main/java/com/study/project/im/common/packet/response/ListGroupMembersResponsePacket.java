@@ -1,6 +1,7 @@
 package com.study.project.im.common.packet.response;
 
 import com.study.project.im.common.Command;
+import com.study.project.im.common.packet.DefaultPacket;
 import com.study.project.im.common.packet.Packet;
 import com.study.project.im.common.auth.Session;
 import lombok.Data;
@@ -8,7 +9,7 @@ import lombok.Data;
 import java.util.List;
 
 @Data
-public class ListGroupMembersResponsePacket extends Packet {
+public class ListGroupMembersResponsePacket extends DefaultPacket {
 
     private String groupId;
 

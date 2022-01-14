@@ -1,6 +1,7 @@
 package com.study.project.im.common.packet.response;
 
 import com.study.project.im.common.Command;
+import com.study.project.im.common.packet.DefaultPacket;
 import com.study.project.im.common.packet.Packet;
 import lombok.Data;
 
@@ -8,7 +9,7 @@ import lombok.Data;
  * 登录响应包
  */
 @Data
-public class LoginResponsePacket extends Packet {
+public class LoginResponsePacket extends DefaultPacket {
 
     @Override
     public Byte getCommand() {

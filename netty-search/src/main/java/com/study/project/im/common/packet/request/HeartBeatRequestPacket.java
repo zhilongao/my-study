@@ -1,9 +1,10 @@
 package com.study.project.im.common.packet.request;
 
 import com.study.project.im.common.Command;
+import com.study.project.im.common.packet.DefaultPacket;
 import com.study.project.im.common.packet.Packet;
 
-public class HeartBeatRequestPacket extends Packet {
+public class HeartBeatRequestPacket extends DefaultPacket {
 
 
     @Override
