@@ -3,7 +3,9 @@ package com.study.project.im.common;
 import com.alibaba.fastjson.JSONObject;
 import com.study.project.im.common.packet.DefaultPacket;
 import com.study.project.im.common.packet.request.LoginRequestPacket;
+import com.study.project.im.common.packet.request.MessageRequestPacket;
 import com.study.project.im.common.packet.response.LoginResponsePacket;
+import com.study.project.im.common.packet.response.MessageResponsePacket;
 import redis.clients.jedis.Jedis;
 
 import java.util.Queue;
@@ -28,6 +30,10 @@ public class MessageQueue {
     public static final String LOGIN_REQ_PACKET_QUEUE_KEY = "login_req_packet_queue_key";
 
     public static final String LOGIN_RESP_PACKET_QUEUE_KEY = "login_resp_packet_queue_key";
+
+    public static final String MESSAGE_REQ_PACKET_QUEUE_KEY = "message_req_packet_queue_key";
+
+    public static final String MESSAGE_RESP_PACKET_QUEUE_KEY = "message_resp_packet_queue_key";
 
     public static final String LOGIN_USER_QUEUE_KEY = "login_user_queue_key";
 
@@ -64,6 +70,25 @@ public class MessageQueue {
     public static LoginResponsePacket getLoginRespPacket() {
         String key = LOGIN_RESP_PACKET_QUEUE_KEY;
         return (LoginResponsePacket)getPacket(key, LoginResponsePacket.class);
+    }
+
+    public static void addReqMessagePacket(MessageRequestPacket packet) {
+        setPacket(MESSAGE_REQ_PACKET_QUEUE_KEY, packet);
+    }
+
+    public static MessageRequestPacket getReqMessagePacket() {
+        String key = MESSAGE_REQ_PACKET_QUEUE_KEY;
+        return (MessageRequestPacket)getPacket(key, MessageRequestPacket.class);
+    }
+
+
+    public static void addRespMessagePacket(MessageResponsePacket packet) {
+        setPacket(MESSAGE_RESP_PACKET_QUEUE_KEY, packet);
+    }
+
+    public static MessageResponsePacket getRespMessagePacket() {
+        String key = MESSAGE_RESP_PACKET_QUEUE_KEY;
+        return (MessageResponsePacket)getPacket(key, MessageResponsePacket.class);
     }
 
     /**

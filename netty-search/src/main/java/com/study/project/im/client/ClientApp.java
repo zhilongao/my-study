@@ -10,6 +10,7 @@ import com.study.project.im.common.handler.Spliter;
 import com.study.project.im.common.packet.DefaultPacket;
 import com.study.project.im.common.packet.Packet;
 import com.study.project.im.common.packet.request.LoginRequestPacket;
+import com.study.project.im.common.packet.request.MessageRequestPacket;
 import com.study.project.im.common.util.Logs;
 import com.study.project.im.common.util.PacketDecoder;
 import com.study.project.im.common.util.PacketEncoder;
@@ -91,6 +92,7 @@ public class ClientApp {
                 // startConsoleThread(channel);
                 // 消息处理线程启动
                 startLoginPacketThread(channel);
+                startMessagePacketThread(channel);
             } else if (retry == 0) {
                 Logs.info("重连次数用完,放弃连接");
             } else {
@@ -136,6 +138,26 @@ public class ClientApp {
             }
         }).start();
     }
+
+    public static void startMessagePacketThread(Channel channel) {
+        new Thread(() -> {
+            while (!Thread.interrupted()) {
+                MessageRequestPacket packet = MessageQueue.getReqMessagePacket();
+                if (null != packet) {
+                    System.err.println("处理普通消息:" + JSONObject.toJSONString(packet));
+                    channel.writeAndFlush(packet);
+                } else {
+                    try {
+                        TimeUnit.SECONDS.sleep(1);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
+
+
 
 
 

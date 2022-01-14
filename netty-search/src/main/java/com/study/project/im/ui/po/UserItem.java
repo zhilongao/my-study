@@ -1,4 +1,4 @@
-package com.study.project.im.ui;
+package com.study.project.im.ui.po;
 
 import lombok.Data;
 
