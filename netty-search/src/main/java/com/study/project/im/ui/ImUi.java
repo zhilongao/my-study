@@ -1,20 +1,14 @@
 package com.study.project.im.ui;
 
-import com.alibaba.fastjson.JSONObject;
 import com.study.project.im.client.ClientApp;
+import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.MessageQueue;
-import com.study.project.im.common.packet.DefaultPacket;
-import com.study.project.im.common.packet.response.LoginResponsePacket;
 import com.study.project.im.common.packet.response.MessageResponsePacket;
 import com.study.project.im.ui.listener.LoginActionListener;
 import com.study.project.im.ui.listener.SendActionListener;
-import com.study.project.im.ui.po.UserItem;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -22,14 +16,16 @@ import java.util.concurrent.TimeUnit;
  */
 public class ImUi {
 
-    private  JTextField nameField = null;
-    private  JPasswordField pwdField = null;
-    private  JTextField messageField = null;
-    private  JComboBox comboBox = null;
+    private JTextField nameField = null;
+    private JPasswordField pwdField = null;
+    private JTextField messageField = null;
+    private JComboBox comboBox = null;
+    private JTextField chatMessage = null;
+    private JFrame loginFrame = null;
+    private JFrame chatFrame = null;
+    private String userId;
+    private String userName;
 
-    private  JTextField chatMessage = null;
-    private  JFrame loginFrame = null;
-    private  JFrame chatFrame = null;
 
     public  void initUi() {
         // 创建JFrame
@@ -58,7 +54,7 @@ public class ImUi {
         pwdField.setPreferredSize(dim);
         JButton loginButton = new JButton();
         loginButton.setText("立即登录");
-        LoginActionListener loginActionListener = new LoginActionListener(nameField, pwdField);
+        LoginActionListener loginActionListener = new LoginActionListener(this);
         loginButton.addActionListener(loginActionListener);
         JLabel nameLabel = new JLabel("账号：");
         JLabel pwdLabel = new JLabel("密码：");
@@ -68,11 +64,9 @@ public class ImUi {
         loginFrame.add(pwdField);
         loginFrame.add(loginButton);
         loginFrame.setVisible(true);
-
         // 聊天界面加载元素
         comboBox = new JComboBox();//下拉选择框
         comboBox.setBounds(15, 15, 100, 25);
-        refreshUser();
         JLabel userIdLabel = new JLabel("用户");
         JLabel messageLabel = new JLabel("消息");
         messageField = new JTextField();
@@ -82,7 +76,7 @@ public class ImUi {
         chatMessage.setPreferredSize(dim2);
         JButton sendButton = new JButton();
         sendButton.setText("发送");
-        SendActionListener listener = new SendActionListener(messageField, comboBox);
+        SendActionListener listener = new SendActionListener(this);
         sendButton.addActionListener(listener);
         chatFrame.add(userIdLabel);
         chatFrame.add(comboBox);
@@ -93,41 +87,14 @@ public class ImUi {
         chatFrame.add(chatMessage);
         // 客户端去连接
         ClientApp.start();
-        // 处理登录响应
-        new Thread(() -> {
-            int retry = 0;
-            while (true) {
-                if (3 == retry) {
-                    log("请求超时!");
-                }
-                retry ++;
-                LoginResponsePacket loginRespPacket = MessageQueue.getLoginRespPacket();
-                if (null != loginRespPacket) {
-                    log("登录请求响应数据包:" + JSONObject.toJSONString(loginRespPacket));
-                    // 更新下相关的选项值
-                    chatFrame.setTitle("聊天窗口-" + loginRespPacket.getUserName());
-                    refreshUser();
-                    // ui显示控制
-                    loginFrame.setVisible(false);
-                    chatFrame.setVisible(true);
-                    break;
-                } else {
-                    try {
-                        TimeUnit.SECONDS.sleep(1);
-                    } catch (InterruptedException e1) {
-                        e1.printStackTrace();
-                    }
-                }
-            }
-        }).start();
-
         // 处理普通的响应消息
         new Thread(() -> {
             while (!Thread.interrupted()) {
-                MessageResponsePacket packet = MessageQueue.getRespMessagePacket();
+                MessageResponsePacket packet = MessageQueue.getRespMessagePacket(userId);
                 if (null != packet) {
                     String fromUserName = packet.getFromUserName();
                     String message = packet.getMessage();
+                    LogUtil.log("接收到普通消息:" + message);
                     chatMessage.setText(fromUserName + ":" + message);
                 } else {
                     try {
@@ -138,42 +105,78 @@ public class ImUi {
                 }
             }
         }).start();
-
-        // 刷新选择框
-//        new Thread(() -> {
-//            while (!Thread.interrupted()) {
-//                refreshUser();
-//                try {
-//                    TimeUnit.SECONDS.sleep(10);
-//                } catch (InterruptedException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        }).start();
-
     }
 
 
-    public void refreshUser() {
-        UserItem[] userItem = getUserItem();
-        comboBox.setModel(new DefaultComboBoxModel(userItem));
+    public JTextField getNameField() {
+        return nameField;
     }
 
-    public UserItem[] getUserItem() {
-        Queue<DefaultPacket> loginUserQueue = MessageQueue.getLoginPacketQueue();
-        List<UserItem> list = new ArrayList<UserItem>();
-        while (!loginUserQueue.isEmpty()) {
-            LoginResponsePacket packet = (LoginResponsePacket)loginUserQueue.poll();
-            UserItem item = new UserItem();
-            item.setUserId(packet.getUserId());
-            item.setUserName(packet.getUserName());
-            list.add(item);
-        }
-        return list.toArray(new UserItem[0]);
+    public void setNameField(JTextField nameField) {
+        this.nameField = nameField;
     }
 
-    public void log(String message) {
-        System.err.println(message);
+    public JPasswordField getPwdField() {
+        return pwdField;
     }
 
+    public void setPwdField(JPasswordField pwdField) {
+        this.pwdField = pwdField;
+    }
+
+    public JTextField getMessageField() {
+        return messageField;
+    }
+
+    public void setMessageField(JTextField messageField) {
+        this.messageField = messageField;
+    }
+
+    public JComboBox getComboBox() {
+        return comboBox;
+    }
+
+    public void setComboBox(JComboBox comboBox) {
+        this.comboBox = comboBox;
+    }
+
+    public JTextField getChatMessage() {
+        return chatMessage;
+    }
+
+    public void setChatMessage(JTextField chatMessage) {
+        this.chatMessage = chatMessage;
+    }
+
+    public JFrame getLoginFrame() {
+        return loginFrame;
+    }
+
+    public void setLoginFrame(JFrame loginFrame) {
+        this.loginFrame = loginFrame;
+    }
+
+    public JFrame getChatFrame() {
+        return chatFrame;
+    }
+
+    public void setChatFrame(JFrame chatFrame) {
+        this.chatFrame = chatFrame;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 }

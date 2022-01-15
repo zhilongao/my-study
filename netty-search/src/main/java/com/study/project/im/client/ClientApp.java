@@ -139,12 +139,11 @@ public class ClientApp {
         }).start();
     }
 
-    public static void startMessagePacketThread(Channel channel) {
+    private static void startMessagePacketThread(Channel channel) {
         new Thread(() -> {
             while (!Thread.interrupted()) {
                 MessageRequestPacket packet = MessageQueue.getReqMessagePacket();
                 if (null != packet) {
-                    System.err.println("处理普通消息:" + JSONObject.toJSONString(packet));
                     channel.writeAndFlush(packet);
                 } else {
                     try {

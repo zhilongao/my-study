@@ -33,7 +33,7 @@ public class MessageQueue {
 
     public static final String MESSAGE_REQ_PACKET_QUEUE_KEY = "message_req_packet_queue_key";
 
-    public static final String MESSAGE_RESP_PACKET_QUEUE_KEY = "message_resp_packet_queue_key";
+    public static final String MESSAGE_RESP_PACKET_QUEUE_KEY = "message_resp_packet_queue_key_";
 
     public static final String LOGIN_USER_QUEUE_KEY = "login_user_queue_key";
 
@@ -83,11 +83,12 @@ public class MessageQueue {
 
 
     public static void addRespMessagePacket(MessageResponsePacket packet) {
-        setPacket(MESSAGE_RESP_PACKET_QUEUE_KEY, packet);
+        String toUserId = packet.getToUserId();
+        setPacket(MESSAGE_RESP_PACKET_QUEUE_KEY + toUserId, packet);
     }
 
-    public static MessageResponsePacket getRespMessagePacket() {
-        String key = MESSAGE_RESP_PACKET_QUEUE_KEY;
+    public static MessageResponsePacket getRespMessagePacket(String toUserId) {
+        String key = MESSAGE_RESP_PACKET_QUEUE_KEY + toUserId;
         return (MessageResponsePacket)getPacket(key, MessageResponsePacket.class);
     }
 

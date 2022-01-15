@@ -12,6 +12,8 @@ public class MessageResponsePacket extends DefaultPacket {
 
     private String fromUserName;
 
+    private String toUserId;
+
     private String message;
 
     @Override
