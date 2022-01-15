@@ -1,20 +1,15 @@
 package com.study.project.im.ui.listener;
 
-import com.alibaba.fastjson.JSONObject;
 import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.MessageQueue;
-import com.study.project.im.common.packet.DefaultPacket;
 import com.study.project.im.common.packet.request.LoginRequestPacket;
 import com.study.project.im.common.packet.response.LoginResponsePacket;
+import com.study.project.im.ui.CommonUtils;
 import com.study.project.im.ui.ImUi;
-import com.study.project.im.ui.po.UserItem;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -45,7 +40,6 @@ public class LoginActionListener implements ActionListener {
         LoginRequestPacket loginReqPacket = new LoginRequestPacket();
         loginReqPacket.setUsername(name);
         loginReqPacket.setPassword(pwd);
-        System.err.println("发送登录请求数据包:" + JSONObject.toJSONString(loginReqPacket));
         MessageQueue.addLoginReqPacket(loginReqPacket);
         // 处理登录响应
         handleLoginResponse();
@@ -61,14 +55,13 @@ public class LoginActionListener implements ActionListener {
                 retry ++;
                 LoginResponsePacket loginRespPacket = MessageQueue.getLoginRespPacket();
                 if (null != loginRespPacket) {
-                    LogUtil.log("登录请求响应数据包:" + JSONObject.toJSONString(loginRespPacket));
                     // 更新下相关的选项值
                     String userId = loginRespPacket.getUserId();
                     String userName = loginRespPacket.getUserName();
                     this.imUi.setUserId(userId);
                     this.imUi.setUserName(userName);
-                    chatFrame.setTitle("聊天窗口-" + userName);
-                    refreshUser();
+                    chatFrame.setTitle("charles聊天室-" + userName);
+                    CommonUtils.refreshUser(this.imUi.getComboBox());
                     // ui显示控制
                     loginFrame.setVisible(false);
                     chatFrame.setVisible(true);
@@ -83,23 +76,4 @@ public class LoginActionListener implements ActionListener {
             }
         }).start();
     }
-
-    public void refreshUser() {
-        UserItem[] userItem = getUserItem();
-        this.imUi.getComboBox().setModel(new DefaultComboBoxModel(userItem));
-    }
-
-    public UserItem[] getUserItem() {
-        Queue<DefaultPacket> loginUserQueue = MessageQueue.getLoginPacketQueue();
-        List<UserItem> list = new ArrayList<UserItem>();
-        while (!loginUserQueue.isEmpty()) {
-            LoginResponsePacket packet = (LoginResponsePacket)loginUserQueue.poll();
-            UserItem item = new UserItem();
-            item.setUserId(packet.getUserId());
-            item.setUserName(packet.getUserName());
-            list.add(item);
-        }
-        return list.toArray(new UserItem[0]);
-    }
-
 }

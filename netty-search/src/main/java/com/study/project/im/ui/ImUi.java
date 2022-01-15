@@ -4,8 +4,10 @@ import com.study.project.im.client.ClientApp;
 import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.MessageQueue;
 import com.study.project.im.common.packet.response.MessageResponsePacket;
+import com.study.project.im.ui.listener.ChatTypeSelectListener;
 import com.study.project.im.ui.listener.LoginActionListener;
 import com.study.project.im.ui.listener.SendActionListener;
+import com.study.project.im.ui.po.ChatTypeItem;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,6 +22,7 @@ public class ImUi {
     private JPasswordField pwdField = null;
     private JTextField messageField = null;
     private JComboBox comboBox = null;
+    private JComboBox msgTypeBox = null;
     private JTextField chatMessage = null;
     private JFrame loginFrame = null;
     private JFrame chatFrame = null;
@@ -30,24 +33,27 @@ public class ImUi {
     public  void initUi() {
         // 创建JFrame
         loginFrame = new JFrame();
-        loginFrame.setTitle("登录界面");
-        loginFrame.setSize(500, 300);
+        loginFrame.setTitle("charles聊天室");
+        loginFrame.setSize(600, 150);
+        loginFrame.setLocation(500, 500);
         loginFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         loginFrame.setResizable(false);
 
         chatFrame = new JFrame();
         chatFrame.setTitle("聊天窗口");
-        chatFrame.setSize(500, 300);
+        chatFrame.setSize(600, 300);
+        chatFrame.setLocation(500, 500);
         chatFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         chatFrame.setResizable(false);
         // 设置为流式布局
         FlowLayout loginLayout = new FlowLayout();
         loginFrame.setLayout(loginLayout);
         FlowLayout chatLayout = new FlowLayout();
+        chatLayout.setAlignment(FlowLayout.LEFT);
         chatFrame.setLayout(chatLayout);
 
         // 登录界面加载元素
-        Dimension dim = new Dimension(400, 40);
+        Dimension dim = new Dimension(550, 30);
         nameField = new JTextField();
         pwdField = new JPasswordField();
         nameField.setPreferredSize(dim);
@@ -56,8 +62,8 @@ public class ImUi {
         loginButton.setText("立即登录");
         LoginActionListener loginActionListener = new LoginActionListener(this);
         loginButton.addActionListener(loginActionListener);
-        JLabel nameLabel = new JLabel("账号：");
-        JLabel pwdLabel = new JLabel("密码：");
+        JLabel nameLabel = new JLabel("账号:");
+        JLabel pwdLabel = new JLabel("密码:");
         loginFrame.add(nameLabel);
         loginFrame.add(nameField);
         loginFrame.add(pwdLabel);
@@ -66,18 +72,26 @@ public class ImUi {
         loginFrame.setVisible(true);
         // 聊天界面加载元素
         comboBox = new JComboBox();//下拉选择框
-        comboBox.setBounds(15, 15, 100, 25);
-        JLabel userIdLabel = new JLabel("用户");
-        JLabel messageLabel = new JLabel("消息");
+        JLabel singLabel = new JLabel("消息类型");
+        ChatTypeItem[] chatTypes = CommonUtils.getChatType();
+        ChatTypeSelectListener chatTypeListener = new ChatTypeSelectListener(this);
+        msgTypeBox = new JComboBox();
+        msgTypeBox.setModel(new DefaultComboBoxModel(chatTypes));
+        msgTypeBox.addActionListener(chatTypeListener);
+        JLabel userIdLabel = new JLabel(" 用户");
+        JLabel messageLabel = new JLabel(" 消息");
         messageField = new JTextField();
-        Dimension dim2 = new Dimension(400, 40);
+        Dimension dim2 = new Dimension(200, 30);
         messageField.setPreferredSize(dim2);
         chatMessage = new JTextField();
-        chatMessage.setPreferredSize(dim2);
+        Dimension dim3 = new Dimension(570, 100);
+        chatMessage.setPreferredSize(dim3);
         JButton sendButton = new JButton();
         sendButton.setText("发送");
         SendActionListener listener = new SendActionListener(this);
         sendButton.addActionListener(listener);
+        chatFrame.add(singLabel);
+        chatFrame.add(msgTypeBox);
         chatFrame.add(userIdLabel);
         chatFrame.add(comboBox);
         chatFrame.add(messageLabel);
@@ -178,5 +192,13 @@ public class ImUi {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public JComboBox getMsgTypeBox() {
+        return msgTypeBox;
+    }
+
+    public void setMsgTypeBox(JComboBox msgTypeBox) {
+        this.msgTypeBox = msgTypeBox;
     }
 }
