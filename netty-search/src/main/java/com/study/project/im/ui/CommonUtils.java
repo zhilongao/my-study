@@ -13,6 +13,10 @@ import java.util.Queue;
 
 public class CommonUtils {
 
+    public static final String CREATE_GROUP_COMMAND = "创建群聊";
+    public static final String ADD_GROUP_COMMAND = "加入群聊";
+    public static final String QUIT_GROUP_COMMAND = "退出群聊";
+
     public static ChatTypeItem[] getChatType() {
         List<ChatTypeItem> list = new ArrayList<>();
         ChatTypeItem item1 = new ChatTypeItem(1, "单聊");
