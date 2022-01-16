@@ -27,7 +27,7 @@ public class ImUi {
     private JTextField messageField = null;
     private JComboBox comboBox = null;
     private JComboBox msgTypeBox = null;
-    private JTextField chatMessage = null;
+    private JTextArea jTextArea;
     private JFrame chatFrame = null;
     private String userId;
     private String userName;
@@ -60,8 +60,8 @@ public class ImUi {
                 if (null != packet) {
                     String fromUserName = packet.getFromUserName();
                     String message = packet.getMessage();
-                    LogUtil.log("接收到普通消息:" + message);
-                    chatMessage.setText(fromUserName + ":" + message);
+                    // LogUtil.log("接收到普通消息:" + message);
+                    jTextArea.append(fromUserName + ":" + message + "\n");
                 } else {
                     try {
                         TimeUnit.SECONDS.sleep(1);
@@ -131,9 +131,9 @@ public class ImUi {
         messageField = new JTextField();
         Dimension dim2 = new Dimension(200, 30);
         messageField.setPreferredSize(dim2);
-        chatMessage = new JTextField();
+        //chatMessage = new JTextField();
         Dimension dim3 = new Dimension(570, 100);
-        chatMessage.setPreferredSize(dim3);
+        //chatMessage.setPreferredSize(dim3);
         JButton sendButton = new JButton();
         sendButton.setText("发送");
         SendActionListener listener = new SendActionListener(this);
@@ -146,7 +146,9 @@ public class ImUi {
         chatFrame.add(messageField);
         chatFrame.setVisible(false);
         chatFrame.add(sendButton);
-        chatFrame.add(chatMessage);
+        jTextArea = new JTextArea();
+        jTextArea.setPreferredSize(dim3);
+        chatFrame.add(jTextArea);
         // 设置菜单
         initMenu();
     }
