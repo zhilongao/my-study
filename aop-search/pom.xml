@@ -53,6 +53,20 @@
             <artifactId>easyexcel</artifactId>
             <version>3.0.5</version>
         </dependency>
+
+
+        <!-- 将logback日志写入到es -->
+        <dependency>
+            <groupId>com.internetitem</groupId>
+            <artifactId>logback-elasticsearch-appender</artifactId>
+            <version>1.6</version>
+        </dependency>
+        <dependency>
+            <groupId>net.logstash.logback</groupId>
+            <artifactId>logstash-logback-encoder</artifactId>
+            <version>4.11</version>
+        </dependency>
+
     </dependencies>
 
     <build>
