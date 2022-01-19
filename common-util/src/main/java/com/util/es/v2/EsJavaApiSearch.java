@@ -20,21 +20,9 @@ import org.elasticsearch.search.sort.SortOrder;
 import java.io.IOException;
 
 /**
- * es高级查询
+ * es高级查询(版本7.8.0)
  */
 public class EsJavaApiSearch {
-
-    public static void main(String[] args) throws IOException {
-        String index = "user";
-        EsJavaApiSearch api = new EsJavaApiSearch();
-        // api.searchAll(index);
-        // api.searchByCondition(index);
-        // api.searchByPage(index);
-        // api.searcBySort(index);
-        // api.searcByFileter(index);
-        // api.searcByCombine(index);
-        api.searcByLike(index);
-    }
 
     /**
      * 查询索引中的全部数据

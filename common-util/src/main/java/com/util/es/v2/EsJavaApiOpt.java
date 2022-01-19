@@ -27,58 +27,13 @@ import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.xcontent.XContentType;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-
-public class EsJavaApiV2 {
-
-    public static void main(String[] args) throws Exception {
-        EsJavaApiV2 api = new EsJavaApiV2();
-
-        String index = "user";
-
-        //api.createIndex(index);
-        //api.delIndex(index);
-        //api.queryIndex(index);
-
-        String id = "10900";
-        User u1 = new User();
-        u1.setAge(18);
-        u1.setGener("男");
-        u1.setName("jack009");
-        //api.createDoc(index, id, u1);
-
-        //api.updateDoc(index, id);
-
-        //api.queryDoc(index, id);
-        //api.deleteDoc(index, id);
-        //api.queryDoc(index, id);
-
-
-        // batch opt
-
-        /*
-        List<User> users = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            User u = new User();
-            u.setName("用户:" + i);
-            u.setAge(i + 10);
-            u.setGener("女");
-            u.setId(UUID.randomUUID().toString().replace("-", ""));
-            users.add(u);
-        }
-        api.createBatchDoc(index, users);
-        */
-
-        List<String> ids = new ArrayList<>();
-        ids.add("1d2ae4e9be284fdd9c1d64d7e9fbcc48");
-        ids.add("f696962a52d14e48879953371888a763");
-        api.deleteBatchDoc(index, ids);
-    }
-
+/**
+ * es高级查询(版本7.8.0)
+ */
+public class EsJavaApiOpt {
 
     /**
      * 索引创建

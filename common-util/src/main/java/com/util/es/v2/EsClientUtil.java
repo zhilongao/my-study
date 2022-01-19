@@ -4,7 +4,9 @@ import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
 
-
+/**
+ * es高级查询(版本7.8.0)
+ */
 public class EsClientUtil {
 
     private static final String host = "127.0.0.1";
