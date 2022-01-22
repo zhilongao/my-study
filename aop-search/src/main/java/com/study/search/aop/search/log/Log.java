@@ -1,4 +1,4 @@
-package com.study.search.aop.search.annotation;
+package com.study.search.aop.search.log;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
