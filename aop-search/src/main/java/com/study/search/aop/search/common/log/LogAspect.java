@@ -1,4 +1,4 @@
-package com.study.search.aop.search.log;
+package com.study.search.aop.search.common.log;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -24,7 +24,7 @@ public class LogAspect {
     /**
      * 定义切点(注解的形式)
      */
-    @Pointcut("@annotation(com.study.search.aop.search.log.Log)")
+    @Pointcut("@annotation(com.study.search.aop.search.common.log.Log)")
     public void pointCutV2() {
 
     }

@@ -1,8 +1,8 @@
-package com.study.search.aop.search.controller;
+package com.study.search.aop.search.skywalking.controller;
 
 
-import com.study.search.aop.search.service.OrderService;
-import com.study.search.aop.search.service.UserService;
+import com.study.search.aop.search.skywalking.service.OrderService;
+import com.study.search.aop.search.skywalking.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

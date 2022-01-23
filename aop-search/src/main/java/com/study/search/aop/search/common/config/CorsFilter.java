@@ -1,4 +1,4 @@
-package com.study.search.aop.search.config;
+package com.study.search.aop.search.common.config;
 
 import org.springframework.context.annotation.Configuration;
 

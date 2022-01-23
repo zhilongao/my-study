@@ -1,4 +1,4 @@
-package com.study.search.aop.search.service;
+package com.study.search.aop.search.skywalking.service;
 
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.study.search.aop.search.controller;
+package com.study.search.aop.search.skywalking.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
