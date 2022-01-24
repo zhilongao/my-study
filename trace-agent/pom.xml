@@ -18,6 +18,10 @@
         <module>agent-jar</module>
         <module>bytebuddy-jar</module>
         <module>bytebuddy-client</module>
+        <module>instrument-jar</module>
+        <module>instrument-client</module>
+        <module>metric-tool</module>
+        <module>metric-client</module>
     </modules>
 
     <build>
