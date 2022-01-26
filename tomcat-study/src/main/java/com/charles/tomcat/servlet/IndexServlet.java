@@ -1,4 +1,4 @@
-package com.study.servlet;
+package com.charles.tomcat.servlet;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;

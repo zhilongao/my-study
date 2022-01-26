@@ -9,7 +9,7 @@ import org.elasticsearch.client.RestHighLevelClient;
  */
 public class EsClientUtil {
 
-    private static final String host = "127.0.0.1";
+    private static final String host = "192.168.222.128";
 
     private static final int port = 9200;
 
