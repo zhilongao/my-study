@@ -11,7 +11,7 @@ public class EsClientUtil {
 
     private static final String host = "192.168.222.128";
 
-    private static final int port = 9200;
+    private static final int port = 9201;
 
     private static final String schema = "http";
 
