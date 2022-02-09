@@ -3,24 +3,13 @@ package com.util.redis.redisson;
 import org.redisson.api.*;
 import org.springframework.util.StringUtils;
 
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 public class ClientApp {
 
     public static void main(String[] args) {
-        //test1();
-        //test2();
-        //test3();
-        for (int i = 0; i < 10; i++) {
-            new Thread(() -> {
-                test5();
-            }).start();
-        }
-        try {
-            Thread.sleep(500000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        test6();
     }
 
     // 普通键值对操作
@@ -97,6 +86,27 @@ public class ClientApp {
         }
     }
 
+    // 测试操作set
+    public static void test6() {
+        String setKey = "set_key_001";
+        RedissonClient client = RedissonConfig.createClient();
+        // set添加
+        /*
+        RSet<Object> rSet = client.getSet(setKey);
+        if (rSet.isEmpty()) {
+            System.err.println("rSet is empty");
+        }
+        rSet.add("val1");
+        rSet.add("val2");
+        rSet.add("val3");
+        */
+        // set获取
+        RSet<Object> rSet = client.getSet(setKey);
+        Set<Object> results = rSet.readAll();
+        for (Object obj : results) {
+            System.err.println(obj);
+        }
+    }
 
 
 
