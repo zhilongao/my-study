@@ -5,6 +5,7 @@ import com.charles.tomcat.servlet.OrderServlet;
 import org.apache.catalina.*;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.*;
+import org.apache.catalina.startup.Bootstrap;
 import org.apache.catalina.startup.Tomcat;
 
 public class TomcatStart {
@@ -111,7 +112,9 @@ public class TomcatStart {
 
     // Service
 
-
+    private static void test1() {
+        Bootstrap strap = new Bootstrap();
+    }
 
 
 }

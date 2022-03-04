@@ -133,6 +133,12 @@
             <version>${elasticsearch.version}</version>
         </dependency>
 
+        <!--  spring集成es -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-elasticsearch</artifactId>
+        </dependency>
+
         <!-- redis客户端 -->
         <!-- redisson -->
         <dependency>

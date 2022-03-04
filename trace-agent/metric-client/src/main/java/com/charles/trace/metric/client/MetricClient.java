@@ -8,7 +8,7 @@ public class MetricClient {
         boolean flag = true;
         while (flag) {
             List<Object> list = new ArrayList<Object>();
-            list.add("Hello World");
+            list.add(new Object());
         }
     }
 }

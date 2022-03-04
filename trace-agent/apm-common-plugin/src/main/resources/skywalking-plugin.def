@@ -1,0 +1,3 @@
+# Key=value的形式
+# key随便写;value是Instrumentation类的包名类名全路径
+my-string-replace-plugin=com.study.apm.common.plugin.StringReplaceInstrumentation

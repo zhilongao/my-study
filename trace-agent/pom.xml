@@ -22,6 +22,7 @@
         <module>instrument-client</module>
         <module>metric-tool</module>
         <module>metric-client</module>
+        <module>apm-common-plugin</module>
     </modules>
 
     <build>

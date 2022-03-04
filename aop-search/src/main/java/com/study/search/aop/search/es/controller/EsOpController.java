@@ -1,7 +1,9 @@
 package com.study.search.aop.search.es.controller;
 
 import com.study.search.aop.search.es.dao.UserRepository;
+import com.study.search.aop.search.es.dao.UserScoreRepository;
 import com.study.search.aop.search.es.entity.SysUser;
+import com.study.search.aop.search.es.entity.UserScore;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
@@ -49,6 +51,14 @@ public class EsOpController {
     @PostMapping("/findAllAndSort")
     public Iterable<SysUser> findAllAndSort(){
         return repository.findAll(Sort.by("password").ascending());
+    }
+
+    @Autowired
+    private UserScoreRepository userScoreRepository;
+
+    @PostMapping("/saveScore")
+    public UserScore saveScore(@RequestBody UserScore user) {
+        return userScoreRepository.save(user);
     }
 
 }
