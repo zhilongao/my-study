@@ -1,7 +1,7 @@
 package com.study.project.im.server.handler;
 
+import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.util.IDUtil;
-import com.study.project.im.common.util.Logs;
 import com.study.project.im.common.auth.SessionUtil;
 import com.study.project.im.common.packet.request.CreateGroupRequestPacket;
 import com.study.project.im.common.packet.response.CreateGroupResponsePacket;
@@ -50,7 +50,7 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
         // 将响应发送到每个客户端
         channelGroup.writeAndFlush(response);
         // 信息
-        Logs.error("群创建成功,id为[" + response.getGroupId() + "]");
-        Logs.error("群里有:" + response.getUserNameList());
+        LogUtil.info("群创建成功,id为[" + response.getGroupId() + "]");
+        LogUtil.info("群里有:" + response.getUserNameList());
     }
 }

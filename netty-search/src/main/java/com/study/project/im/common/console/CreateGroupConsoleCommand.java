@@ -1,6 +1,6 @@
 package com.study.project.im.common.console;
 
-import com.study.project.im.common.util.Logs;
+import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.auth.SessionUtil;
 import com.study.project.im.common.packet.request.CreateGroupRequestPacket;
 import io.netty.channel.Channel;
@@ -17,7 +17,7 @@ public class CreateGroupConsoleCommand implements ConsoleCommand {
     @Override
     public void exec(Scanner scanner, Channel channel) {
         CreateGroupRequestPacket packet = new CreateGroupRequestPacket();
-        Logs.error("【拉入群聊】输入userId列表,userId之间引文逗号隔开:");
+        LogUtil.info("【拉入群聊】输入userId列表,userId之间引文逗号隔开:");
         String userIds = scanner.next();
         // 群聊创建,需要加入创建者userId
         Set<String> groupUserIds = new HashSet<>(Arrays.asList(userIds.split(USER_ID_SPLITER)));

@@ -1,6 +1,6 @@
 package com.study.project.im.server.handler;
 
-import com.study.project.im.common.util.Logs;
+import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.auth.Session;
 import com.study.project.im.common.auth.SessionUtil;
 import com.study.project.im.common.packet.request.MessageRequestPacket;
@@ -34,7 +34,7 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         if (toUserChannel != null && SessionUtil.hasLogin(toUserChannel)) {
             toUserChannel.writeAndFlush(message);
         } else {
-            Logs.error("[" + packet.getToUserId() + "] 不在线,发送消息失败!");
+            LogUtil.info("[" + packet.getToUserId() + "] 不在线,发送消息失败!");
         }
 
     }

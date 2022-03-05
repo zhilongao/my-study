@@ -1,6 +1,6 @@
 package com.study.project.im.common.console;
 
-import com.study.project.im.common.util.Logs;
+import com.study.project.im.common.LogUtil;
 import io.netty.channel.Channel;
 
 import java.util.HashMap;
@@ -28,7 +28,7 @@ public class ConsoleCommandManager implements ConsoleCommand {
         if (consoleCommand != null) {
             consoleCommand.exec(scanner, channel);
         } else {
-            Logs.error("无法识别[" + command + "]指令,请重新输入!");
+            LogUtil.info("无法识别[" + command + "]指令,请重新输入!");
         }
     }
 }

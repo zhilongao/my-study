@@ -1,6 +1,6 @@
 package com.study.project.im.common.auth;
 
-import com.study.project.im.common.util.Logs;
+import com.study.project.im.common.LogUtil;
 import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -16,7 +16,7 @@ public class AuthHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        Logs.error("服务端AuthHandler校验!");
+        LogUtil.info("服务端AuthHandler校验!");
         if (!SessionUtil.hasLogin(ctx.channel())) {
             ctx.channel().close();
         } else {
@@ -29,9 +29,9 @@ public class AuthHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
         if (SessionUtil.hasLogin(ctx.channel())) {
-            Logs.info("当前连接登录验证完毕,无需再次验证,AuthHandler被移除!");
+            LogUtil.info("当前连接登录验证完毕,无需再次验证,AuthHandler被移除!");
         } else {
-            Logs.info("无登录验证,强制关闭连接!");
+            LogUtil.info("无登录验证,强制关闭连接!");
         }
     }
 }

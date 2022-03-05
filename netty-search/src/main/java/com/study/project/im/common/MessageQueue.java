@@ -6,6 +6,7 @@ import com.study.project.im.common.packet.request.LoginRequestPacket;
 import com.study.project.im.common.packet.request.MessageRequestPacket;
 import com.study.project.im.common.packet.response.LoginResponsePacket;
 import com.study.project.im.common.packet.response.MessageResponsePacket;
+import com.study.project.im.utils.RedisUtils;
 import redis.clients.jedis.Jedis;
 
 import java.util.Queue;
@@ -13,20 +14,6 @@ import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class MessageQueue {
-    /**
-     * 请求包队列
-     */
-//    public static Queue<DefaultPacket> reqPacketQueue = new LinkedBlockingQueue<>();
-//    /**
-//     * 响应包队列
-//     */
-//    public static Queue<DefaultPacket> respPacketQueue = new LinkedBlockingQueue<>();
-//    /**
-//     * 登录用户列表
-//     */
-//    public static Queue<DefaultPacket> loginUserQueue = new LinkedBlockingQueue<>();
-
-
     public static final String LOGIN_REQ_PACKET_QUEUE_KEY = "login_req_packet_queue_key";
 
     public static final String LOGIN_RESP_PACKET_QUEUE_KEY = "login_resp_packet_queue_key";
@@ -119,7 +106,7 @@ public class MessageQueue {
         if (values.size() > 0) {
             queue.clear();
             for (String msg : values) {
-                System.err.println(msg);
+                LogUtil.info(msg);
                 DefaultPacket packet = JSONObject.parseObject(msg, cls);
                 queue.add(packet);
             }
@@ -139,12 +126,7 @@ public class MessageQueue {
     }
 
 
-
-
     public static Jedis getJedis() {
-        Jedis jedis = new Jedis("127.0.0.1", 6379);
-        return jedis;
+        return RedisUtils.getJedis();
     }
-
-
 }

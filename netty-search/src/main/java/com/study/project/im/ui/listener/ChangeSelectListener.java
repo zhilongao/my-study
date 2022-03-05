@@ -1,5 +1,7 @@
 package com.study.project.im.ui.listener;
 
+import com.study.project.im.common.LogUtil;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +12,6 @@ public class ChangeSelectListener implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        System.err.println("change selected");
+        LogUtil.info("change selected");
     }
 }

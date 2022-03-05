@@ -1,7 +1,7 @@
 package com.study.project.im.server.handler;
 
+import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.util.IDUtil;
-import com.study.project.im.common.util.Logs;
 import com.study.project.im.common.auth.Session;
 import com.study.project.im.common.auth.SessionUtil;
 import com.study.project.im.common.packet.request.LoginRequestPacket;
@@ -33,7 +33,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             response.setUserId(userId);
             response.setUserName(username);
             response.setSuccess(true);
-            Logs.info("【" + packet.getUsername() + "】 登录成功");
+            LogUtil.info("【" + packet.getUsername() + "】 登录成功");
             ctx.channel().writeAndFlush(response);
         }
     }

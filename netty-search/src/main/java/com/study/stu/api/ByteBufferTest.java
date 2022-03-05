@@ -1,5 +1,6 @@
 package com.study.stu.api;
 
+import com.study.project.im.common.LogUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
 
@@ -40,17 +41,16 @@ public class ByteBufferTest {
     }
 
     private static void print(String action, ByteBuf buffer) {
-        System.err.println("after =====================" + action + "===============");
-        System.err.println("capacity():" + buffer.capacity());
-        System.err.println("maxCapacity():" + buffer.maxCapacity());
-        System.err.println("readerIndex():" + buffer.readerIndex());
-        System.err.println("readableBytes():" + buffer.readableBytes());
-        System.err.println("isReadable():" + buffer.isReadable());
-        System.err.println("writerIndex():" + buffer.writerIndex());
-        System.err.println("writableBytes():" + buffer.writableBytes());
-        System.err.println("isWritable():" + buffer.isWritable());
-        System.err.println("maxWritableBytes():" + buffer.maxWritableBytes());
-        System.err.println();
+        LogUtil.info("after =====================" + action + "===============");
+        LogUtil.info("capacity():" + buffer.capacity());
+        LogUtil.info("maxCapacity():" + buffer.maxCapacity());
+        LogUtil.info("readerIndex():" + buffer.readerIndex());
+        LogUtil.info("readableBytes():" + buffer.readableBytes());
+        LogUtil.info("isReadable():" + buffer.isReadable());
+        LogUtil.info("writerIndex():" + buffer.writerIndex());
+        LogUtil.info("writableBytes():" + buffer.writableBytes());
+        LogUtil.info("isWritable():" + buffer.isWritable());
+        LogUtil.info("maxWritableBytes():" + buffer.maxWritableBytes());
     }
 
 }

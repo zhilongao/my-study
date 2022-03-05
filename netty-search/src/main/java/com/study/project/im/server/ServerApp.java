@@ -1,8 +1,8 @@
 package com.study.project.im.server;
 
+import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.auth.AuthHandler;
 import com.study.project.im.common.handler.Spliter;
-import com.study.project.im.common.util.Logs;
 import com.study.project.im.server.handler.*;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
@@ -55,9 +55,9 @@ public class ServerApp {
             @Override
             public void operationComplete(Future<? super Void> future) throws Exception {
                 if (future.isSuccess()) {
-                    Logs.error("端口[" + port + "]绑定成功!");
+                    LogUtil.info("端口[" + port + "]绑定成功!");
                 } else {
-                    Logs.error("端口[" + port + "]绑定失败!");
+                    LogUtil.info("端口[" + port + "]绑定失败!");
                     bind(bootstrap, port + 1);
                 }
             }

@@ -10,7 +10,7 @@ public class IoServer {
         new Thread(() -> {
             while (true) {
                 try {
-                    System.err.println("服务启动");
+                    LogUtil.info("服务启动");
                     // 1. 阻塞方法,获取新的连接
                     final Socket socket = server.accept();
                     // 2. 每个连接都创建一个新线程，负责读取数据
@@ -20,7 +20,7 @@ public class IoServer {
                             byte[] data = new byte[1024];
                             InputStream inputStream = socket.getInputStream();
                             while ((len = inputStream.read(data)) != -1) {
-                                System.err.println(new String(data, 0, len));
+                                LogUtil.info(new String(data, 0, len));
                             }
                         } catch (Exception e) {
                             e.printStackTrace();

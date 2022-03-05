@@ -2,16 +2,14 @@ package com.study.project.im.client;
 
 import com.alibaba.fastjson.JSONObject;
 import com.study.project.im.client.handler.*;
+import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.MessageQueue;
 import com.study.project.im.common.auth.SessionUtil;
 import com.study.project.im.common.console.ConsoleCommandManager;
 import com.study.project.im.common.console.LoginConsoleCommand;
 import com.study.project.im.common.handler.Spliter;
-import com.study.project.im.common.packet.DefaultPacket;
-import com.study.project.im.common.packet.Packet;
 import com.study.project.im.common.packet.request.LoginRequestPacket;
 import com.study.project.im.common.packet.request.MessageRequestPacket;
-import com.study.project.im.common.util.Logs;
 import com.study.project.im.common.util.PacketDecoder;
 import com.study.project.im.common.util.PacketEncoder;
 import com.study.project.im.server.handler.IMIdlesStateHandler;
@@ -24,11 +22,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
-import java.util.Queue;
 import java.util.Scanner;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 
@@ -86,7 +80,7 @@ public class ClientApp {
     private static void connect(Bootstrap bootstrap, String host, int port, int retry) {
         bootstrap.connect(host, port).addListener(future -> {
             if (future.isSuccess()) {
-                Logs.info("客户端连接成功");
+                LogUtil.info("客户端连接成功");
                 // 启动控制台消息发送线程
                 Channel channel = ((ChannelFuture) future).channel();
                 // startConsoleThread(channel);
@@ -94,11 +88,11 @@ public class ClientApp {
                 startLoginPacketThread(channel);
                 startMessagePacketThread(channel);
             } else if (retry == 0) {
-                Logs.info("重连次数用完,放弃连接");
+                LogUtil.info("重连次数用完,放弃连接");
             } else {
                 int order = (MAX_RETRY - retry) + 1;
                 int delay = 1 << order;
-                Logs.error("连接失败,第" + order + "次重连...");
+                LogUtil.error("连接失败,第" + order + "次重连...");
                 bootstrap.config().group().schedule(() -> connect(bootstrap, host, port, retry - 1), delay, TimeUnit.SECONDS);
             }
         });
@@ -126,7 +120,7 @@ public class ClientApp {
             while (!Thread.interrupted()) {
                 LoginRequestPacket packet = MessageQueue.getLoginRequestPacket();
                 if (null != packet) {
-                    System.err.println("处理登录消息:" + JSONObject.toJSONString(packet));
+                    LogUtil.info("处理登录消息:" + JSONObject.toJSONString(packet));
                     channnel.writeAndFlush(packet);
                 } else {
                     try {
