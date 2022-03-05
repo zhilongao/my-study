@@ -10,6 +10,7 @@ public class IoServer {
         new Thread(() -> {
             while (true) {
                 try {
+                    System.err.println("服务启动");
                     // 1. 阻塞方法,获取新的连接
                     final Socket socket = server.accept();
                     // 2. 每个连接都创建一个新线程，负责读取数据
