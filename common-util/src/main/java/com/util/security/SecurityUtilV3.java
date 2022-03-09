@@ -19,9 +19,10 @@ public class SecurityUtilV3 {
 
     public static void main(String[] args) {
         SecurityUtilV3 inst = SecurityUtilV3.getInst();
-        String token = "PWYJNwX4Zb1gUMYOEUhwHfIAssdGQTlZUAO8eN2crtU";
-        String desString = inst.getDesString(token);
-        System.err.println(desString);
+        String encString = inst.getEncString("hello,world");
+        String desString1 = inst.getDesString(encString);
+        System.err.println(encString);
+        System.err.println(desString1);
     }
 
 
