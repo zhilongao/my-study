@@ -3,6 +3,7 @@ package com.util.security;
 import com.util.security.util.AesUtil;
 import com.util.security.util.DesUtil;
 import com.util.security.util.DigestUtil;
+import com.util.security.util.RsaUtil;
 
 import java.nio.charset.StandardCharsets;
 import java.security.*;
@@ -11,43 +12,11 @@ import java.util.Map;
 public class App {
 
     public static void main(String[] args) throws Exception {
-
-        // testDes();
-        // testAes();
+        testDes();
+        testAes();
         testSha1();
         testMd5();
-        System.err.println("*********");
-        System.err.println();
-
-        SecurityUtil app = new SecurityUtil();
-        Map<String, Object> keyMap;
-        String input = "10001eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-        try {
-            keyMap = app.initKey();
-            String publicKey = app.generatePublicKeyStr(keyMap);
-            System.out.println("公钥------------------");
-            System.out.println(publicKey);
-            System.out.println("length: " + publicKey.length());
-
-            String privateKey = app.generatePrivateKeyStr(keyMap);
-            System.out.println("私钥------------------");
-            System.out.println(privateKey);
-            System.out.println("length: " + privateKey.length());
-
-            System.out.println("测试可行性-------------------");
-            System.out.println("明文=======" + input);
-            System.out.println("length: " + input.length());
-
-            String message = "a=1&b=2&c=3";
-            byte[] data = message.getBytes(StandardCharsets.UTF_8);
-            String sign = app.sign(data, (PrivateKey) keyMap.get(SecurityUtil.PRIVATE_KEY));
-            System.err.println(sign);
-
-            String sign1 = app.sign(data, privateKey);
-            System.err.println(sign1);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        testRsa();
     }
 
 
@@ -90,6 +59,33 @@ public class App {
         String message = "23213wweqhwekqwhewqkehwqkewq213213";
         String s = DigestUtil.md5(message);
         System.err.println(s);
+    }
+
+
+    public static void testRsa() {
+        String message = "hello,world10000002222";
+        byte[] messageBytes = message.getBytes(StandardCharsets.UTF_8);
+        RsaUtil util = new RsaUtil();
+        try {
+            Map<String, Object> keyMap = util.initKey();
+            String publicKeyStr = (String)keyMap.get(RsaUtil.PUBLIC_KEY_STR);
+            String privateKeyStr = (String)keyMap.get(RsaUtil.PRIVATE_KEY_STR);
+            PublicKey publicKey = (PublicKey)keyMap.get(RsaUtil.PUBLIC_KEY);
+            PrivateKey privateKey = (PrivateKey)keyMap.get(RsaUtil.PRIVATE_KEY);
+
+            System.err.println("------公钥--------");
+            System.err.println(publicKeyStr);
+            System.err.println("\n------私钥--------");
+            System.err.println(privateKeyStr);
+
+
+            String encrypt = util.encryptByPublicKey(message, publicKeyStr);
+            System.err.println(encrypt);
+            String decrypt = util.decryptByPrivateKey(encrypt, privateKeyStr);
+            System.err.println(decrypt);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 

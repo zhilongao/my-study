@@ -25,7 +25,7 @@ public class DigestUtil {
 
     public static String digest(String algorithm, String message) {
         byte[] hash = digest(algorithm, message.getBytes(StandardCharsets.UTF_8));
-        return toHex(hash);
+        return CommonUtil.toHex(hash);
     }
 
     public static byte[] digest(String algorithm, byte[] message) {
@@ -37,14 +37,4 @@ public class DigestUtil {
         }
         return null;
     }
-
-    public static String toHex(byte[] bytes) {
-        StringBuilder ret = new StringBuilder(bytes.length * 2);
-        for (int i=0; i<bytes.length; i++) {
-            ret.append(HEX_DIGITS[(bytes[i] >> 4) & 0x0f]);
-            ret.append(HEX_DIGITS[bytes[i] & 0x0f]);
-        }
-        return ret.toString();
-    }
-
 }
