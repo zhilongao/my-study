@@ -13,10 +13,10 @@ public class App {
 
     public static void main(String[] args) throws Exception {
         testDes();
-        testAes();
-        testSha1();
-        testMd5();
-        testRsa();
+        //testAes();
+        //testSha1();
+        //testMd5();
+        //testRsa();
     }
 
 

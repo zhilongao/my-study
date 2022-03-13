@@ -140,6 +140,14 @@
             <version>3.11.1</version>
         </dependency>
 
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>4.2.0-m1</version><!--版本号可根据实际情况填写-->
+        </dependency>
+
+
+
         <!-- mongodb客户端 -->
         <dependency>
             <groupId>org.mongodb</groupId>

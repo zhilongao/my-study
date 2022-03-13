@@ -17,7 +17,6 @@ public class DesUtil {
 
     public static final String ALGORITHM_DES_MODE = "DES/CBC/PKCS5Padding";
 
-
     /**
      * 加密
      * @param message message
