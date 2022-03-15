@@ -1,4 +1,4 @@
-package com.util.log;
+package com.charles.log.api.logback;
 
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.LoggerContext;
@@ -19,25 +19,33 @@ import org.slf4j.LoggerFactory;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class LogUtils {
 
+/**
+ * 编程的方式使用logback
+ * @author gaozhilong
+ * @date 2022/3/15 15:03
+ */
+public class LogBackUtils {
 
-    private static final String basePath = "E:\\files\\";
+    private static LogBackUtils instance = new LogBackUtils();
 
-
-    public static void main(String[] args) {
-        Logger logger = getLogger();
-        // use
-        logger.info("info, hello,world1");
-        logger.warn("warn, hello,world2");
-        logger.error("error, hello,world3");
+    public static LogBackUtils getInstance() {
+        return instance;
     }
+
+    private LogBackUtils() {
+
+    }
+
+    private static final String DEFAULT_BASE_PATH = "E:\\files\\";
+
+    private static final String basePath = DEFAULT_BASE_PATH;
 
     /**
      * 获取Logger,对外提供的方法
      * @return Logger
      */
-    public static Logger getLogger () {
+    public Logger getLogger () {
         // attribute
         String logName = "test1-info-log";
         String fileInfoName = basePath + "info.log";
@@ -61,7 +69,7 @@ public class LogUtils {
      * @param appenderList appender列表
      * @return Logger
      */
-    public static Logger initLogger(String logName, Level level, Appender<ILoggingEvent>... appenderList) {
+    public Logger initLogger(String logName, Level level, Appender<ILoggingEvent>... appenderList) {
         Logger logger = LoggerFactory.getLogger(logName);
         ch.qos.logback.classic.Logger logbackLogger = (ch.qos.logback.classic.Logger)logger;
         logbackLogger.detachAndStopAllAppenders();
@@ -79,7 +87,7 @@ public class LogUtils {
      * @param pattern pattern
      * @return
      */
-    public static Appender initConsoleAppender(LoggerContext context, String pattern) {
+    public Appender initConsoleAppender(LoggerContext context, String pattern) {
         ConsoleAppender appender = new ConsoleAppender();
         PatternLayoutEncoder encoder = new PatternLayoutEncoder();
         encoder.setContext(context);
@@ -99,7 +107,7 @@ public class LogUtils {
      * @param pattern pattern
      * @return appender
      */
-    public static Appender initInfoAppender(LoggerContext context, String fileName, String fnp, String fileSize, String pattern) {
+    public Appender initInfoAppender(LoggerContext context, String fileName, String fnp, String fileSize, String pattern) {
 
         RollingFileAppender<ILoggingEvent> appender = new RollingFileAppender<ILoggingEvent>();
         appender.setFile(fileName);
@@ -132,7 +140,7 @@ public class LogUtils {
      * @param pattern pattern
      * @return appender
      */
-    public static Appender initErrorAppender(LoggerContext context, String fileName, String fnp, String fileSize, String pattern) {
+    public Appender initErrorAppender(LoggerContext context, String fileName, String fnp, String fileSize, String pattern) {
         RollingFileAppender<ILoggingEvent> appender = new RollingFileAppender<ILoggingEvent>();
         appender.setFile(fileName);
         // 创建policy并启动
@@ -164,7 +172,7 @@ public class LogUtils {
      * @param context context
      * @return policy
      */
-    public static TimeBasedRollingPolicy policyCreateAndStart(String fnp, String fileSize, FileAppender appender, LoggerContext context) {
+    public TimeBasedRollingPolicy policyCreateAndStart(String fnp, String fileSize, FileAppender appender, LoggerContext context) {
         // 创建policy并启动
         SizeAndTimeBasedRollingPolicy policy = new SizeAndTimeBasedRollingPolicy();
         policy.setFileNamePattern(fnp);
@@ -185,7 +193,7 @@ public class LogUtils {
      * @param pattern pattern
      * @return encoder
      */
-    public static PatternLayoutEncoder encoderCreateAndStart(LoggerContext context, String pattern) {
+    public PatternLayoutEncoder encoderCreateAndStart(LoggerContext context, String pattern) {
         PatternLayoutEncoder encoder = new PatternLayoutEncoder();
         encoder.setContext(context);
         encoder.setPattern(pattern);
@@ -193,12 +201,10 @@ public class LogUtils {
         return encoder;
     }
 
-
-
     /**
      * 简单的测试
      */
-    private static void simpleTest() {
+    private void simpleTest() {
         String fileName = basePath + logName("info");
         // 获取LoggerContext
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();

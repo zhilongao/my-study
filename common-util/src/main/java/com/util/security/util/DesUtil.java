@@ -51,6 +51,7 @@ public class DesUtil {
             DESKeySpec keySpec = new DESKeySpec(key.getBytes(StandardCharsets.UTF_8));
             // 创建秘钥工厂,获取secretKey
             SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM_DES);
+            //SecretKeyFactory keyFactory = SecretKeyFactory.getInstance(ALGORITHM_DES_MODE);
             SecretKey secretKey = keyFactory.generateSecret(keySpec);
             // Cipher对象完成实际解密工作
             Cipher cipher = Cipher.getInstance(ALGORITHM_DES);

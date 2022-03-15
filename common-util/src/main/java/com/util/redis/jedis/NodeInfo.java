@@ -4,7 +4,7 @@ public class NodeInfo {
 
     private String id;
     private String host;
-    private int port;
+    private String port;
     private String flags;
 
     public String getId() {
@@ -23,11 +23,11 @@ public class NodeInfo {
         this.host = host;
     }
 
-    public int getPort() {
+    public String getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(String port) {
         this.port = port;
     }
 

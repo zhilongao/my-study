@@ -21,9 +21,16 @@ public class RedisClusterStrategy {
                 continue;
             }
             NodeInfo node = new NodeInfo();
-            node.setId(nodeMessArr[0]);
-            node.setHost(nodeMessArr[1]);
-            node.setFlags(nodeMessArr[2]);
+            String id = nodeMessArr[0];
+            String[] hostAndPort = nodeMessArr[1].split(":");
+            String host = hostAndPort[0];
+            String port = hostAndPort[1];
+            String flag = nodeMessArr[2];
+
+            node.setId(id);
+            node.setHost(host);
+            node.setPort(port);
+            node.setFlags(flag);
             list.add(node);
         }
         return list;

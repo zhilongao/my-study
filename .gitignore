@@ -309,3 +309,5 @@ transaction-logs/
 .idea/libraries/Maven__commons_validator_
 commons_validator_1_6.xml
 .idea/libraries/Maven__org_apache_curator_curator_client_4_0_1.xml
+/charles-log-api/charles-log-api.iml
+/charles-log-api/target/
