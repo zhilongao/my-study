@@ -13,6 +13,7 @@ import ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy;
 import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
 import ch.qos.logback.core.spi.FilterReply;
 import ch.qos.logback.core.util.FileSize;
+import com.charles.log.api.BaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,7 @@ import java.util.Date;
  * @author gaozhilong
  * @date 2022/3/15 15:03
  */
-public class LogBackUtils {
+public class LogBackUtils extends BaseUtils {
 
     private static LogBackUtils instance = new LogBackUtils();
 
@@ -37,16 +38,13 @@ public class LogBackUtils {
 
     }
 
-    private static final String DEFAULT_BASE_PATH = "E:\\files\\";
-
-    private static final String basePath = DEFAULT_BASE_PATH;
-
     /**
      * 获取Logger,对外提供的方法
      * @return Logger
      */
     public Logger getLogger () {
         // attribute
+        String basePath = getBasePath();
         String logName = "test1-info-log";
         String fileInfoName = basePath + "info.log";
         String fileErrorName = basePath + "error.log";
@@ -205,6 +203,7 @@ public class LogBackUtils {
      * 简单的测试
      */
     private void simpleTest() {
+        String basePath = getBasePath();
         String fileName = basePath + logName("info");
         // 获取LoggerContext
         LoggerContext loggerContext = (LoggerContext) LoggerFactory.getILoggerFactory();

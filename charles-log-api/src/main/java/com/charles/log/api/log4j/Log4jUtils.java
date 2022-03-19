@@ -1,5 +1,6 @@
 package com.charles.log.api.log4j;
 
+import com.charles.log.api.BaseUtils;
 import org.apache.log4j.*;
 
 
@@ -8,9 +9,7 @@ import org.apache.log4j.*;
  * @author gaozhilong
  * @date 2022/3/15 15:03
  */
-public class Log4jUtils {
-
-    private static final String DEFAULT_BASE_PATH = "E:\\files\\";
+public class Log4jUtils extends BaseUtils {
 
     private static final String INFO_LOG_FILE = "info-log4j.log";
 
@@ -37,22 +36,24 @@ public class Log4jUtils {
     }
 
     private Appender initInfoAppender() {
+        String basePath = getBasePath();
         Layout layout = createCommonLayout();
         RollingFileAppender appender = new RollingFileAppender();
         appender.setAppend(true);
         appender.setName("info-appender");
-        appender.setFile(DEFAULT_BASE_PATH + INFO_LOG_FILE);
+        appender.setFile(basePath + INFO_LOG_FILE);
         appender.setLayout(layout);
         appender.activateOptions();
         return appender;
     }
 
     private Appender initErrorAppender() {
+        String basePath = getBasePath();
         Layout layout = createCommonLayout();
         RollingFileAppender appender = new RollingFileAppender();
         appender.setAppend(true);
         appender.setName("error-appender");
-        appender.setFile(DEFAULT_BASE_PATH + ERROR_LOG_FILE);
+        appender.setFile(basePath + ERROR_LOG_FILE);
         appender.setLayout(layout);
         appender.activateOptions();
         return appender;
