@@ -13,6 +13,8 @@ public class CreateGroupResponsePacket extends DefaultPacket {
 
     private String groupId;
 
+    private List<String> userIdList;
+
     private List<String> userNameList;
 
     @Override

@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 群组创建处理器
+ */
 @ChannelHandler.Sharable
 public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<CreateGroupRequestPacket> {
 
@@ -29,13 +32,14 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
     protected void channelRead0(ChannelHandlerContext ctx, CreateGroupRequestPacket packet) throws Exception {
         Set<String> userIdList = packet.getUserIdSet();
         List<String> userNameList = new ArrayList<>();
-        // 创建一个channel分组
+        List<String> groupUserIds = new ArrayList<>();
+        // 创建一个channel分组 筛选待加入的用户
         ChannelGroup channelGroup = new DefaultChannelGroup(ctx.executor());
-        // 筛选待加入的用户
         for (String userId : userIdList) {
             Channel channel = SessionUtil.getChannel(userId);
             if (channel != null) {
                 channelGroup.add(channel);
+                groupUserIds.add(userId);
                 userNameList.add(SessionUtil.getSession(channel).getUserName());
             }
         }
@@ -44,13 +48,14 @@ public class CreateGroupRequestHandler extends SimpleChannelInboundHandler<Creat
         CreateGroupResponsePacket response = new CreateGroupResponsePacket();
         response.setSuccess(true);
         response.setGroupId(groupId);
+        response.setUserIdList(groupUserIds);
         response.setUserNameList(userNameList);
         // 保存下当前群状态
         SessionUtil.recordGroup(groupId, channelGroup);
         // 将响应发送到每个客户端
         channelGroup.writeAndFlush(response);
-        // 信息
-        LogUtil.info("群创建成功,id为[" + response.getGroupId() + "]");
-        LogUtil.info("群里有:" + response.getUserNameList());
+        // print log message
+        LogUtil.info("create group success|groupId:{}|userIds:{}|userNames:{}", response.getGroupId(),
+                response.getUserIdList(), response.getUserNameList());
     }
 }

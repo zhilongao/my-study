@@ -18,6 +18,11 @@ public class ServerApp {
     private static final int port = 8080;
 
     public static void main(String[] args) {
+        startServer();
+    }
+
+
+    private static void startServer() {
         final ServerBootstrap bootstrap = new ServerBootstrap();
         NioEventLoopGroup boss = new NioEventLoopGroup();
         NioEventLoopGroup worker = new NioEventLoopGroup();

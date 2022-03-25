@@ -22,6 +22,10 @@ public class LogUtil {
         loggerV2.info(message);
     }
 
+    public static void info(String format, Object... arguments) {
+        loggerV2.info(format, arguments);
+    }
+
     public static void error(String message) {
         loggerV2.info(message);
     }
