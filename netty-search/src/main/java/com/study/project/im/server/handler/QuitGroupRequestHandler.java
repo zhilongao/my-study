@@ -1,5 +1,6 @@
 package com.study.project.im.server.handler;
 
+import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.auth.SessionUtil;
 import com.study.project.im.common.packet.request.QuitGroupRequestPacket;
 import com.study.project.im.common.packet.response.QuitGroupResponsePacket;
@@ -8,6 +9,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 
+/**
+ * 退出群组处理器
+ */
 @ChannelHandler.Sharable
 public class QuitGroupRequestHandler extends SimpleChannelInboundHandler<QuitGroupRequestPacket> {
 
@@ -28,6 +32,7 @@ public class QuitGroupRequestHandler extends SimpleChannelInboundHandler<QuitGro
         QuitGroupResponsePacket response = new QuitGroupResponsePacket();
         response.setSuccess(true);
         response.setGroupId(groupId);
+        LogUtil.info("quit group success, groupId:{}", groupId);
         ctx.channel().writeAndFlush(response);
     }
 }

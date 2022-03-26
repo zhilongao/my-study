@@ -14,7 +14,7 @@ public class App {
     public static void main(String[] args) {
         App app = new App();
         app.logbackPrint();
-        app.log4jPrint();
+       // app.log4jPrint();
     }
 
     public void logbackPrint() {

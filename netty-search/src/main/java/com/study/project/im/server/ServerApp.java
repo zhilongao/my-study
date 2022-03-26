@@ -60,9 +60,9 @@ public class ServerApp {
             @Override
             public void operationComplete(Future<? super Void> future) throws Exception {
                 if (future.isSuccess()) {
-                    LogUtil.info("端口[" + port + "]绑定成功!");
+                    LogUtil.info("server bind port success, port:{}", port);
                 } else {
-                    LogUtil.info("端口[" + port + "]绑定失败!");
+                    LogUtil.info("server bind port fail, port:{}", port);
                     bind(bootstrap, port + 1);
                 }
             }

@@ -1,5 +1,6 @@
 package com.study.project.im.server.handler;
 
+import com.study.project.im.common.LogUtil;
 import com.study.project.im.common.auth.SessionUtil;
 import com.study.project.im.common.packet.request.JoinGroupRequestPacket;
 import com.study.project.im.common.packet.response.JoinGroupResponsePacket;
@@ -8,6 +9,9 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.group.ChannelGroup;
 
+/**
+ * 加入群组处理器
+ */
 @ChannelHandler.Sharable
 public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGroupRequestPacket> {
 
@@ -27,6 +31,7 @@ public class JoinGroupRequestHandler extends SimpleChannelInboundHandler<JoinGro
         JoinGroupResponsePacket response = new JoinGroupResponsePacket();
         response.setSuccess(true);
         response.setGroupId(groupId);
+        LogUtil.info("add group success, groupId:{}", groupId);
         // 3. 发送响应
         ctx.channel().writeAndFlush(response);
     }

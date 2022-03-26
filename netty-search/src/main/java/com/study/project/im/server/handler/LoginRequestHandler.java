@@ -10,7 +10,9 @@ import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 
-
+/**
+ * 登录请求处理器
+ */
 @ChannelHandler.Sharable
 public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginRequestPacket> {
 
@@ -33,7 +35,7 @@ public class LoginRequestHandler extends SimpleChannelInboundHandler<LoginReques
             response.setUserId(userId);
             response.setUserName(username);
             response.setSuccess(true);
-            LogUtil.info("【" + packet.getUsername() + "】 登录成功");
+            LogUtil.info("login success, userId:{}, username:{}", userId, username);
             ctx.channel().writeAndFlush(response);
         }
     }

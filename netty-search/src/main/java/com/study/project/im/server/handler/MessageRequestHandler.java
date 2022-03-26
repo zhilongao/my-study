@@ -34,7 +34,8 @@ public class MessageRequestHandler extends SimpleChannelInboundHandler<MessageRe
         if (toUserChannel != null && SessionUtil.hasLogin(toUserChannel)) {
             toUserChannel.writeAndFlush(message);
         } else {
-            LogUtil.info("[" + packet.getToUserId() + "] 不在线,发送消息失败!");
+            LogUtil.info("fail send message to user fromUserId:{}, toUserId:{}, message:{}",
+                    session.getUserId(), packet.getToUserId(), message);
         }
 
     }

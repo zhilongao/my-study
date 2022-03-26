@@ -14,6 +14,7 @@ import ch.qos.logback.core.rolling.TimeBasedRollingPolicy;
 import ch.qos.logback.core.spi.FilterReply;
 import ch.qos.logback.core.util.FileSize;
 import com.charles.log.api.BaseUtils;
+import com.charles.log.api.logback.appender.LogbackAppenderKafka;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -57,7 +58,8 @@ public class LogBackUtils extends BaseUtils {
         Appender infoAppender = initInfoAppender(context, fileInfoName, infoFnp, fileSize, pattern);
         Appender errorAppender = initErrorAppender(context, fileErrorName, errorFnp, fileSize, pattern);
         Appender consoleAppender = initConsoleAppender(context, pattern);
-        return initLogger(logName, Level.INFO, infoAppender, consoleAppender, errorAppender);
+        Appender kafkaAppender = initKafkaAppender(context);
+        return initLogger(logName, Level.INFO, infoAppender, consoleAppender, errorAppender, kafkaAppender);
     }
 
     /**
@@ -162,6 +164,13 @@ public class LogBackUtils extends BaseUtils {
         // 返回appender
         return appender;
     }
+
+    public Appender initKafkaAppender(LoggerContext context) {
+        LogbackAppenderKafka appenderKafka = new LogbackAppenderKafka();
+        return appenderKafka;
+    }
+
+
 
     /**
      * 创建policy
