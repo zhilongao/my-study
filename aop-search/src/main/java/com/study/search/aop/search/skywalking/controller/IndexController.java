@@ -73,4 +73,9 @@ public class IndexController {
             }
         }).start();
     }
+
+    @RequestMapping("/sent")
+    public String sent(@RequestParam String param) {
+        return "ok";
+    }
 }

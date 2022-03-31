@@ -1,0 +1,1 @@
+dubboGatewayFilter=com.study.search.dubbo.provider.filter.GatewayFilter
