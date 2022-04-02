@@ -26,7 +26,6 @@
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-recipes</artifactId>
-            <version>${cloud.curator-recipes.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.curator</groupId>
@@ -37,9 +36,11 @@
         <dependency>
             <groupId>org.apache.curator</groupId>
             <artifactId>curator-framework</artifactId>
-            <version>${cloud.curator-framework.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
         <!-- api  -->
         <dependency>
             <groupId>org.charles</groupId>
