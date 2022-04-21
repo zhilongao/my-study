@@ -2,6 +2,8 @@ package com.study.dubbo.provider;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * 写点注释吧
  *
@@ -12,8 +14,18 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class ProviderApp {
 
     public static void main(String[] args) {
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("provider-service.xml");
-        context.start();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("provider-service.xml");
+                context.start();
+            }
+        }).start();
+        try {
+            TimeUnit.SECONDS.sleep(1000000000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

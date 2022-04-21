@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-       http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/beans/spring-beans.xsd
        http://dubbo.apache.org/schema/dubbo
        http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
 
     <!-- 消费方应用信息，用于计算依赖关系 -->
-    <dubbo:application name="dubbo-consumer-service"/>
+    <dubbo:application name="dubbo-consumer-service" />
 
     <!-- 注册中心配置信息 -->
-    <dubbo:registry id="register1" address="zookeeper://127.0.0.1:2181"/>
+    <dubbo:registry id="register1" check="false" address="zookeeper://121.4.154.35:2181"/>
 
     <!-- 协议信息 -->
     <dubbo:protocol id="protocol1" name="dubbo" port="20880"/>
 
+    <dubbo:consumer check="false"/>
+
     <!-- 接口引用 -->
-    <dubbo:reference interface="com.study.dubbo.api.PayService" id="payService" protocol="protocol1" registry="register1"/>
+    <dubbo:reference interface="com.study.dubbo.api.PayService" id="payService" protocol="protocol1" registry="register1" check="false"/>
 </beans>

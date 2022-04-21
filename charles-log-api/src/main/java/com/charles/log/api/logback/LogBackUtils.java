@@ -31,6 +31,19 @@ public class LogBackUtils extends BaseUtils {
 
     private static LogBackUtils instance = new LogBackUtils();
 
+
+    private static final String DEFAULT_LOGBACK_PATTERN = "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n";
+
+    private static final String DEFAULT_FILE_SIZE = "2mb";
+
+    private static final String DEFAULT_FILE_NAME_INFO = "info.log";
+
+    private static final String DEFAULT_FILE_NAME_ERROR = "error.log";
+
+    private static final String DEFAULT_INFO_FNP = "info-%d{yyyy-MM-dd}.%i.log";
+
+    private static final String DEFAULT_ERROR_FNP = "error-%d{yyyy-MM-dd}.%i.log";
+
     public static LogBackUtils getInstance() {
         return instance;
     }
@@ -44,22 +57,25 @@ public class LogBackUtils extends BaseUtils {
      * @return Logger
      */
     public Logger getLogger () {
-        // attribute
-        String basePath = getBasePath();
         String logName = "test1-info-log";
-        String fileInfoName = basePath + "info.log";
-        String fileErrorName = basePath + "error.log";
-        String infoFnp = basePath + "info-%d{yyyy-MM-dd}.%i.log";
-        String errorFnp = basePath + "error-%d{yyyy-MM-dd}.%i.log";
-        String pattern = "%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{50} - %msg%n";
-        String fileSize = "2mb";
+        return getLogger(logName, Level.INFO);
+    }
+
+    public Logger getLogger(String logName, Level level) {
+        String basePath = getBasePath();
+        String fileInfoName = basePath + DEFAULT_FILE_NAME_INFO;
+        String fileErrorName = basePath + DEFAULT_FILE_NAME_ERROR;
+        String infoFnp = basePath + DEFAULT_INFO_FNP;
+        String errorFnp = basePath + DEFAULT_ERROR_FNP;
+        String pattern = DEFAULT_LOGBACK_PATTERN;
+        String fileSize = DEFAULT_FILE_SIZE;
         // create
         LoggerContext context = (LoggerContext) LoggerFactory.getILoggerFactory();
         Appender infoAppender = initInfoAppender(context, fileInfoName, infoFnp, fileSize, pattern);
         Appender errorAppender = initErrorAppender(context, fileErrorName, errorFnp, fileSize, pattern);
         Appender consoleAppender = initConsoleAppender(context, pattern);
         Appender kafkaAppender = initKafkaAppender(context);
-        return initLogger(logName, Level.INFO, infoAppender, consoleAppender, errorAppender, kafkaAppender);
+        return initLogger(logName, level, infoAppender, consoleAppender, errorAppender, kafkaAppender);
     }
 
     /**

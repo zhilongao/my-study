@@ -14,6 +14,11 @@ public class ProviderServiceImpl implements ProviderService {
     @Override
     public String printMessage(String message) {
         System.err.println(message);
-        return message;
+        return "okok";
+    }
+
+    @Override
+    public String pay(String params) {
+        return "ok";
     }
 }

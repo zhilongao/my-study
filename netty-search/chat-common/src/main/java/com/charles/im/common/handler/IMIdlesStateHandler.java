@@ -17,7 +17,7 @@ public class IMIdlesStateHandler extends IdleStateHandler {
 
     @Override
     protected void channelIdle(ChannelHandlerContext ctx, IdleStateEvent evt) throws Exception {
-        LogUtil.info(READ_IDLE_TIME + "秒内未读取到数据,关闭连接");
+        LogUtil.info(READ_IDLE_TIME + "s not read data, close connection");
         ctx.channel().close();
     }
 }

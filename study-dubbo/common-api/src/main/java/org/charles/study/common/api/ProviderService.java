@@ -4,4 +4,5 @@ public interface ProviderService {
 
     String printMessage(String message);
 
+    String pay(String params);
 }
