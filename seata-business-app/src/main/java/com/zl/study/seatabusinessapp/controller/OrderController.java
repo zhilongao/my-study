@@ -24,7 +24,13 @@ public class OrderController {
         // 验证问题:内层事物的异常,会影响外部事物的回滚
         // return orderService.insertV2(order) == 1 ? "ok": "fail";
         // 解决问题:内层事物的异常,会影响外部事物的回滚
-        return orderService.insertV3(order) == 1 ? "ok": "fail";
+        // return orderService.insertV3(order) == 1 ? "ok": "fail";
+        // 验证问题:类内部this方法调用事物失效
+        // return orderService.insertV4(order) == 1 ? "ok": "fail";
+        // 验证问题:多个线程事物不生效的问题
+        // return orderService.insertV5(order) == 1 ? "ok": "fail";
+        // 验证问题: 异常回滚
+        return orderService.insertV6(order) == 1 ? "ok" : "fail";
     }
 
     @PostMapping("delOrder/{id}")

@@ -28,6 +28,8 @@
         <cloud.curator-framework.version>2.12.0</cloud.curator-framework.version>
         <cloud.curator-recipes.version>2.12.0</cloud.curator-recipes.version>
         <com.alibaba.fastjson.version>1.2.71</com.alibaba.fastjson.version>
+        <org.apache.commons-pool2.version>2.0</org.apache.commons-pool2.version>
+        <jedis.version>3.2.0</jedis.version>
     </properties>
 
     <dependencyManagement>
@@ -51,6 +53,16 @@
                 <groupId>com.alibaba</groupId>
                 <artifactId>fastjson</artifactId>
                 <version>${com.alibaba.fastjson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-pool2</artifactId>
+                <version>${org.apache.commons-pool2.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>redis.clients</groupId>
+                <artifactId>jedis</artifactId>
+                <version>${jedis.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
