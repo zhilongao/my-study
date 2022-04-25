@@ -14,6 +14,13 @@ import java.beans.PropertyDescriptor;
  * @since v1.0.0001
  */
 public class SelfInstantiationAwareBeanPostProcessor implements InstantiationAwareBeanPostProcessor {
+
+    public SelfInstantiationAwareBeanPostProcessor() {
+        super();
+        System.err.println("SelfInstantiationAwareBeanPostProcessor 初始化完成!");
+    }
+
+
     public Object postProcessBeforeInstantiation(Class<?> beanClass, String beanName) throws BeansException {
         System.err.println("postProcessBeforeInstantiation----" + beanClass.getName());
         return null;

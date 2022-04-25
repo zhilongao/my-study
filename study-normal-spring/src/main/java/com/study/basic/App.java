@@ -1,49 +1,48 @@
 package com.study.basic;
 
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.AbstractApplicationContext;
 
 /**
  * 写点注释吧
  *
  * @author gaozhilong
- * @date 2020/12/18 19:58
+ * @date 2020/12/30 10:22
  * @since v1.0.0001
  */
 public class App {
     public static void main(String[] args) {
-        AbstractApplicationContext context = new AnnotationConfigApplicationContext(SimpleConfiguration.class);
-        context.getBean(SimpleCls.class);
+        // lazyTest1();
+        lazyTest2();
     }
 
-    @Configuration
-    public static class SimpleConfiguration {
-
-        @Bean
-        public SimpleCls simpleCls() {
-            return new SimpleCls();
+    /**
+     * spring bean的懒加载测试
+     */
+    private static void lazyTest1() {
+        System.err.println("------------------------start-------------------------");
+        AbstractApplicationContext context = new AnnotationConfigApplicationContext(BeanConfiguration.class);
+        // 此时,searchService还未初始化
+        String[] definitionNames = context.getBeanDefinitionNames();
+        System.err.println("*****************************************");
+        for (String definitionName : definitionNames) {
+            System.err.println(definitionName);
         }
+        System.err.println("*****************************************");
+        context.getBean("searchService");
+        System.err.println("------------------------end-------------------------");
     }
 
-
-    public static class SimpleCls{
-
-        public SimpleCls() {
-            System.err.println("SimpleCls Constructor");
+    /**
+     * 测试getBeanNamesForType方法是否会创建懒加载bean
+     */
+    private static void lazyTest2() {
+        System.err.println("------------------------start-------------------------");
+        AbstractApplicationContext context = new AnnotationConfigApplicationContext(BeanConfiguration.class);
+        String[] beanNames = context.getBeanNamesForType(Object.class);
+        for (String beanName : beanNames) {
+            System.err.println(beanName);
         }
-
-        private String name;
-
-        private int age;
-
-        @Override
-        public String toString() {
-            return "SimpleCls{" +
-                    "name='" + name + '\'' +
-                    ", age=" + age +
-                    '}';
-        }
+        System.err.println("------------------------end-------------------------");
     }
 }

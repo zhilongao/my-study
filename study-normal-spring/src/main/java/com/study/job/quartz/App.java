@@ -26,7 +26,7 @@ public class App {
 
     private static void ramTest() throws SchedulerException {
         // 1. 获取容器
-        ApplicationContext context = new ClassPathXmlApplicationContext("spring_quartz_ram.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("job/spring_quartz_ram.xml");
         // 2. 从容器中获取到调度器
         StdScheduler scheduler = (StdScheduler) context.getBean("scheduler");
         // 3. 调度开始

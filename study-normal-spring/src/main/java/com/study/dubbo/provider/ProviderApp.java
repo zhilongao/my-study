@@ -17,7 +17,7 @@ public class ProviderApp {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("provider-service.xml");
+                ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("dubbo/provider-service.xml");
                 context.start();
             }
         }).start();

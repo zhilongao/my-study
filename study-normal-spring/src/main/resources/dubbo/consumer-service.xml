@@ -1,17 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
        xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://dubbo.apache.org/schema/dubbo
-       http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+       http://dubbo.apache.org/schema/dubbo/dubbo.xsd
+       http://www.springframework.org/schema/context
+       https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:property-placeholder location="classpath:common.properties"/>
 
     <!-- 消费方应用信息，用于计算依赖关系 -->
     <dubbo:application name="dubbo-consumer-service" />
 
     <!-- 注册中心配置信息 -->
-    <dubbo:registry id="register1" check="false" address="zookeeper://121.4.154.35:2181"/>
+    <dubbo:registry id="register1" check="false" address="zookeeper://${zookeeper.host}"/>
 
     <!-- 协议信息 -->
     <dubbo:protocol id="protocol1" name="dubbo" port="20880"/>

@@ -23,9 +23,9 @@
         <quartz.version>2.2.1</quartz.version>
         <rabbitmq.version>1.3.5.RELEASE</rabbitmq.version>
         <mysql.version>8.0.15</mysql.version>
-        <dubbo.version>3.0.7</dubbo.version>
-        <cloud.curator-recipes.version>4.0.0</cloud.curator-recipes.version>
-        <cloud.curator-framework.version>4.0.0</cloud.curator-framework.version>
+        <dubbo.version>2.7.2</dubbo.version>
+        <cloud.curator-recipes.version>4.0.1</cloud.curator-recipes.version>
+        <cloud.curator-framework.version>4.0.1</cloud.curator-framework.version>
     </properties>
 
     <dependencies>
