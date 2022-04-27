@@ -10,19 +10,24 @@ import com.charles.dubbo.test.util.DefaultConfigInfo;
 import org.apache.curator.framework.CuratorFramework;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
-//@RestController
 @Controller
 @RequestMapping
 public class RpcController {
 
     public static final String DEFAULT_DUBBO_NAMESPACE = "dubbo";
+
+    String pattern = "^(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5])\\.(\\d|[1-9]\\d|1\\d{2}|2[0-4]\\d|25[0-5]):([0-9]|[1-9]\\d|[1-9]\\d{2}|[1-9]\\d{3}|[1-5]\\d{4}|6[0-4]\\d{3}|65[0-4]\\d{2}|655[0-2]\\d|6553[0-5])$";
+
 
     @Autowired
     private DubboInvokeService dubboInvokeService;
@@ -43,6 +48,15 @@ public class RpcController {
     @ResponseBody
     public boolean configZk(@RequestBody JSONObject params) {
         String zkUrl = params.getString("zkUrl");
+        if (StringUtils.isEmpty(zkUrl)) {
+            return false;
+        }
+        Pattern r = Pattern.compile(pattern);
+        Matcher matcher = r.matcher(zkUrl);
+        boolean matches = matcher.matches();
+        if (!matches) {
+            return false;
+        }
         DefaultConfigInfo.setZkUrl(zkUrl);
         return true;
     }
@@ -55,7 +69,14 @@ public class RpcController {
     @GetMapping("/path")
     @ResponseBody
     public List<PathNode> findPath() {
-        return findProviderNodes();
+        return findInterfaceNames();
+    }
+
+
+    @GetMapping("/method")
+    @ResponseBody
+    public List<String> findMethods(@RequestParam("catalog") String catalog) {
+        return findInterfaceMethods(catalog);
     }
 
     /**
@@ -133,4 +154,68 @@ public class RpcController {
         }
         return results;
     }
+
+    public List<PathNode> findInterfaceNames() {
+        List<PathNode> results = new ArrayList<>();
+        String nameSpace = DEFAULT_DUBBO_NAMESPACE;
+        CuratorFramework framework = CuratorUtil.curatorFramework(nameSpace);
+        framework.start();
+        try {
+            List<String> catalogs = framework.getChildren().forPath("/");
+            for (String catalog : catalogs) {
+                PathNode node = new PathNode();
+                node.setInterfaceName(catalog);
+                results.add(node);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+    public List<String> findInterfaceMethods(String catalog) {
+        List<String> results = new ArrayList<>();
+        String nameSpace = DEFAULT_DUBBO_NAMESPACE;
+        CuratorFramework framework = CuratorUtil.curatorFramework(nameSpace);
+        framework.start();
+        try {
+            String path = "/" + catalog.trim() + "/providers";
+            List<String> providerNodes = framework.getChildren().forPath(path);
+            for (String providerNode : providerNodes) {
+                String proDecodeNode = URLDecoder.decode(providerNode);
+                String nodeInfo = proDecodeNode.substring(proDecodeNode.indexOf("?") + 1);
+                String[] nodeInfoArr = nodeInfo.split("&");
+                for (String nodeInfoStr : nodeInfoArr) {
+                    String[] split = nodeInfoStr.split("=");
+                    String key = split[0];
+                    String val = split[1];
+                    if ("interface".equals(key)) {
+                        // ingore
+                    } else if ("methods".equals(key)) {
+                        String[] methods = val.split(",");
+                        for (String m : methods) {
+                            results.add(m.trim());
+                        }
+                        //results.add(val);
+                    }
+
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+
+
+
+
+    public List<String> findInterfaceMethods() {
+
+        return null;
+    }
+
+
+
 }
