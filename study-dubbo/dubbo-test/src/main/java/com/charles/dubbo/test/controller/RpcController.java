@@ -1,6 +1,7 @@
 package com.charles.dubbo.test.controller;
 
 
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.charles.dubbo.test.invoke.DubboInvokeService;
 
@@ -99,22 +100,19 @@ public class RpcController {
         String interfaceName = businessParams.getString("interface");
         String methodName = businessParams.getString("method");
         // 入参类型 入参处理
-        String[] parameterTypes = {String.class.getName()};
-        Object[] args = {"1"};
-        if ("pay".equals(methodName)) {
-            parameterTypes = new String[]{"org.charles.study.common.params.PayParams"};
-            // 复杂类型的调用
-            Map<String, Object> params1 = new HashMap<String, Object>();
-            //params1.put("class", "org.charles.study.common.params.PayParams");
-            params1.put("id", 1001);
-            params1.put("mount", 2000);
-            params1.put("desc", "测试的");
-            args = new Object[] {params1};
+        JSONArray values = businessParams.getJSONArray("values");
+        String[] parameterTypes = new String[values.size()];
+        Object[] parameterValues = new Object[values.size()];
+        for (int i = 0; i < values.size(); i++) {
+            JSONObject valueItem = values.getJSONObject(i);
+            String type = valueItem.getString("type");
+            Object value = valueItem.get("value");
+            parameterTypes[i] = type;
+            parameterValues[i] = value;
         }
-        Object result = dubboInvokeService.invoke(interfaceName, methodName, parameterTypes, args, attachmentMap);
+        Object result = dubboInvokeService.invoke(interfaceName, methodName, parameterTypes, parameterValues, attachmentMap);
         return result.toString();
     }
-
 
     public List<PathNode> findProviderNodes() {
         List<PathNode> results = new ArrayList<>();
