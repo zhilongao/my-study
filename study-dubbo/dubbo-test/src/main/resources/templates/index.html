@@ -32,6 +32,48 @@
         </div>
     </div>
     <!-- params -->
+    <div class="attachment">
+        <h4>上下文参数配置</h4>
+        <div class="input-dyna-add" id="attachment-element-box">
+            <div class='form-group attach-element-item'>
+                <label class="col-sm-1 control-label">key:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control keyIndex"/>
+                </div>
+                <label class="col-sm-1 control-label">value:</label>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control valIndex" placeholder="">
+                    </div>
+                    <button class='btn btn-danger' type='button' onclick="deleteSelf(this)"><span>删除</span></button>
+                </div>
+            </div>
+        </div>
+        <input class='btn btn-info' type="button" id="addAttachmentOpt" onclick="addAttachmentOpt()" value="+添加"/>
+        <input class='btn btn-info' type="button" id="saveAttachmentOpt" onclick="saveAttachmentOpt()" value="保存"/>
+    </div>
+
+    <div class="paramsBox">
+        <h4>方法参数配置</h4>
+        <div class="input-dyna-add" id="param-element-box">
+            <div class='form-group param-element-item'>
+                <label class="col-sm-1 control-label">type:</label>
+                <div class="col-sm-2">
+                    <input type="text" class="form-control keyIndex">
+                </div>
+                <label class="col-sm-1 control-label">value:</label>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control valIndex" placeholder="">
+                    </div>
+                    <button class='btn btn-danger' type='button' onclick="deleteSelf(this)"><span>删除</span></button>
+                </div>
+            </div>
+        </div>
+        <input class='btn btn-info' type="button" id="addParamOpt" onclick="addParamOpt()" value="+添加"/>
+        <input class='btn btn-info' type="button" id="saveParamOpt" onclick="saveParamOpt()" value="保存"/>
+    </div>
+
 
     <!-- invoke method -->
     <div class="form-group">
@@ -121,8 +163,74 @@
                 }
             }
         });
-    }
+    };
 
+    // 添加上下文输入框
+    function addAttachmentOpt() {
+        var el = "<div class='form-group attach-element-item'>" +
+                    "<label class='col-sm-1 control-label'>key:</label>" +
+                    "<div class='col-sm-2'>" +
+                        "<input type='text' class='form-control keyIndex'/>" +
+                    "</div>" +
+                    "<label class='col-sm-1 control-label'>value:</label>" +
+                    "<div class='row'>" +
+                        "<div class='col-sm-3'>" +
+                            "<input type='text' class='form-control valIndex' placeholder=''>" +
+                        "</div>" +
+                        "<button class='btn btn-danger' type='button' onclick='deleteSelf(this)'><span>删除</span></button>" +
+                    "</div>" +
+                "</div>";
+        $("#attachment-element-box").append(el);
+    };
+
+    // 添加参数输入框
+    function addParamOpt() {
+        var el = "<div class='form-group param-element-item'>" +
+                    "<label class='col-sm-1 control-label'>type:</label>" +
+                    "<div class='col-sm-2'>" +
+                        "<input type='text' class='form-control keyIndex'>" +
+                    "</div>" +
+                    "<label class='col-sm-1 control-label'>value:</label>" +
+                    "<div class='row'>" +
+                        "<div class='col-sm-3'>" +
+                            "<input type='text' class='form-control valIndex' placeholder=''>" +
+                        "</div>" +
+                        "<button class='btn btn-danger' type='button' onclick='deleteSelf(this)'><span>删除</span></button>" +
+                    "</div>" +
+                "</div>";
+        $("#param-element-box").append(el);
+    };
+
+    // 上下文参数的保存
+    function saveAttachmentOpt() {
+        // 构建上下文参数
+        var attachment = {};
+        var a = $("#attachment-element-box").children(".attach-element-item");
+        $(a).each(function(index, e) {
+            var m1 = $(e).find(".keyIndex").val();
+            var m2 = $(e).find(".valIndex").val();
+            attachment[m1] = m2;
+        });
+        console.log(attachment);
+    };
+
+    // 请求参数得保存
+    function saveParamOpt() {
+        // 构建请求参数
+        var params = {};
+        var a = $("#param-element-box").children(".param-element-item");
+        $(a).each(function(index, e) {
+            var m1 = $(e).find(".keyIndex").val();
+            var m2 = $(e).find(".valIndex").val();
+            params[m1] = m2;
+        });
+        console.log(params);
+    };
+
+    // 删除动态添加的元素
+    function deleteSelf(el) {
+        $(el).closest('.form-group').remove();
+    };
 
 
 </script>
