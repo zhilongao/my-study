@@ -111,7 +111,9 @@ public class RpcController {
             parameterValues[i] = value;
         }
         Object result = dubboInvokeService.invoke(interfaceName, methodName, parameterTypes, parameterValues, attachmentMap);
-        return result.toString();
+        JSONObject resultObj = new JSONObject();
+        resultObj.put("data", result.toString());
+        return resultObj.toJSONString();
     }
 
     public List<PathNode> findProviderNodes() {
@@ -188,13 +190,12 @@ public class RpcController {
                     String key = split[0];
                     String val = split[1];
                     if ("interface".equals(key)) {
-                        // ingore
+                        //
                     } else if ("methods".equals(key)) {
                         String[] methods = val.split(",");
                         for (String m : methods) {
                             results.add(m.trim());
                         }
-                        //results.add(val);
                     }
 
                 }
@@ -204,16 +205,4 @@ public class RpcController {
         }
         return results;
     }
-
-
-
-
-
-    public List<String> findInterfaceMethods() {
-
-        return null;
-    }
-
-
-
 }
