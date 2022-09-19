@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class App1 {
-
+    // 我是master,我要修改这个文件的内容了
     public static void main(String[] args) {
         int[] nums1 = {2,7,11,15}; int target1 = 9;
         int[] nums2 = {3,2,4}; int target2 = 6;
