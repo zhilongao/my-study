@@ -1,13 +1,178 @@
-###### 请求如何到达【spring security】
+###### 	1.从【tomcat】到【spring security】
 
 ```tex
------------------------------------------具体认证和授权流程的分析----------------------------------------------------
-1.当一个请求到达【Tomcat】【ApplicationFilterChain】,挨个循环获取它所持有的【ApplicationFilterConfig[] filters】,调用【ApplicationFilterConfig】【getFilter】方法获取到具体的【Filter】,调用【doFilter】方法。
-【SpringSecurity】先是获取到【DelegatingFilterProxy】,然后从【Spring】上下文中找到名称为【springSecurityFilterChain】,类型为【Filter】的【bean】,设置为它的【Filter】【delegate】属性。该【delegate】类型为【FilterChainProxy】
+1.一个请求到达【tomcat】时,会先经过父容器【Pipeline】中【Value】元素的层层处理,最终调用到【StandardWrapper】【Pipeline】中【Value】元素【StandardWrapperValue】的【invoke】方法。
+
+2.该方法先是调用了【ApplicationFilterFactory】【createFilterChain】方法,创建一个【ApplicationFilterChain】,然后调用【ApplicationFilterChain】的【doFilter】方法。
+
+3.【ApplicationFilterChain】内部持有【Filter】列表和【Servlet】,先调用每个【Filter】的【doFilter】方法,然后在调用【Servlet】【service】方法。
+
+4.【Spring Security】的原理就是在【ApplicationFilterChain】中添加的过滤器【DelegatingFilterProxy】【delegate】->【FilterChainProxy】,对经过它的请求进行主要的【认证】和【授权】处理。
+```
+
+```tex
+1.【DelegatingFilterProxy】从【Spring】上下文中找到名称为【springSecurityFilterChain】,类型为【Filter】的【bean】,设置为【Filter】【delegate】属性。该【delegate】类型为【FilterChainProxy】。
 
 2.【FilterChainProxy】【doFilterInternal】方法根据【ServletRequest】【request】,从【List<SecurityFilterChain> filterChains】中找到一个匹配该【request】的【SecurityFilterChain】,并调用它的【getFilters】获取一个【Filter】列表。
 
-3.一个【VirtualFilterChain】被创建并携带获取到的【Filter】列表以及【Tomcat】的调用链以及【request】。该类的【doFilter】方法也是挨个调用【Filter】列表中的【doFilter】方法。
+3.【VirtualFilterChain】被创建并携带获取到的【Filter】列表以及【Tomcat】的调用链以及【request】。该类的【doFilter】方法也是挨个调用【Filter】列表中的【doFilter】方法。
+```
+
+
+
+###### 2.【spring security】初始化流程
+
+```tex
+2.1 开始说【ApplicationFilterFactory】【createFilterChain】方法创建了【ApplicationFilterChain】,所以它内部的【Fiter】也可能是这时候被放入进去的。
+
+2.2 【StandardContext】中有【ContextFilterMaps filterMaps】【Map<String, ApplicationFilterConfig> filterConfigs】两个属性。【ContextFilterMaps】其实是一个【FilterMap】数组,每一个【FilterMap】可以看成是请求的【url】或者【servletName】和【filterName】的映射关系。而【filterConfigs】就是【filterName】和【ApplicationFilterConfig】的映射关系,且【ApplicationFilterConfig】里面包含具体的【Filter】实例。
+
+2.3 【ApplicationFilterFactory】【createFilterChain】方法,先是用【StandardContext】【findFilterMaps】拿到【filterMaps】,循环每一个【FilterMap】判断是否和本次请求的【url】或者【servlet】匹配。若是匹配的话,在用【StandardContext】【findFilterConfig】方法获取一个具体的【ApplicationFilterConfig】,将它加入到【ApplicationFilterChain】中。
+
+2.4 既然我们所用到的【Filter】是从【StandardContext】中拿到的,所以我们追踪其来源也必然是何时注入到【StandardContext】中的这两个属性中开始。
+```
+
+```tex
+2.5 最终追踪到【StandardContext】【startInternal】方法,逻辑中有一个步骤是拿到它的【Map<ServletContainerInitializer, Set<Class<?>>> initializers】属性,循环调用【ServletContainerInitializer】【onStartup】方法,这个【Map】中只有一个元素【TomcatStarter】。而【TomcatStarter】【onStartup】又会拿到它内部的【ServletContextInitializer[] initializers】列表,挨个调用他们的【onStartup】方法。
+```
+
+```tex
+2.7【TomcatStarter】中的【ServletContextInitializer[] initializers】
+【AnnotationConfigServletWebServerApplicationContext】【createWebServer】方法会用【TomcatServletWebServerFactory】【getWebServer】方法创建一个【WebServer】。【getWebServer】方法接收【ServletContextInitializer... initializers】数组参数,只有一个【lumbda】表达是,具体逻辑在调用的时候分析。
+
+2.8 在【TomcatServletWebServerFactory】【prepareContext】方法中,会通过【mergeInitializers】方法,又增加了一些额外的【ServletContextInitializer】。
+	2.8.1 第一个是给【ServletContext】设置参数的【ServletContextInitializer】,拿到【WebServerFactory】中的【initParameters】,设置到【ServletContext】中,以【lumbda】表达式的方式呈现。
+	2.8.2 第二个是创建了一个【SessionConfiguringInitializer】,添加到【List<ServletContextInitializer>】列表中。
+	2.8.3 第三个是把步骤2中的【ServletContextInitializer】添加到列表中。
+	2.8.4 第四个是把【WebServerFactory】中的【List<ServletContextInitializer>】添加到列表中。
+	2.8.5 转换为数组的形式返回。
+
+2.9【TomcatServletWebServerFactory】的【configureContext】方法中创建的【TomcatStarter】对象	,并且【configureContext】将方法参数【ServletContextInitializer[] initializers】传给了【TomcatStarter】。随后【StandardContext】【addServletContainerInitializer】将【TomcatStarter】加入到【Map<ServletContainerInitializer, Set<Class<?>>> initializers】属性中。
+```
+
+```tex
+----->【TomcatStarter】的【onStart】<-----
+3.0 上面步骤分析到在【AnnotationConfigServletWebServerApplicationContext】【createWebServer】方法调用的时候,传入了一个【lumbda】,现在分析它的主要逻辑。
+
+3.1 该【lumbda】在【ServletWebServerApplicationContext】中以【selfInitialize】方法呈现。【getServletContextInitializerBeans】方法获取一个类型为【ServletContextInitializer】的对象【ServletContextInitializerBeans】,然后在调用它的【onStartup】方法。
+
+3.2 【ServletContextInitializerBeans】的创建逻辑
+	3.2.1 【BeanFactory】中获取类型为【ServletContextInitializer】的【bean】,键【key】为【name】,【value】为【bean】放入到【map】中。
+	3.2.2 【map】中的两个【bean】分别是【name】为【securityFilterChainRegistration】的【DelegatingFilterProxyRegistrationBean】,它的【targetBeanName】为【springSecurityFilterChain】。【name】为【dispatcherServletRegistration】的【DispatcherServletRegistrationBean】。	
+	3.2.3 将这两个【bean】对象加入到一个【MultiValueMap<Class<?>, ServletContextInitializer> initializers】中
+		【Filter -> DelegatingFilterProxyRegistrationBean】
+		【Servlet -> DispatcherServletRegistrationBean】
+	3.2.4 调用【addAdaptableBeans】,从【BeanFactory】中获取类型为【Filter】的，他们分别是
+			【requestContextFilter】 -> 【OrderedRequestContextFilter】
+			【hiddenHttpMethodFilter】 -> 【OrderedHiddenHttpMethodFilter】
+			【formContentFilter】 -> 【OrderedFormContentFilter】
+			【springSecurityFilterChain】 -> (上一步已经被加载过了)
+			【characterEncodingFilter】 -> 【OrderedCharacterEncodingFilter】
+	3.2.5 将上面这几个加入封装成为【FilterRegistrationBean】,然后在加入到【MultiValueMap<Class<?>, ServletContextInitializer> initializers】中。
+	3.2.6 适配【EventListener】->目前上下文中没有，先略过。
+	3.2.7 上面的步骤已经创建好了【ServletContextInitializerBeans】,由于它实现了集合抽象类,所以将挨个调用上面封装好的【RegistrationBean】的【onStartup】方法。		
+            
+```
+
+
+
+```tex
+3.3 【ServletContextInitializerBeans】【onStartup】逻辑
+	
+	3.3.1 【filter characterEncodingFilter】【FilterRegistrationBean】注册到【ServletContext】
+		3.3.1.1 先获取到【Filter】,然后调用【ServletContext】的【addFilter】方法,将该【Filter】加入到【ServletContext】【Map<String, FilterDef> filterDefs】属性中。
+		3.3.1.2 加入完成以后会返回一个【ApplicationFilterRegistration】,然后调用【configure】方法对它进行处理,其实就是将【Filter】和【url】的映射关系加入到【ServletContext】【ContextFilterMaps】中。
+
+	3.3.2 【Spring Security】【DelegatingFilterProxyRegistrationBean】注册到【ServletContext】
+		3.3.2.1 先获取【Filter】,该【Filter】的类型为【DelegatingFilterProxy】,它的【targetBeanName】属性值为【springSecurityFilterChain】,然后调用【ServletContext】的【addFilter】方法,将该【Filter】加入到【ServletContext】【Map<String, FilterDef> filterDefs】属性中。
+		3.3.2.2 加入完成以后会返回一个【ApplicationFilterRegistration】,然后调用【configure】方法对它进行处理,其实就是将【Filter】和【url】的映射关系加入到【ServletContext】【ContextFilterMaps】中。
+
+	3.3.3 【Spring MVC】【DispatcherServletRegistrationBean】注册到【ServletContext】
+		3.3.3.1 先将具体的【DispatcherServlet】加入到【StandardContext】【HashMap<String, Container> children】属性中,返回一个【ApplicationServletRegistration】。
+		3.3.3.2 将【url】和【servlet name】的映射关系加入到【ServletContext】的【Map<String, String> servletMappings】属性中。
+
+```
+
+```tex
+后续我们在创建【ServletContextInitializerBeans】的过程中,会获取到【DelegatingFilterProxyRegistrationBean】,该对象的创建逻辑也很关键。
+3.4【SecurityFilterAutoConfiguration】类的【securityFilterChainRegistration】方法向spring上下文中注册一个【DelegatingFilterProxyRegistrationBean】对象,该【bean】【name】属性是【springSecurityFilterChain】,【targetBeanName】属性是【springSecurityFilterChain】。
+
+3.5 而该对象的创建逻辑是在上下文中存在名为【springSecurityFilterChain】的【bean】时才创建的。
+
+3.6【springSecurityFilterChain】是通过配置类【WebSecurityConfiguration】【springSecurityFilterChain】方法创建的,该方法会调用【WebSecurity】【build】方法创建一个【Filter】对象。
+
+3.7【WebSecurity】是通过配置类【WebSecurityConfiguration】【setFilterChainProxySecurityConfigurer】方法创建的。
+```
+
+
+
+```tex
+【Spring Security】初始化流程->【WebSecurity】的构建
+3.8 我们在使用【Spring Security】的时候,自定义配置一般是继承自【WebSecurityConfigurerAdapter】,重写相关的方法去添加一些自定义的配置。【WebSecurityConfiguration】【setFilterChainProxySecurityConfigurer】方法在创建完【WebSecurity】后。
+
+3.9 会调用【apply】方法将这个自定义的【SecurityConfigurer】加入到它的【LinkedHashMap<Class<? extends SecurityConfigurer<O, B>>, List<SecurityConfigurer<O, B>>> configurers】中去。
+```
+
+```tex
+4.0 在【WebSecurity】创建好之后,接下来就是调用【WebSecurityConfiguration】【springSecurityFilterChain】方法,通过【WebSecurity】【build】方法创建一个【Filter】对象。
+
+4.1 详细的流程就是要分析【WebSecurity】【build】方法了。
+	【AbstractSecurityBuilder】【build】方法算是一个空壳,具体的创建流程在【AbstractConfiguredSecurityBuilder】【doBuild】方法,【doBuild】方法会执行【beforeInit】【init】【beforeConfigure】【configure】【performBuild】这几个方法。
+
+	【beforeInit】方法没有任何执行逻辑。
+
+	【init】方法拿到提前配置好的【List<SecurityConfigurer】,就是我们重写的那个【WebSecurityConfigurerAdapter】对象,调用该对象的【init】方法。
+	该配置的【init】方法执行了两个动作。①拿到【HttpSecurity】,调用【WebSecurity】【addSecurityFilterChainBuilder】方法,将该【HttpSecurity】加入到【WebSecurity】【List<SecurityBuilder<? extends SecurityFilterChain>> securityFilterChainBuilders】属性中来。
+	②加入进来以后,还会给该【WebSecurity】设置一个【Runnable postBuildAction】动作,该动作的逻辑是从【HttpSecurity】中拿到【FilterSecurityInterceptor】,设置给【WebSecurity】【filterSecurityInterceptor】属性。
+
+	【beforeConfigure】方法没有任何执行逻辑。
+
+	【configure】方法拿到提前配置好的【List<SecurityConfigurer】,就是我们重写的那个【WebSecurityConfigurerAdapter】对象,调用该对象的【configure】方法。在没有重写自定义逻辑的情况下,该方法也没有执行任何的逻辑。
+
+	【performBuild】方法,拿出刚才在【WebSecurity】【List<SecurityBuilder<? extends SecurityFilterChain>> securityFilterChainBuilders】属性中加入的【HttpSecurity】,调用它的【build】方法返回一个【SecurityFilterChain】,构建成【FilterChainProxy】然后返回。
+	这一步其实主要的是【HttpSecurity】【build】方法。
+
+4.2 这一步其实还有一点需要分析一下,就是在适配类【init】方法中【getHttp】获取【HttpSecurity】的过程。(******************************这一块很重要,明天早上重点分析一下***********************************)
+	这一步是拿到【WebSecurity】	中的配置类【WebSecurityConfigurerAdapter】,然后调用它的【init】方法。这个【init】的主体逻辑是将一些配置类加入到【HttpSecurity】的配置类列表中去,现在分析下这些主要的配置类。(分析的前提是我们现在是在【WebSecurityConfigurerAdapter】中)。
+
+	第一个是【AuthenticationManager】,通过【authenticationManager】方法获取它,该方法的内部先是执行了一个【configure】方法,参数是【AuthenticationManagerBuilder】【localConfigureAuthenticationBldr】,该方法只是将变量【disableLocalConfigureAuthenticationBldr】改为【true】。
+	然后我们根据变量【disableLocalConfigureAuthenticationBldr】是否为【true】,执行不同的逻辑。 
+	若是为【true】的话,【AuthenticationManager】的获取将会调用AuthenticationConfiguration】【authenticationConfiguration】属性的【getAuthenticationManager】方法。
+	若是为【false】的话,【AuthenticationManager】的获取将会调用【AuthenticationManagerBuilder】【localConfigureAuthenticationBldr】【build】方法获取。(此步骤前提是【disableLocalConfigureAuthenticationBldr】不为【true】)
+	执行完成之后,给变量【AuthenticationManagerBuilder】【authenticationBuilder】设置属性【AuthenticationManager】【parentAuthenticationManager】。
+	【new】【HttpSecurity】同时将【AuthenticationManagerBuilder】【authenticationBuilder】设置到【HttpSecurity】的【Map<Class<? extends Object>, Object> sharedObjects】属性中。
+
+	第二个是将一些默认过滤器的配置类加入到【HttpSecurity】的配置类列表中。(如【DefaultLoginPageConfigurer】【CsrfConfigurer】等等)。
+
+	第三个是从【spring】上下文中获取类型为【AbstractHttpConfigurer】的对象,使用【HttpSecurity】【apply】方法加入到它的配置类列表中。
+
+	返回【HttpSecurity】之前还有一个【configure】方法,也是对【HttpSecurity】加入一些配置类。
+
+	此后【HttpSecurity】加入到【WebSecurity】的某个属性中。
+```
+
+
+
+```tex
+4.3【Spring Security】初始化流程->【HttpSecurity】的构建
+	4.3.1【HttpSecurity】【build】方法其实和【WebSecurity】一样,也是【doBuild】方法执行的【beforeInit】【init】【beforeConfigure】【configure】【performBuild】这几个步骤分析
+	
+  【beforeInit】方法其实啥也没有做。
+
+  【init】方法拿到提前配置好的【List<SecurityConfigurer】,然后挨个调用【init】方法。
+
+  【beforeConfigure】方法获取到【AuthenticationManagerBuilder】对象,然后调用它的【build】方法创建一个【AuthenticationManager】对象。
+
+  【configure】方法,主要就是拿到配置【Filter】的那些工具类,创建好【Filter】,然后将【Filter】加入到【HttpSecurity】的过滤器列表中去。
+
+  【performBuild】方法创建一个【DefaultSecurityFilterChain】对象,内部包含【List<Filter> filters】。
+```
+
+
+
+###### 关于【spring security】基础组件
+
+```tex
 ```
 
 
