@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="chat-server" />
+        <module name="normal-pro" />
+        <module name="study-mq" />
+        <module name="common-util" />
+        <module name="chat-ui" />
+        <module name="chat-common" />
+        <module name="ibatis-search" />
+        <module name="chat-client" />
+        <module name="tomcat-study" />
+        <module name="study-noraml-spring" />
+      </profile>
+    </annotationProcessing>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="common-util" options="-parameters" />
+      <module name="normal-pro" options="-parameters" />
+      <module name="study-mq" options="-parameters" />
+    </option>
+  </component>
+</project>
