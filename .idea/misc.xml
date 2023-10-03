@@ -7,6 +7,8 @@
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/normal-pro/pom.xml" />
         <option value="$PROJECT_DIR$/study-mq/pom.xml" />
+        <option value="$PROJECT_DIR$/mybatis-search/pom.xml" />
+        <option value="$PROJECT_DIR$/charles-log-api/pom.xml" />
       </list>
     </option>
   </component>

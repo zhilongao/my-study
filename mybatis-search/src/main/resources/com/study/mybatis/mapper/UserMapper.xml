@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：命名空间，在同一个项目中保持唯一 -->
+<mapper namespace="userMapper">
+    <!--  SQL 操作（根据 CRUD 的不同选择不同的标签编写 SQL 操作）
+          id：SQL 操作标识
+          resultType： 结果集类型（全类名）
+          下方设定等价于编写了一个方法：List<User> selectList();
+    -->
+    <select id="selectList" resultType="com.study.mybatis.pojo.User">
+        SELECT * FROM `user`
+    </select>
+</mapper>

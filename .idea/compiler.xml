@@ -12,8 +12,8 @@
         <module name="common-util" />
         <module name="chat-ui" />
         <module name="chat-common" />
-        <module name="ibatis-search" />
         <module name="chat-client" />
+        <module name="mybatis-search" />
         <module name="tomcat-study" />
         <module name="study-noraml-spring" />
       </profile>

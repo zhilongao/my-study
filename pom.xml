@@ -18,7 +18,7 @@
     <modules>
         <module>study-normal-spring</module>
         <module>netty-search</module>
-        <module>ibatis-search</module>
+        <module>mybatis-search</module>
         <module>tomcat-study</module>
         <module>common-util</module>
     </modules>
