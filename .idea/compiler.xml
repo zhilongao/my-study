@@ -13,6 +13,7 @@
         <module name="chat-ui" />
         <module name="chat-common" />
         <module name="chat-client" />
+        <module name="spring-security" />
         <module name="mybatis-search" />
         <module name="tomcat-study" />
         <module name="study-noraml-spring" />
@@ -23,6 +24,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="common-util" options="-parameters" />
       <module name="normal-pro" options="-parameters" />
+      <module name="spring-security" options="-parameters" />
       <module name="study-mq" options="-parameters" />
     </option>
   </component>
