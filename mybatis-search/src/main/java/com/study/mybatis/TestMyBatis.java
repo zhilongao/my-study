@@ -14,7 +14,8 @@ public class TestMyBatis {
     public void testSelectListV1() throws IOException {
         try (SqlSession sqlSession = MyBatisUtils.openSession()){
             // 执行sql语句
-            List<User> userList = sqlSession.selectList("userMapper.selectList");
+            //List<User> userList = sqlSession.selectList("userMapper.selectList");
+            List<User> userList = sqlSession.selectList("com.study.mybatis.mapper.UserMapper.selectList");
             // 遍历数据
             userList.forEach(System.out::println);
         } catch (Exception e) {
