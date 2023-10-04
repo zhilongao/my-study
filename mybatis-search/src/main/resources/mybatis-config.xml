@@ -24,6 +24,18 @@
     </typeAliases>
 
 
+    <plugins>
+        <!-- 自定义插件 -->
+        <plugin interceptor="com.study.mybatis.plugin.MyPlugin">
+            <property name="key1" value="${mysql.url}"/>
+        </plugin>
+
+        <!-- PageHelper插件 -->
+        <plugin interceptor="com.github.pagehelper.PageHelper">
+            <property name="dialect" value="mysql"/>
+        </plugin>
+    </plugins>
+
     <!-- 环境配置：
      可以配置多个，但生效的只有一个
      default属性：指定生效的环境的id
