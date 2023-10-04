@@ -12,4 +12,14 @@ public class IndexController {
     public String sayHello() {
         return "hello,world";
     }
+
+    @GetMapping("/loginDefaultSuccessUrl")
+    public String loginDefaultSuccessUrl() {
+        return "login defaultSuccessUrl ";
+    }
+
+    @GetMapping("/loginSuccessForwardUrl")
+    public String loginSuccessForwardUrl() {
+        return "login successForwardUrl ";
+    }
 }

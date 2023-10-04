@@ -30,6 +30,10 @@ public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .loginPage("/login.html")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/index/loginDefaultSuccessUrl", false)
+                .successForwardUrl("/index/loginDefaultSuccessUrl")
                 .permitAll()
                 .and()
                 .csrf().disable();
