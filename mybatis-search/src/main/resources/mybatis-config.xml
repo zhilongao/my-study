@@ -3,6 +3,27 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!-- 属性配置 -->
+    <!-- 可以引入外部文件,也可以定义属性 -->
+    <properties resource="jdbc.properties">
+        <property name="txType" value="JDBC"/>
+    </properties>
+
+    <!-- mybatis运行时的一些配置 -->
+    <settings>
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+
+    <!-- 类型别名的配置 -->
+    <typeAliases>
+        <!-- 可以单个配置,也可以配置某个package -->
+        <!--
+        <typeAlias type="com.study.mybatis.pojo.User" alias="user"/>
+        -->
+        <package name="com.study.mybatis.pojo"/>
+    </typeAliases>
+
+
     <!-- 环境配置：
      可以配置多个，但生效的只有一个
      default属性：指定生效的环境的id
@@ -13,10 +34,10 @@
             <transactionManager type="JDBC"/>
             <!-- 数据源配置 -->
             <dataSource type="POOLED">
-                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
-                <property name="url" value="jdbc:mysql://192.168.225.131:3306/mybatis_demo_db?serverTimezone=UTC"/>
-                <property name="username" value="root"/>
-                <property name="password" value="123456"/>
+                <property name="driver" value="${mysql.driver}"/>
+                <property name="url" value="${mysql.url}"/>
+                <property name="username" value="${mysql.username}"/>
+                <property name="password" value="${mysql.password}"/>
             </dataSource>
         </environment>
     </environments>
@@ -24,6 +45,14 @@
     <!-- 指定要加载的sql映射文件 -->
     <mappers>
         <!-- 注意：该地址不是全类名！！！ -->
+        <!--
         <mapper resource="com/study/mybatis/mapper/UserMapper.xml"/>
+        -->
+
+        <!-- 使用 Mapper 接口的完全限定类名 -->
+        <mapper class="com.study.mybatis.mapper.UserMapper"/>
+        <!-- 也支持包扫描的方式 -->
+<!--        <package name="com.study.mybatis.mapper"/>-->
+
     </mappers>
 </configuration>
