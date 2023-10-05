@@ -177,6 +177,16 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
 ###### 关于【spring security】过滤器
 
 ```tex
@@ -274,4 +284,73 @@
 	【AccessDecisionManager】【accessDecisionManager】【decide】的认证方法分析。
  	这个是【spring securiity】的共性问题,无论是针对【url】的校验,还是针对具体某一个方法的校验,只要没有重写默认的逻辑,都会走该段。
 ```
+
+
+
+
+
+##### spring security系列文章
+
+###### 1.认证失败后是如何跳转到默认登录页面的
+
+```tex
+1.【FormLoginConfigurer】作为【UsernamePasswordAuthenticationFilter】的配置类,在初始化【new】的时候,父类【AbstractAuthenticationFilterConfigurer】会设置一个【loginPage】属性的值为【/login】。同时创建属性【LoginUrlAuthenticationEntryPoint】【authenticationEntryPoint】,将【loginFormUrl】属性设置为【/login】。
+```
+
+```tex
+2.【FormLoginConfigurer】【init】方法先调用父类【AbstractAuthenticationFilterConfigurer】【init】方法执行下面的逻辑。
+2.1 调用【updateAuthenticationDefaults】方法
+	设置一些默认的属性
+	
+2.2 调用【updateAccessDefaults】方法
+
+2.3 调用【registerDefaultAuthenticationEntryPoint】方法
+从【HttpSecurity】中拿到对象【ExceptionHandlingConfigurer】,调用【ExceptionHandlingConfigurer】【defaultAuthenticationEntryPointFor】方法将【LoginUrlAuthenticationEntryPoint】存储到它的【LinkedHashMap<RequestMatcher,AuthenticationEntryPoint> defaultEntryPointMappings】属性中。
+
+2.4【FormLoginConfigurer】【init】方法调用【initDefaultLoginFilter】方法
+
+```
+
+```tex
+3.【ExceptionHandlingConfigurer】【configure】方法
+3.1 调用【getAuthenticationEntryPoint】方法从【LinkedHashMap<RequestMatcher, AuthenticationEntryPoint> defaultEntryPointMappings】属性中取到【AuthenticationEntryPoint】【LoginUrlAuthenticationEntryPoint】。
+
+2.创建【ExceptionTranslationFilter】时,将【LoginUrlAuthenticationEntryPoint】传给【ExceptionTranslationFilter】的【authenticationEntryPoint】属性。
+```
+
+```tex
+4.【ExceptionTranslationFilter】【doFilter】方法
+4.1 在捕获到异常时，调用【handleSpringSecurityException】方法,进而调用到【sendStartAuthentication】方法,最终调用到【AuthenticationEntryPoint】【commence】方法。
+```
+
+```tex
+5.【LoginUrlAuthenticationEntryPoint】【commence】方法
+5.1 根据之前设置好的【loginFormUrl】属性,构建【redirectUrl】【http://127.0.0.1:8080/login】。
+5.2 调用【RedirectStrategy】【redirectStrategy】【DefaultRedirectStrategy】的【sendRedirect】方法重定向。
+
+6.【DefaultRedirectStrategy】【sendRedirect】
+6.1 处理【sendRedirect】后调用【HttpServletResponse】【sendRedirect】方法
+```
+
+
+
+###### 2.spring-session
+
+```tex
+2.1 【spring】如何将【SessionRepositoryFilter】注册到【tomcat】的【ApplicationFilterChain】。
+
+2.2 【SessionRepositoryFilter】持久化【session】到【redis】的作用原理。
+```
+
+
+
+###### 3.jwt
+
+```tex
+可以看做是token的一种生成方式,不过它的好处是不用再服务端存储,但是消耗比较大。
+```
+
+
+
+
 

@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <jwt.version>0.10.2</jwt.version>
     </properties>
 
     <dependencies>
@@ -210,6 +211,28 @@
             <artifactId>transport</artifactId>
             <version>6.3.1</version>
         </dependency>
+
+
+        <!-- jwt相关的依赖 -->
+        <!-- jwt api定义 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+        <!-- jwt api impl实现 -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+        <!-- jwt json -->
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>${jwt.version}</version>
+        </dependency>
+
 
     </dependencies>
 

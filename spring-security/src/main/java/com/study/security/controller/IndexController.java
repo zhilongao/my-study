@@ -13,13 +13,13 @@ public class IndexController {
         return "hello,world";
     }
 
-    @GetMapping("/loginDefaultSuccessUrl")
-    public String loginDefaultSuccessUrl() {
-        return "login defaultSuccessUrl ";
+    @GetMapping("/admin/hello")
+    public String adminHello() {
+        return "admin";
     }
 
-    @GetMapping("/loginSuccessForwardUrl")
-    public String loginSuccessForwardUrl() {
-        return "login successForwardUrl ";
+    @GetMapping("/user/hello")
+    public String userHello() {
+        return "user";
     }
 }
