@@ -9,6 +9,8 @@
         <option value="$PROJECT_DIR$/study-mq/pom.xml" />
         <option value="$PROJECT_DIR$/mybatis-search/pom.xml" />
         <option value="$PROJECT_DIR$/charles-log-api/pom.xml" />
+        <option value="$PROJECT_DIR$/dubug-try/pom.xml" />
+        <option value="$PROJECT_DIR$/spring-transaction-study/pom.xml" />
       </list>
     </option>
   </component>

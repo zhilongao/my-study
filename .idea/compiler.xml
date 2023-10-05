@@ -7,24 +7,31 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="chat-server" />
-        <module name="normal-pro" />
-        <module name="study-mq" />
+        <module name="charles-log-api" />
         <module name="common-util" />
         <module name="chat-ui" />
-        <module name="chat-common" />
         <module name="chat-client" />
+        <module name="study-noraml-spring" />
+        <module name="normal-pro" />
+        <module name="study-mq" />
+        <module name="chat-common" />
         <module name="spring-security" />
         <module name="mybatis-search" />
         <module name="tomcat-study" />
-        <module name="study-noraml-spring" />
+        <module name="spring-transaction-study" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="debug-try" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="common-util" options="-parameters" />
+      <module name="debug-try" options="-parameters" />
       <module name="normal-pro" options="-parameters" />
       <module name="spring-security" options="-parameters" />
+      <module name="spring-transaction-study" options="-parameters" />
       <module name="study-mq" options="-parameters" />
     </option>
   </component>
