@@ -15,7 +15,11 @@ public class SpringTransactionController {
 
     @RequestMapping("/spring-transaction")
     public String testTransaction() {
-        transactionServiceA.methodA();
+        try {
+            transactionServiceA.methodA();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return "SUCCESS";
     }
 
