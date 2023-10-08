@@ -148,3 +148,11 @@ public void testSelectListV2() {
 
 
 
+##### mybatis中一些工具类的使用
+
+###### 1.对参数名称的解析【ParamNameResolver】
+
+```tex
+ParamNameResolver工具类解析某个方法上被@Param注解所修饰的名称,当我们在项目中有类似的场景时,也可以使用此方法。
+```
+
