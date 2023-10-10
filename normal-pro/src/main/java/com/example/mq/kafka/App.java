@@ -1,6 +1,5 @@
 package com.example.mq.kafka;
 
-import com.example.mq.kafka.admin.PrintTopicMessage;
 import com.example.mq.kafka.simple.SimpleConsumer;
 import com.example.mq.kafka.simple.SimpleProducer;
 
@@ -13,16 +12,7 @@ import com.example.mq.kafka.simple.SimpleProducer;
  */
 public class App {
     public static void main(String[] args) {
-        // testPrintTopics();
         testSimple();
-    }
-
-    public static void testPrintTopics() {
-        try {
-            PrintTopicMessage.listTopicsWithOptions();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public static void testSimple() {

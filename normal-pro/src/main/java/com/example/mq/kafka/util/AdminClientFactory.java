@@ -1,4 +1,4 @@
-package com.example.mq.kafka.admin;
+package com.example.mq.kafka.util;
 
 import com.example.mq.kafka.CommonConstant;
 import com.google.common.collect.Maps;

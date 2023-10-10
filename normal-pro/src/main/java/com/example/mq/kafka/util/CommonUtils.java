@@ -24,10 +24,10 @@ public class CommonUtils {
         // key和value的序列化方式
         props.put("key.serializer","org.apache.kafka.common.serialization.StringSerializer");
         props.put("value.serializer","org.apache.kafka.common.serialization.StringSerializer");
-        // 确认机制 0:发送出去就确认 1:leader罗盘就确认 all(-1) 所有follower同步完才确认
+        // 确认机制 0:发送出去就确认 1:leader落盘就确认  all(-1) 所有follower同步完才确认
         props.put("acks","1");
         // 异常自动重试次数
-        props.put("retries",3);
+        props.put("retries",  3);
         // 多少条数据发送一次，默认16k
         props.put("batch.size",16384);
         // 批量发送的等待时间

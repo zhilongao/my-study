@@ -190,6 +190,13 @@
 >sh kafka-topics.sh --create --zookeeper localhost:2181 --replication-factor 1 --partitions 1 --topic gptest
 >```
 >
+>删除主题
+>
+>```shell
+>```
+>
+>
+>
 >查看已创建主题
 >
 >```shell
@@ -203,7 +210,7 @@
 >```
 >
 >查看kafka的索引文件
+>
 >```shell
 >sh kafka-dump-log.sh --files /usr/local/src/kafka_2.13-2.5.0/data/kafka-logs3/ser-topic-0/00000000000000000000.index
 >```
->

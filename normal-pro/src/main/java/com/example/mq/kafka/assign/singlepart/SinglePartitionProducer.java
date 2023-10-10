@@ -1,6 +1,7 @@
 package com.example.mq.kafka.assign.singlepart;
 
 
+import com.example.mq.kafka.topic.TopicOperate;
 import com.example.mq.kafka.util.InitPropsUtil;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.Producer;
@@ -16,6 +17,9 @@ public class SinglePartitionProducer {
     public static final String topicName = "simple-test-topic-22";
 
     public static void main(String[] args) {
+        // 先创建主题
+        TopicOperate.createTopic(topicName, 3, (short) 2);
+        // 初始化生产者
         Properties props = InitPropsUtil.commonProducerProps();
         Producer<String,String> producer = new KafkaProducer<String, String>(props);
         // 全部发送到一个分区，不知道哪位幸运儿能消费到
