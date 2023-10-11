@@ -28,6 +28,9 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/**
+ * 测试下提交
+ */
 @Configuration
 public class SysSecurityConfig extends WebSecurityConfigurerAdapter {
 
